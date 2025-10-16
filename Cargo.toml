@@ -16,22 +16,30 @@ repository = ""
 [workspace.dependencies]
 lib = { path = "crates/lib" }
 
+# -- Lints --
+
 [workspace.lints.rust]
 warnings = "deny"
-
+unsafe_code = "deny"
 arithmetic_overflow = "deny" # Prevent operations that would cause integer overflow
 
 [workspace.lints.clippy]
-pedantic = { level = "deny", priority = -1 }
 
 # Blanket foundation rules
-cargo = { level = "deny", priority = -1 }
-complexity = { level = "deny", priority = -1 }
-correctness = { level = "deny", priority = -1 }
+all = "deny"
+cargo = "deny"
+complexity = "deny"
+correctness = "deny"
 panic = "deny"
-perf = { level = "deny", priority = -1 }
-style = { level = "deny", priority = -1 }
-suspicious = { level = "deny", priority = -1 }
+pedantic = "deny"
+perf = "deny"
+style = "deny"
+suspicious = "deny"
+
+# Macros
+dbg_macro = "warn"
+todo = "deny"
+unimplemented = "deny"
 
 # Style and clarity
 wildcard_imports = "deny"
@@ -61,45 +69,32 @@ expect_used = "forbid"     # Prevent using .expect() which can cause panics
 panicking_unwrap = "deny"  # Prevent unwrap on values known to cause panics
 option_env_unwrap = "deny" # Prevent unwrapping environment variables which might be absent
 
-# Array indexing
-indexing_slicing = "deny" # Avoid direct array indexing and use safer methods like .get()
-
-# Path handling
-join_absolute_paths = "deny" # Prevent issues when joining paths with absolute paths
-
-# Serialization issues
-serde_api_misuse = "deny" # Prevent incorrect usage of Serde's serialization/deserialization API
-
-# Unbounded input
-uninit_vec = "deny" # Prevent creating uninitialized vectors which is unsafe
-
 # Unsafe code detection
 transmute_int_to_char = "deny"    # Prevent unsafe transmutation from integers to characters
 transmute_int_to_float = "deny"   # Prevent unsafe transmutation from integers to floats
 transmute_ptr_to_ref = "deny"     # Prevent unsafe transmutation from pointers to references
 transmute_undefined_repr = "deny" # Detect transmutes with potentially undefined representations
 
-# Allowed exceptions
-multiple_crate_versions = "allow" # Can't control dependencies of dependencies
-
-todo = "warn"
-must_use_candidate = "allow"
-allow_attributes_without_reason = "deny"
+# Miscellaneous
 allow_attributes = "deny"
-dbg_macro = "warn"
+allow_attributes_without_reason = "deny"
 exit = "deny"
-infinite_loop = "warn"
+indexing_slicing = "deny"                # Avoid direct array indexing and use safer methods like .get()
+infinite_loop = "deny"
+join_absolute_paths = "deny"             # Prevent issues when joining paths with absolute paths
 let_underscore_must_use = "deny"
 map_err_ignore = "deny"
 missing_assert_message = "warn"
-print_stdout = "warn"
-print_stderr = "warn"
-redundant_type_annotations = "warn"
-rest_pat_in_fully_bound_structs = "warn"
-return_and_then = "warn"
-string_slice = "warn"
+multiple_crate_versions = "allow"        # Can't control dependencies of dependencies
+must_use_candidate = "deny"
+print_stdout = "deny"
+print_stderr = "deny"
+redundant_type_annotations = "deny"
+rest_pat_in_fully_bound_structs = "deny"
+return_and_then = "deny"
+serde_api_misuse = "deny"                # Prevent incorrect usage of Serde's serialization/deserialization API
+string_slice = "deny"
 try_err = "deny"
 undocumented_unsafe_blocks = "deny"
-unimplemented = "deny"
-unneeded_field_pattern = "warn"
-
+unneeded_field_pattern = "deny"
+uninit_vec = "deny"                      # Prevent creating uninitialized vectors which is unsafe
