@@ -18,11 +18,13 @@ warnings = "deny"
 arithmetic_overflow = "deny" # Prevent operations that would cause integer overflow
 
 [workspace.lints.clippy]
+pedantic = { level = "deny", priority = -1 }
+
 # Blanket foundation rules
 cargo = { level = "deny", priority = -1 }
 complexity = { level = "deny", priority = -1 }
 correctness = { level = "deny", priority = -1 }
-panic = { level = "deny", priority = -1 }
+panic = "deny"
 perf = { level = "deny", priority = -1 }
 style = { level = "deny", priority = -1 }
 suspicious = { level = "deny", priority = -1 }
@@ -50,8 +52,8 @@ arithmetic_side_effects = "deny"        # Detect arithmetic operations with pote
 unchecked_duration_subtraction = "deny" # Ensure duration subtraction won't cause underflow
 
 # Unwraps
-unwrap_used = "deny"       # Prevent using .unwrap() which can cause panics
-expect_used = "deny"       # Prevent using .expect() which can cause panics
+unwrap_used = "forbid"     # Prevent using .unwrap() which can cause panics
+expect_used = "forbid"     # Prevent using .expect() which can cause panics
 panicking_unwrap = "deny"  # Prevent unwrap on values known to cause panics
 option_env_unwrap = "deny" # Prevent unwrapping environment variables which might be absent
 
@@ -75,5 +77,26 @@ transmute_undefined_repr = "deny" # Detect transmutes with potentially undefined
 
 # Allowed exceptions
 multiple_crate_versions = "allow" # Can't control dependencies of dependencies
+
+todo = "warn"
+must_use_candidate = "allow"
+allow_attributes_without_reason = "deny"
+allow_attributes = "deny"
+dbg_macro = "warn"
+exit = "deny"
+infinite_loop = "warn"
+let_underscore_must_use = "deny"
+map_err_ignore = "deny"
+missing_assert_message = "warn"
+print_stdout = "warn"
+print_stderr = "warn"
+redundant_type_annotations = "warn"
+rest_pat_in_fully_bound_structs = "warn"
+return_and_then = "warn"
+string_slice = "warn"
+try_err = "deny"
+undocumented_unsafe_blocks = "deny"
+unimplemented = "deny"
+unneeded_field_pattern = "warn"
 
 [workspace.dependencies]
