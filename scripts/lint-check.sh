@@ -13,16 +13,25 @@ fi
 
 echo ""
 
+CHECK_CMD="cargo workspace-lints"
+info "Running workspace lints enforcement check..."
+if ! $CHECK_CMD; then
+  fail "A crate is missing workspace.lints"
+fi
+success "Workspace lints are properly enforced."
+
+echo ""
+
 CHECK_CMD="cargo check $RUST_SCOPE"
 info "Checking code compilation with \`$CHECK_CMD\`..."
 if ! $CHECK_CMD; then
   fail "Code did not compile. Run \`$CHECK_CMD\` and fix issues."
 fi
 success "Code compiles."
-CLIPPY_CMD="cargo clippy $RUST_SCOPE"
 
 echo ""
 
+CLIPPY_CMD="cargo clippy $RUST_SCOPE"
 info "Running clippy linter with \`$CLIPPY_CMD\`..."
 if ! $CLIPPY_CMD; then
   fail "Clippy found issues. Run \`$CLIPPY_CMD\` and fix issues."
