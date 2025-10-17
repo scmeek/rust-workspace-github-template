@@ -1,4 +1,4 @@
-name: Check Lints
+name: Check Semantic Versioning
 
 on:
   push:
@@ -9,10 +9,9 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  RUST_SCOPE: --all-targets --all-features
 
 jobs:
-  lint-check:
+  version-check:
     runs-on: rust:1.89 # Also defined in workspace Cargo.toml
 
     strategy:
@@ -25,5 +24,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check lints
-        run: ./scripts/lint-check.sh
+      - name: Check semantic versioning
+        run: ./scripts/version-check.sh

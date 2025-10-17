@@ -1,4 +1,4 @@
-name: Check Lints
+name: Check Formatting
 
 on:
   push:
@@ -12,7 +12,7 @@ env:
   RUST_SCOPE: --all-targets --all-features
 
 jobs:
-  lint-check:
+  format-check:
     runs-on: rust:1.89 # Also defined in workspace Cargo.toml
 
     strategy:
@@ -25,5 +25,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check lints
-        run: ./scripts/lint-check.sh
+      - name: Check formatting
+        run: ./scripts/format-check.sh

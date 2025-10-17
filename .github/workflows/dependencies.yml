@@ -1,4 +1,4 @@
-name: Unused Dependencies
+name: Check Dependencies
 
 on:
   push:
@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
-
-env:
-  SCOPE: --all-targets --all-features
 
 jobs:
   dependencies-check:

@@ -1,4 +1,4 @@
-name: Check Lints
+name: Generate Documentation
 
 on:
   push:
@@ -9,10 +9,10 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  RUST_SCOPE: --all-targets --all-features
+  RUST_DOC_SCOPE: --all-features
 
 jobs:
-  lint-check:
+  documentation-generate:
     runs-on: rust:1.89 # Also defined in workspace Cargo.toml
 
     strategy:
@@ -25,5 +25,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check lints
-        run: ./scripts/lint-check.sh
+      - name: Generate documentation
+        run: ./scripts/documentation-generate.sh
