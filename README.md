@@ -6,15 +6,17 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 1. Update and uncomment `PROJECT_NAME` in `Makefile`
 
-2. Update `bin` and `lib` crates
+2. If using a different primary git branch than `main`, update `scripts/version-check.sh`
+
+3. Update `bin` and `lib` crates
    - Crate names and directories (if desired)
    - Update "`bin`" crate dependency to "`lib`" crate
 
-3. Update workspace `Cargo.toml`
+4. Update workspace `Cargo.toml`
 
-4. Update `LICENSE`
+5. Update `LICENSE`
 
-5. Update/replace this `README.md`
+6. Update/replace this `README.md`
 
 ## Project Getting Started
 
