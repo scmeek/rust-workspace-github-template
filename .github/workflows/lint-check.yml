@@ -30,5 +30,8 @@ jobs:
         with:
           toolchain: ${{ matrix.toolchain }}
 
+      - name: Install dependencies
+        run: ./scripts/dependencies.sh
+
       - name: Check lints
         run: ./scripts/lint-check.sh
