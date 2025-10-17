@@ -7,16 +7,19 @@ on:
     branches: [main]
   workflow_dispatch:
 
+env:
+  CARGO_TERM_COLOR: always
+
 jobs:
   dependencies-check:
-    runs-on: rust:1.89 # Also defined in workspace Cargo.toml
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: 1.90 # Also defined in workspace Cargo.toml
 
       - run: cargo install cargo-udeps --locked
 

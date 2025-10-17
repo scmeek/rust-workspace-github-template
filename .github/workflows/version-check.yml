@@ -12,17 +12,22 @@ env:
 
 jobs:
   version-check:
-    runs-on: rust:1.89 # Also defined in workspace Cargo.toml
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
         toolchain:
           - stable
+          - 1.90 # Also defined in workspace Cargo.toml
           - beta
           - nightly
 
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.toolchain }}
 
       - name: Check semantic versioning
         run: ./scripts/version-check.sh

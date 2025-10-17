@@ -13,17 +13,14 @@ env:
 
 jobs:
   documentation-generate:
-    runs-on: rust:1.89 # Also defined in workspace Cargo.toml
-
-    strategy:
-      matrix:
-        toolchain:
-          - stable
-          - beta
-          - nightly
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: 1.90 # Also defined in workspace Cargo.toml
 
       - name: Generate documentation
         run: ./scripts/documentation-generate.sh
