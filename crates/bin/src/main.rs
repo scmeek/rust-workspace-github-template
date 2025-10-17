@@ -1,3 +1,5 @@
+#![allow(clippy::print_stdout, reason = "template code")]
+
 use lib::add;
 
 fn main() {

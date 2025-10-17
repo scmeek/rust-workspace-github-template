@@ -3,15 +3,16 @@ resolver = "2"
 members = ["crates/bin", "crates/lib"]
 
 [workspace.package]
+description = "description"
 authors = []
 edition = "2024"
 rust-version = "1.90.0"
 
-categories = []
-keywords = []
+categories = ["rust"]
+keywords = ["rust"]
 license-file = "LICENSE"
 readme = "README.md"
-repository = ""
+repository = "repo"
 
 [workspace.dependencies]
 lib = { path = "crates/lib" }
@@ -19,22 +20,23 @@ lib = { path = "crates/lib" }
 # -- Lints --
 
 [workspace.lints.rust]
-warnings = "deny"
+# warnings = "deny"
 unsafe_code = "deny"
-arithmetic_overflow = "deny" # Prevent operations that would cause integer overflow
+arithmetic_overflow = "deny"    # Prevent operations that would cause integer overflow
+unnecessary_transmutes = "deny" # Prevent unsafe transmutations
 
 [workspace.lints.clippy]
 
 # Blanket foundation rules
-all = "deny"
-cargo = "deny"
-complexity = "deny"
-correctness = "deny"
-panic = "deny"
-pedantic = "deny"
-perf = "deny"
-style = "deny"
-suspicious = "deny"
+all = { level = "deny", priority = -1 }
+cargo = { level = "deny", priority = -1 }
+complexity = { level = "deny", priority = -1 }
+correctness = { level = "deny", priority = -1 }
+panic = { level = "deny", priority = -1 }
+pedantic = { level = "deny", priority = -1 }
+perf = { level = "deny", priority = -1 }
+style = { level = "deny", priority = -1 }
+suspicious = { level = "deny", priority = -1 }
 
 # Macros
 dbg_macro = "warn"
@@ -70,8 +72,6 @@ panicking_unwrap = "deny"  # Prevent unwrap on values known to cause panics
 option_env_unwrap = "deny" # Prevent unwrapping environment variables which might be absent
 
 # Unsafe code detection
-transmute_int_to_char = "deny"    # Prevent unsafe transmutation from integers to characters
-transmute_int_to_float = "deny"   # Prevent unsafe transmutation from integers to floats
 transmute_ptr_to_ref = "deny"     # Prevent unsafe transmutation from pointers to references
 transmute_undefined_repr = "deny" # Detect transmutes with potentially undefined representations
 

@@ -4,17 +4,11 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 ## After Cloning
 
-1. Update workspace `Cargo.toml`
-   - `authors`
-   - `edition`
-   - `rust-version`
-   - `categories`
-   - `keywords`
-
-2. Update `bin` and `lib` crates
+1. Update `bin` and `lib` crates
    - Crate names and directories (if desired)
-   - Update workspace `Cargo.toml` appropriately
    - Update "`bin`" crate dependency to "`lib`" crate
+
+2. Update workspace `Cargo.toml`
 
 3. Update `LICENSE`
 
