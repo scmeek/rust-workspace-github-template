@@ -16,6 +16,12 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 ## Project Getting Started
 
+0. Interact with the repo
+
+   ```sh
+   make help
+   ```
+
 1. Initialize your development environment
 
    ```sh
