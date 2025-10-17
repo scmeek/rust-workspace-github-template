@@ -35,7 +35,9 @@ if [ "${SKIP_UNCOMMITTED_CHECK:-false}" != "true" ] && [ -n "$(git status --porc
   fail "${text}"
 fi
 
-"${SCRIPTS_DIR}/lint.sh"
+"${SCRIPTS_DIR}/format-check.sh"
+"${SCRIPTS_DIR}/lint-check.sh"
+"${SCRIPTS_DIR}/test.sh"
 
 echo ""
 final_success "Pre-push checks passed. Proceeding with push."
