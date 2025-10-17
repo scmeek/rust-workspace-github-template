@@ -25,4 +25,4 @@ jobs:
         run: ./scripts/dependencies.sh
 
       - name: Find unused dependencies
-        run: cargo udeps $SCOPE
+        run: cargo +nightly udeps
