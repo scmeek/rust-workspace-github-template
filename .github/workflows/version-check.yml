@@ -19,6 +19,9 @@ jobs:
         with:
           fetch-depth: 0 # Fetch all history
 
+      - name: Fetch main branch
+        run: git fetch origin main:main
+
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: 1.90 # Also defined in workspace Cargo.toml
