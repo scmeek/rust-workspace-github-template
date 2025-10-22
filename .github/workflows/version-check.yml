@@ -16,6 +16,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # Fetch all history
 
       - uses: actions-rs/toolchain@v1
         with:
