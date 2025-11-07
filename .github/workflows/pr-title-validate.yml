@@ -1,0 +1,51 @@
+name: Validate Pull Request Title
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - edited
+permissions: read-all
+
+jobs:
+  pr-title-validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Show PR context (debug)
+        run: |
+          echo "Action triggered by event: $GITHUB_EVENT_NAME"
+          echo "PR number: ${{ github.event.pull_request.number }}"
+          echo "PR title: ${{ github.event.pull_request.title }}"
+
+      - name: Validate PR title
+        shell: bash
+        run: |
+          title="${{ github.event.pull_request.title }}"
+
+          echo "Checking PR title: '$title'"
+
+          # allowed types: feat, fix, build, chore, ci, docs, style, refactor, perf, test
+          # format: <type>: #(optional issue) short description
+          regex='^(feat|fix|build|chore|ci|docs|style|refactor|perf|test):(?:\s*#\d+)?\s+.+$'
+
+          if [[ -z "${title// }" ]]; then
+            echo "✖ PR title is empty"
+            echo "Expected format: <type>: #(optional issue) short description"
+            exit 1
+          fi
+
+          if [[ ! $title =~ $regex ]]; then
+            echo "✖ Invalid PR title format."
+            echo
+            echo "Expected:  <type>: #(optional issue) short description"
+            echo "Example:   feat: #123 add user avatar upload"
+            echo "Allowed types: feat, fix, build, chore, ci, docs, style, refactor, perf, test"
+            echo
+            exit 1
+          fi
+
+          echo "✔ PR title format OK"
