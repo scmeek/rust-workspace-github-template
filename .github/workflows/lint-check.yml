@@ -19,7 +19,7 @@ jobs:
       matrix:
         toolchain:
           - stable
-          - 1.90 # Also defined in workspace Cargo.toml
+          - 1.91 # Also defined in workspace Cargo.toml
           - beta
           - nightly
 
