@@ -8,15 +8,17 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 2. If using a different primary git branch than `main`, update `scripts/version-check.sh`
 
-3. Update `bin` and `lib` crates
+3. Update `.github/CODEOWNERS`
+
+4. Update `bin` and `lib` crates
    - Crate names and directories (if desired)
    - Update "`bin`" crate dependency to "`lib`" crate
 
-4. Update workspace `Cargo.toml`
+5. Update workspace `Cargo.toml`
 
-5. Update `LICENSE`
+6. Update `LICENSE`
 
-6. Update/replace this `README.md`
+7. Update/replace this `README.md`
 
 ## Project Getting Started
 
