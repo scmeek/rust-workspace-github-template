@@ -29,6 +29,7 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: ${{ matrix.toolchain }}
+          override: true
 
       - name: Install dependencies
         run: ./scripts/dependencies.sh
