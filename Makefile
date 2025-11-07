@@ -23,6 +23,10 @@ hooks: ## Attach git hooks
 deps: ## Install project dependencies
 	$(SCRIPTS_DIR)/dependencies.sh
 
+.PHONY: audit
+a audit: ## Audit dependencies for security vulnerabilities
+	$(SCRIPTS_DIR)/audit.sh
+
 .PHONY: docs
 d docs:  ## Generate documentation
 	$(SCRIPTS_DIR)/documentation-generate.sh

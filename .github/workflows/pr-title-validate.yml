@@ -1,0 +1,64 @@
+name: Validate Pull Request Title
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - edited
+permissions: read-all
+
+jobs:
+  pr-title-validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Show PR context (debug)
+        run: |
+          echo "Action triggered by event: $GITHUB_EVENT_NAME"
+          echo "PR number: ${{ github.event.pull_request.number }}"
+          echo "PR title: ${{ github.event.pull_request.title }}"
+
+      - name: Validate PR title follows Conventional Commits
+        shell: bash
+        run: |
+          title="${{ github.event.pull_request.title }}"
+          echo "PR title: '$title'"
+
+          # Allowed types
+          types="feat|fix|build|chore|ci|docs|style|refactor|perf|test"
+
+          # Regex explanation:
+          # ^(type)(optional (scope))?(optional !)?: <description> (optional issue at end)
+          # - scope: letters, numbers, _, -, .
+          # - description: at least one non-space char after the colon
+          # - optional issue: space + (#digits) at the very end
+          regex="^(${types})(?:\\([A-Za-z0-9_.-]+\\))?(?:!)?:\\s+.+?(?:\\s*\\(#\\d+\\))?$"
+
+          if [[ -z "${title// }" ]]; then
+            echo "✖ PR title is empty"
+            echo "Expected conventional commit format: <type>[optional scope][!]: <description> ( #optional-issue )"
+            exit 1
+          fi
+
+          if [[ ! $title =~ $regex ]]; then
+            echo "✖ PR title does NOT follow Conventional Commits."
+            echo
+            echo "Required pattern:  <type>[optional scope][!]: <description> ( #optional-issue )"
+            echo "Allowed types: feat, fix, build, chore, ci, docs, style, refactor, perf, test"
+            echo
+            echo "Valid examples:"
+            echo "  feat: allow provided config object to extend other configs"
+            echo "  feat!: send an email to the customer when a product is shipped"
+            echo "  feat(api)!: send an email to the customer when a product is shipped"
+            echo "  chore!: drop support for Node 6"
+            echo "  docs: correct spelling of CHANGELOG (#869)"
+            echo "  feat(lang): add Polish language"
+            echo "  chore(deps): Update deps (#123)"
+            echo
+            exit 1
+          fi
+
+          echo "✔ PR title matches Conventional Commits"

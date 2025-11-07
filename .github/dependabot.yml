@@ -1,0 +1,22 @@
+version: 2
+updates:
+  # --- Rust dependencies (Cargo) ---
+  - package-ecosystem: "cargo"
+    # Root directory of your Cargo workspace
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # (optional) open grouped PRs to reduce noise
+    groups:
+      rust-deps:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "build(dep)"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "build(dep)"

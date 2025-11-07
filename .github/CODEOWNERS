@@ -1,0 +1,33 @@
+# CODEOWNERS
+#
+# This file defines individuals or teams responsible for code in this repository.
+# Code owners are automatically requested for review when someone opens a pull request
+# that modifies code that they own.
+#
+# Order is important; the last matching pattern takes the most precedence.
+# More info: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything in the repo
+# This should be the primary maintainer
+* @scmeek
+
+# GitHub Configuration and Templates
+# .github/ @username
+
+# CI/CD Workflows
+# .github/workflows/ @username
+
+# Documentation
+# *.md @username
+# README.md @username
+# CONTRIBUTING.md @username
+# CODE_OF_CONDUCT.md @username
+# SECURITY.md @username
+
+# Rust Configuration Files
+# Cargo.toml @username
+# Cargo.lock @username
+# clippy.toml @username
+
+# Scripts and Tooling
+# /scripts/ @username

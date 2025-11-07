@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or Discussion
+    url: /discussions
+    about: Please ask questions and have discussions in GitHub Discussions
+  - name: Security Issue
+    url: /security/advisories/new
+    about: Report security vulnerabilities privately
