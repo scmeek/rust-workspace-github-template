@@ -22,5 +22,8 @@ jobs:
         with:
           toolchain: 1.90 # Also defined in workspace Cargo.toml
 
+      - name: Install dependencies
+        run: ./scripts/dependencies.sh
+
       - name: Audit dependencies
         run: ./scripts/audit.sh
