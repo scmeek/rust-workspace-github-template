@@ -1,0 +1,26 @@
+name: Audit dependencies
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_SCOPE: --all-targets --all-features
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: 1.90 # Also defined in workspace Cargo.toml
+
+      - name: Audit dependencies
+        run: ./scripts/audit.sh
