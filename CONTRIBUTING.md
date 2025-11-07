@@ -30,7 +30,7 @@ By participating in this project, you agree to abide by our Code of Conduct (see
 Write clear, descriptive commit messages using [Conventional Commits](https://www.conventionalcommits.org):
 
 ```
-<type>[optional scope]: <description>
+<type>[optional scope][! breaking change]: <description> (#[optional issue])
 
 [optional body]
 
