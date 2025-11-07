@@ -22,6 +22,7 @@ jobs:
         with:
           toolchain: 1.91 # Also defined in workspace Cargo.toml
           override: true
+          components: rustfmt
 
       - name: Check formatting
         run: ./scripts/format-check.sh
