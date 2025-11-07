@@ -17,6 +17,9 @@ repository = "repo"
 [workspace.dependencies]
 lib = { path = "crates/lib" }
 
+derive-new = "0.7"
+rstest = "0.26"
+
 # -- Lints --
 
 [workspace.lints.rust]
