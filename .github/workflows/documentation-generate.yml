@@ -20,5 +20,7 @@ jobs:
           toolchain: 1.91 # Also defined in workspace Cargo.toml
           override: true
 
+      - uses: Swatinem/rust-cache@v2
+
       - name: Generate documentation
         run: ./scripts/documentation-generate.sh

@@ -24,5 +24,7 @@ jobs:
           override: true
           components: rustfmt
 
+      - uses: Swatinem/rust-cache@v2
+
       - name: Check formatting
         run: ./scripts/format-check.sh

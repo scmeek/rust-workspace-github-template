@@ -19,6 +19,8 @@ jobs:
           toolchain: 1.91 # Also defined in workspace Cargo.toml
           override: true
 
+      - uses: Swatinem/rust-cache@v2
+
       - name: Check semver compatibility - lib
         uses: obi1kenobi/cargo-semver-checks-action@v2
         with:
