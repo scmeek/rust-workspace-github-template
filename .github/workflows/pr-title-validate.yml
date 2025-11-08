@@ -15,43 +15,7 @@ jobs:
       contents: read
 
     steps:
-      - name: Show PR context (debug)
-        run: |
-          echo "Action triggered by event: $GITHUB_EVENT_NAME"
-          echo "PR number: ${{ github.event.pull_request.number }}"
-          echo "PR title: ${{ github.event.pull_request.title }}"
-
-      - name: Validate PR title follows Conventional Commits
-        run: |
-          title="${{ github.event.pull_request.title }}"
-
-          TYPE_PART='(?:feat|fix|build|chore|ci|docs|style|refactor|perf|test)'
-          SCOPE_PART='(?:\([A-Za-z0-9_.\-\/]+\))?'
-          BANG_PART='!?'
-          SEP_PART=':\s+'
-          DESC_PART='.+?'
-          ISSUE_PART='(?:\s*\(#\d+\))?'
-          REGEX="^${TYPE_PART}${SCOPE_PART}${BANG_PART}${SEP_PART}${DESC_PART}${ISSUE_PART}$"
-
-          echo "Checking PR title: '$title'"
-
-          if ! perl -e 'exit($ARGV[0] =~ /'"$REGEX"'/ ? 0 : 1)' -- "$title"; then
-            echo "✖ Invalid PR title."
-            echo
-            echo "Expected Conventional Commit format:"
-            echo "  <type>[optional scope][!]: <description> (optional issue)"
-            echo
-            echo "Allowed types: feat, fix, build, chore, ci, docs, style, refactor, perf, test"
-            echo
-            echo "Examples:"
-            echo "  feat: allow provided config object to extend other configs"
-            echo "  feat!: send an email to the customer when a product is shipped"
-            echo "  feat(api)!: send an email to the customer when a product is shipped"
-            echo "  chore!: drop support for Node 6"
-            echo "  docs: correct spelling of CHANGELOG (#869)"
-            echo "  feat(lang): add Polish language"
-            echo "  chore(deps): Update deps (#123)"
-            exit 1
-          fi
-
-          echo "✔ PR title matches Conventional Commits"
+      - name: Check PR title
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
