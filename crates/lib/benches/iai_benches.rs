@@ -1,3 +1,4 @@
+#![cfg(target_os = "linux")]
 #![allow(clippy::exit, reason = "Use of main macro by Iai-Callgrind")]
 
 use iai_callgrind::{library_benchmark, library_benchmark_group, main};
