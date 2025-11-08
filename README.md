@@ -17,6 +17,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
    - Update `.github/workflows/release-plz.yml` to new names
 
 5. Update workspace `Cargo.toml`
+   - `authors`
 
 6. Update `LICENSE`
 

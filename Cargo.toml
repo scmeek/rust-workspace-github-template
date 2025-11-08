@@ -4,7 +4,7 @@ members = ["crates/bin", "crates/lib"]
 
 [workspace.package]
 description = "description"
-authors = []
+authors = [""]
 edition = "2024"
 rust-version = "1.91"       # Also defined in GitHub Actions workflow runners
 
