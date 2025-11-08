@@ -15,7 +15,7 @@ info "Running semantic versioning check..."
 
 LAST_GIT_HASH=$(git rev-parse "${PRIMARY_BRANCH_NAME}")
 
-SEMVER_CHECK_CMD="cargo semver-checks --all-features --baseline-rev $LAST_GIT_HASH"
+SEMVER_CHECK_CMD="cargo semver-checks --all-features --baseline-rev $LAST_GIT_HASH" # Also in dependencies.sh
 if ! $SEMVER_CHECK_CMD; then
   fail "Semantic versioning check failed.. Run \`$SEMVER_CHECK_CMD\` and fix issues."
 fi

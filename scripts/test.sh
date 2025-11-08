@@ -13,7 +13,7 @@ fi
 
 echo ""
 
-TEST_CMD="cargo llvm-cov nextest --workspace $RUST_SCOPE"
+TEST_CMD="cargo llvm-cov nextest --workspace $RUST_SCOPE" # Also in dependencies.sh
 info "Running tests with \`$TEST_CMD\`..."
 if ! $TEST_CMD; then
   fail "Tests failed. Run \`$TEST_CMD\` and fix issues."

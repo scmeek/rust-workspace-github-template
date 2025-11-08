@@ -26,7 +26,7 @@ jobs:
 
       - uses: taiki-e/install-action@v2
         with:
-          tool: cargo-udeps # Also defined in scripts/audit.sh
+          tool: cargo-udeps # Also defined in scripts/dependencies.sh
 
       - name: Find unused dependencies
         run: cargo +nightly udeps
