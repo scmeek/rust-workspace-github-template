@@ -7,8 +7,12 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/.." && pwd)}"
 
 . "${SCRIPTS_DIR}/functions.sh"
 
-cargo install cargo-audit --locked
-cargo install cargo-semver-checks --locked
-cargo install cargo-tarpaulin --locked
-cargo install cargo-udeps --locked
-cargo install cargo-workspace-lints --locked
+# Install llvm-tools-preview (required for llvm-cov)
+rustup component add llvm-tools-preview
+
+cargo install --locked cargo-audit
+cargo install --locked cargo-llvm-cov
+cargo install --locked cargo-nextest
+cargo install --locked cargo-semver-checks
+cargo install --locked cargo-udeps
+cargo install --locked cargo-workspace-lints
