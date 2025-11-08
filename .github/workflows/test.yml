@@ -31,8 +31,10 @@ jobs:
           toolchain: ${{ matrix.toolchain }}
           override: true
 
+      - uses: Swatinem/rust-cache@v2
+
       - uses: taiki-e/install-action@v2
         with:
-          tool: cargo-nextest, cargo-llvm-cov
+          tool: cargo-nextest, cargo-llvm-cov # Also defined in scripts/test.sh
 
       - run: cargo llvm-cov nextest --workspace $RUST_SCOPE
