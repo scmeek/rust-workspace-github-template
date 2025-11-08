@@ -11,7 +11,21 @@ license-file.workspace = true
 readme.workspace = true
 repository.workspace = true
 
-[dependencies]
-
 [lints]
 workspace = true
+
+[dependencies]
+
+[dev-dependencies]
+criterion = { workspace = true }
+iai-callgrind = { workspace = true }
+
+# Wall-time benchmarks (for local development)
+[[bench]]
+name = "criterion_benches"
+harness = false
+
+# Cycle-count benchmarks (for CI determinism)
+[[bench]]
+name = "iai_benches"
+harness = false

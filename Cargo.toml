@@ -17,7 +17,14 @@ repository = "repo"
 [workspace.dependencies]
 lib = { path = "crates/lib" }
 
+# Crate dependencies
 derive-new = "0.7"
+
+# Benchmarking
+criterion = { version = "0.7", features = ["html_reports"] } # Wall-time
+iai-callgrind = "0.16"                                       # Cycle-count benchmarking
+
+# Testing
 rstest = "0.26"
 
 # -- Lints --

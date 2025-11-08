@@ -1,0 +1,89 @@
+name: Benchmark
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+env:
+  CARGO_TERM_COLOR: always
+  BENCHMARK_ALERT_THRESHOLD: 115%
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: 1.91 # Also defined in workspace Cargo.toml
+          override: true
+
+      - uses: Swatinem/rust-cache@v2
+
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: valgrind
+          version: 1.0
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-criterion # Also defined in scripts/benchmark.sh
+
+      - name: Run iai-callgrind (cycle-count) benchmarks
+        run: |
+          cargo bench --bench iai_benches 2>&1 | tee iai-output.txt
+
+      - name: Upload iai-callgrind results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: iai-callgrind-results
+          path: |
+            iai-output.txt
+            target/iai/
+          retention-days: 30
+
+      - name: Run criterion benchmarks
+        run: |
+          cargo criterion --message-format=json -- --output-format bencher | tee criterion-output.txt
+
+      - name: Store criterion results for historical tracking
+        uses: benchmark-action/github-action-benchmark@v1
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        with:
+          tool: "cargo"
+          output-file-path: criterion-output.txt
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          alert-threshold: ${{ env.BENCHMARK_ALERT_THRESHOLD }}
+          comment-on-alert: true
+          fail-on-alert: false
+
+      - name: Comment criterion results on PR
+        uses: benchmark-action/github-action-benchmark@v1
+        if: github.event_name == 'pull_request'
+        with:
+          tool: "cargo"
+          output-file-path: criterion-output.txt
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          comment-always: true
+
+      - name: Upload HTML criterion reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: criterion-reports
+          path: |
+            target/criterion/
+            criterion-output.txt
+          retention-days: 30
