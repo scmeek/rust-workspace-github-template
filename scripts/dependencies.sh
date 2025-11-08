@@ -13,6 +13,7 @@ rustup component add llvm-tools-preview
 cargo install --locked cargo-audit
 cargo install --locked cargo-llvm-cov
 cargo install --locked cargo-nextest
+cargo install --locked cargo-release-plz
 cargo install --locked cargo-semver-checks
 cargo install --locked cargo-udeps
 cargo install --locked cargo-workspace-lints

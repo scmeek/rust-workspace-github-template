@@ -28,6 +28,7 @@
 # Cargo.toml @username
 # Cargo.lock @username
 # clippy.toml @username
+# release-plz.toml @username
 
 # Scripts and Tooling
 # /scripts/ @username

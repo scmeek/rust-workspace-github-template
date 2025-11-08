@@ -72,7 +72,7 @@ This project uses a Cargo workspace. When adding new crates:
 
 ## Pull Requests
 
-1. Use the following title format: `<type>: #(issue) short description`
+1. Use the following title format: `<type>: (#issue) short description`
 2. Complete the PR description template
 
 ## Review Process

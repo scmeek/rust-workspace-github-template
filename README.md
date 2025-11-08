@@ -13,6 +13,8 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 4. Update `bin` and `lib` crates
    - Crate names and directories (if desired)
    - Update "`bin`" crate dependency to "`lib`" crate
+   - Update `release-plz.toml` to new names
+   - Update `.github/workflows/release-plz.yml` to new names
 
 5. Update workspace `Cargo.toml`
 
