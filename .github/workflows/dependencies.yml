@@ -22,8 +22,11 @@ jobs:
           toolchain: 1.91 # Also defined in workspace Cargo.toml
           override: true
 
-      - name: Install dependencies
-        run: ./scripts/dependencies.sh
+      - uses: Swatinem/rust-cache@v2
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-udeps # Also defined in scripts/audit.sh
 
       - name: Find unused dependencies
         run: cargo +nightly udeps
