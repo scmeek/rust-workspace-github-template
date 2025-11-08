@@ -39,7 +39,7 @@ Please describe the tests that you ran to verify your changes.
     - `fix:` for bug fixes
     - `docs:` for documentation changes
     - `chore:` for maintenance tasks
-    - Add `!` after type or `BREAKING CHANGE:` in footer for breaking changes
+    - Add `!` after type in PR title for breaking changes
 - [ ] I have run `make version` locally to check for appropriate applied type above
 - [ ] **I have NOT updated version numbers in `Cargo.toml`** (these are managed automatically by `release-plz`)
 - [ ] My code follows the style guidelines of this project
