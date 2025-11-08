@@ -32,8 +32,11 @@ jobs:
           override: true
           components: clippy
 
-      - name: Install dependencies
-        run: ./scripts/dependencies.sh
+      - uses: Swatinem/rust-cache@v2
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-workspace-lints # Also defined in scripts/lint-check.sh
 
       - name: Check lints
         run: ./scripts/lint-check.sh
