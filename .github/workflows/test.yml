@@ -31,8 +31,8 @@ jobs:
           toolchain: ${{ matrix.toolchain }}
           override: true
 
-      - name: Build
-        run: cargo build --verbose $RUST_SCOPE
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-nextest, cargo-llvm-cov
 
-      - name: Run tests
-        run: cargo test --verbose $RUST_SCOPE
+      - run: cargo llvm-cov nextest --workspace $RUST_SCOPE
