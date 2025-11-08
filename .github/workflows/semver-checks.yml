@@ -23,8 +23,3 @@ jobs:
         uses: obi1kenobi/cargo-semver-checks-action@v2
         with:
           package: lib
-
-      - name: Check semver compatibility - bin
-        uses: obi1kenobi/cargo-semver-checks-action@v2
-        with:
-          package: bin
