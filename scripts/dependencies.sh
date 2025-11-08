@@ -8,6 +8,7 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/.." && pwd)}"
 . "${SCRIPTS_DIR}/functions.sh"
 
 cargo install cargo-audit --locked
+cargo install release-plz --locked
 cargo install cargo-semver-checks --locked
 cargo install cargo-tarpaulin --locked
 cargo install cargo-udeps --locked
