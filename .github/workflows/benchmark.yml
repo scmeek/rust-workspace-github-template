@@ -23,14 +23,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: 1.91 # Also defined in workspace Cargo.toml
-          override: true
+      - uses: dtolnay/rust-toolchain@1.91 # Also defined in workspace Cargo.toml
 
       - uses: Swatinem/rust-cache@v2
 
-      - uses: awalsh128/cache-apt-pkgs-action@latest
+      - uses: awalsh128/cache-apt-pkgs-action@v1
         with:
           packages: valgrind
           version: 1.0
@@ -44,7 +41,7 @@ jobs:
           cargo bench --bench iai_benches 2>&1 | tee iai-output.txt
 
       - name: Upload iai-callgrind results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: iai-callgrind-results
@@ -55,7 +52,7 @@ jobs:
 
       - name: Run criterion benchmarks
         run: |
-          cargo criterion --message-format=json -- --output-format bencher | tee criterion-output.txt
+          cargo criterion --bench criterion_benches -- --output-format bencher | tee criterion-output.txt
 
       - name: Store criterion results for historical tracking
         uses: benchmark-action/github-action-benchmark@v1
