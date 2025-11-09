@@ -28,6 +28,6 @@ name = "criterion_benches"
 harness = false
 
 # Cycle-count benchmarks (for CI determinism)
-[target.'cfg(target_os = "linux")'.bench]
+[[bench]]
 name = "iai_benches"
 harness = false
