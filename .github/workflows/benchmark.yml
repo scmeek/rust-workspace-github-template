@@ -52,7 +52,7 @@ jobs:
 
       - name: Run criterion benchmarks
         run: |
-          cargo criterion --bench criterion_benches -- --output-format bencher | tee criterion-output.txt
+          cargo criterion --bench criterion_benches --output-format bencher | tee criterion-output.txt
 
       - name: Store criterion results for historical tracking
         uses: benchmark-action/github-action-benchmark@v1
