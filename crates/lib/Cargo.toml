@@ -26,8 +26,10 @@ iai-callgrind = { workspace = true }
 [[bench]]
 name = "criterion_benches"
 harness = false
+test = false
 
 # Cycle-count benchmarks (for CI determinism)
 [[bench]]
 name = "iai_benches"
 harness = false
+test = false
