@@ -27,7 +27,7 @@ jobs:
           tool: cargo-license # Also defined in scripts/license.sh
 
       - name: Run licenses check script
-        run: ./scripts/licenses-check.sh  2>&1 | tee license-report.txt
+        run: ./scripts/licenses-check.sh > license-report.txt 2>&1
 
       - name: Upload license report
         if: always()
