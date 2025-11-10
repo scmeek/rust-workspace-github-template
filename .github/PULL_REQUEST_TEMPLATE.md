@@ -28,7 +28,7 @@ Please describe the tests that you ran to verify your changes.
 - [ ] Unit and integration tests pass
 - [ ] All lints pass and code is formatted properly
 - [ ] Documentation builds
-- [ ] Benchmarks run (if applicable)
+- [ ] Benchmarks run
 
 ## Checklist
 
