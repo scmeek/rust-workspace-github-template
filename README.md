@@ -4,26 +4,27 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 ## After Cloning
 
-1. Update and uncomment `PROJECT_NAME` in `Makefile`
+1. Update and uncomment `PROJECT_NAME` in `Makefile`.
 
-2. If using a different primary git branch than `main`, update `scripts/version-check.sh`
+2. If using a different primary git branch than `main`, update `scripts/version-check.sh`.
 
-3. Update `.github/CODEOWNERS`
+3. Update `.github/CODEOWNERS`.
 
-4. Update `bin` and `lib` crates
+4. Update `bin` and `lib` crates.
    - Crate names and directories (if desired)
    - Update "`bin`" crate dependency to "`lib`" crate
    - Update `release-plz.toml` to new names
    - Update `.github/workflows/release-plz.yml` to new names
 
-5. Update workspace `Cargo.toml`
+5. Update workspace `Cargo.toml`.
    - `authors`
 
-6. Update `benchmark.yml` to enable historical storage of benchmarks, if desired
+6. Update `benchmark.yml` to enable historical storage and PR comments of
+   benchmarks, if desired.
 
-7. Update `LICENSE`
+7. Update `LICENSE`.
 
-8. Update/replace this `README.md`
+8. Update or replace this `README.md`.
 
 ## Project Getting Started
 

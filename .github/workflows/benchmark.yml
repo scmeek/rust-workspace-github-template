@@ -50,13 +50,13 @@ jobs:
 
       - name: Comment criterion results on PR
         uses: benchmark-action/github-action-benchmark@v1
-        if: github.event_name == 'pull_request'
+        if: false # Requires a `gh-pages` branch
+        # if: github.event_name == 'pull_request'
         with:
           tool: "cargo"
           output-file-path: criterion-output.txt
           github-token: ${{ secrets.GITHUB_TOKEN }}
           comment-always: true
-          save-data-file: false
 
       - name: Upload criterion reports
         uses: actions/upload-artifact@v4
