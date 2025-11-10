@@ -19,9 +19,11 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 5. Update workspace `Cargo.toml`
    - `authors`
 
-6. Update `LICENSE`
+6. Update `benchmark.yml` to enable historical storage of benchmarks, if desired
 
-7. Update/replace this `README.md`
+7. Update `LICENSE`
+
+8. Update/replace this `README.md`
 
 ## Project Getting Started
 

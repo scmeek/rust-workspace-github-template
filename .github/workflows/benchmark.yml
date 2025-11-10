@@ -53,13 +53,11 @@ jobs:
       - name: Run criterion benchmarks
         run: |
           cargo criterion --bench criterion_benches --output-format bencher 2>&1 | tee criterion-output.txt
-          echo "=== Criterion output file contents ==="
-          cat criterion-output.txt
-          echo "=== End of file ==="
 
       - name: Store criterion results for historical tracking
         uses: benchmark-action/github-action-benchmark@v1
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: false # Requires a `gh-pages` branch
+        # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
           tool: "cargo"
           output-file-path: criterion-output.txt
