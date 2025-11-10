@@ -48,7 +48,7 @@ Please describe the tests that you ran to verify your changes.
 - [ ] I have made corresponding changes to the documentation
 - [ ] My changes generate no new warnings
 - [ ] New and existing unit tests pass locally with my changes
-  - New tests have been added that prove the fix is effective or that the feature works
+  - [ ] New tests have been added that prove the fix is effective or that the feature works
 - [ ] Any dependent changes have been merged and published
 
 ## Additional Notes & Related Issues
