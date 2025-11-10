@@ -19,6 +19,8 @@ jobs:
       - uses: actions/checkout@v5
 
       - uses: dtolnay/rust-toolchain@1.91 # Also defined in workspace Cargo.toml
+        with:
+          components: rustfmt
 
       - uses: Swatinem/rust-cache@v2
 
