@@ -27,28 +27,9 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
 
-      - uses: awalsh128/cache-apt-pkgs-action@v1
-        with:
-          packages: valgrind
-          version: 1.0
-
       - uses: taiki-e/install-action@v2
         with:
           tool: cargo-criterion # Also defined in scripts/benchmark.sh
-
-      - name: Run iai-callgrind (cycle-count) benchmarks
-        run: |
-          cargo bench --bench iai_benches 2>&1 | tee iai-output.txt
-
-      - name: Upload iai-callgrind results
-        uses: actions/upload-artifact@v5
-        if: always()
-        with:
-          name: iai-callgrind-results
-          path: |
-            iai-output.txt
-            target/iai/
-          retention-days: 30
 
       - name: Run criterion benchmarks
         run: |
