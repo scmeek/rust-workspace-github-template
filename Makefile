@@ -43,6 +43,10 @@ l lint:  ## Check lints
 t test:  ## Run tests
 	$(SCRIPTS_DIR)/test.sh
 
+.PHONY: licenses
+licenses:  ## Check dependency licenses
+	$(SCRIPTS_DIR)/licenses-check.sh
+
 .PHONY: version
 v version:  ## Check semantic versioning
 	$(SCRIPTS_DIR)/version-check.sh
