@@ -13,9 +13,9 @@ fi
 
 echo ""
 
-BENCHMARK_WALLTIME_CMD="cargo criterion" # Also in dependencies.sh
-info "Running wall-time benchmarks..."
-if ! $BENCHMARK_WALLTIME_CMD; then
-  fail "Wall-time benchmarks failed."
+BENCHMARK_CMD="cargo criterion" # Also in dependencies.sh
+info "Running benchmarks..."
+if ! $BENCHMARK_CMD; then
+  fail "Benchmarks failed."
 fi
-success "Wall-time benchmarks successfully ran."
+success "Benchmarks successfully ran."
