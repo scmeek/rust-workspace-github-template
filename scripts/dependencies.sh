@@ -7,10 +7,6 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/.." && pwd)}"
 
 . "${SCRIPTS_DIR}/functions.sh"
 
-# Valgrind for Iai-Callgrind
-# sudo apt-get install valgrind # Linux
-# brew install valgrind # macOs
-
 # Install llvm-tools-preview (required for llvm-cov)
 rustup component add llvm-tools-preview
 

@@ -18,14 +18,9 @@ repository = "repo"
 lib = { path = "crates/lib" }
 
 # Crate dependencies
+criterion = { version = "0.7", features = ["html_reports"] } # Benchmarks
 derive-new = "0.7"
-
-# Benchmarking
-criterion = { version = "0.7", features = ["html_reports"] } # Wall-time
-iai-callgrind = "0.16"                                       # Cycle-count benchmarking
-
-# Testing
-rstest = "0.26"
+rstest = "0.26"                                              # Tests
 
 # -- Lints --
 

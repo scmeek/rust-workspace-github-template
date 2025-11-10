@@ -19,17 +19,8 @@ workspace = true
 [dev-dependencies]
 criterion = { workspace = true }
 
-[target.'cfg(target_os = "linux")'.dev-dependencies]
-iai-callgrind = { workspace = true }
-
-# Wall-time benchmarks (for local development)
+# Benchmarks (for local development)
 [[bench]]
 name = "criterion_benches"
-harness = false
-test = false
-
-# Cycle-count benchmarks (for CI determinism)
-[[bench]]
-name = "iai_benches"
 harness = false
 test = false
