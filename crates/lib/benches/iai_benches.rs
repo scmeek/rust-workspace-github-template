@@ -1,5 +1,5 @@
 #[cfg(target_os = "linux")]
-mod linux_benches {
+mod iai_benches {
     use iai_callgrind::{library_benchmark, library_benchmark_group, main};
     use lib::add;
     use std::hint::black_box;
@@ -14,4 +14,10 @@ mod linux_benches {
 }
 
 #[cfg(not(target_os = "linux"))] // No-op
-fn main() {}
+mod iai_benches {
+    pub fn main() {}
+}
+
+fn main() {
+    iai_benches::main();
+}
