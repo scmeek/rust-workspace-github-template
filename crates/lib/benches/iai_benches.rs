@@ -9,8 +9,8 @@ mod linux_benches {
         black_box(add(black_box(42), black_box(58)));
     }
 
-    library_benchmark_group!(name = my_group; benchmarks = iai_my_function);
-    main!(library_benchmark_groups = my_group);
+    library_benchmark_group!(name = iai_benches_group; benchmarks = iai_add);
+    main!(library_benchmark_groups = iai_benches_group);
 }
 
 #[cfg(not(target_os = "linux"))] // No-op
