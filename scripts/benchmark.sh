@@ -18,4 +18,4 @@ info "Running benchmarks..."
 if ! $BENCHMARK_CMD; then
   fail "Benchmarks failed."
 fi
-success "Benchmarks successfully ran."
+final_success "Benchmarks successfully ran."

@@ -37,3 +37,5 @@ if ! $CLIPPY_CMD; then
   fail "Clippy found issues. Run \`$CLIPPY_CMD\` and fix issues."
 fi
 success "Clippy linter passed."
+
+final_success "Lint configuration and all lints passed."

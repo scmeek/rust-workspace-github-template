@@ -15,4 +15,4 @@ AUDIT_CMD="cargo audit" # Also in dependencies.sh
 if ! $AUDIT_CMD; then
   fail "Dependencies audit failed.. Run \`$AUDIT_CMD\` and fix issues."
 fi
-success "Dependencies passed audit."
+final_success "Dependencies passed audit."

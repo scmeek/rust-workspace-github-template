@@ -18,4 +18,4 @@ info "Running tests with \`$TEST_CMD\`..."
 if ! $TEST_CMD; then
   fail "Tests failed. Run \`$TEST_CMD\` and fix issues."
 fi
-success "All tests passed."
+final_success "All tests passed."

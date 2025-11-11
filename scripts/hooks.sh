@@ -15,4 +15,4 @@ echo ""
 
 info "Attaching git hooks..."
 ln -sf "${SCRIPTS_DIR}/git-pre-push.sh" .git/hooks/pre-push
-success "Attached git hooks."
+final_success "Attached git hooks."
