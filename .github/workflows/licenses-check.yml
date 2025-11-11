@@ -11,7 +11,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  license-check:
+  licenses-check:
     runs-on: ubuntu-latest
 
     steps:

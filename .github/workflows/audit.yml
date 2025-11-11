@@ -12,7 +12,7 @@ env:
   RUST_SCOPE: --all-targets --all-features
 
 jobs:
-  format-check:
+  audit:
     runs-on: ubuntu-latest
 
     steps:
