@@ -54,8 +54,8 @@ NCSA
 "
 
 is_license_allowed() {
-    local license="$1"
-    echo "$ALLOWED_LICENSES" | grep -q "^${license}$"
+  local license="$1"
+  echo "$ALLOWED_LICENSES" | grep -q "^${license}$"
 }
 
 echo ""
@@ -64,27 +64,38 @@ info "Running dependency licenses check..."
 
 license_output=$(cargo license 2>/dev/null) # Also in dependencies.sh
 
+echo ""
+echo "📋 Dependency Licenses:"
+echo "$license_output"
+echo ""
+
 violations=0
 while IFS= read -r line; do
-    [[ -z "$line" ]] && continue
-    
-    # Parse: "crate_name vX.Y.Z (license)"
-    if echo "$line" | grep -q '^[^ ]* v[0-9].*(\(.*\))$'; then
-        name=$(echo "$line" | sed 's/ .*//')
-        license=$(echo "$line" | sed 's/.*(\(.*\))$/\1/' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-        
-        if [[ -z "$license" ]]; then
-            echo "❌ $name: NO LICENSE SPECIFIED"
-            ((violations++))
-        elif ! is_license_allowed "$license"; then
-            echo "❌ $name: $license"
-            ((violations++))
-        fi
-    fi
-done <<< "$license_output"
+  test -z "$line" && continue
 
-if [[ $violations -eq 0 ]]; then
-    success "All dependencies use approved open-source licenses"
-else
-    fail "Found $violations non-open-source or unrecognized license(s)"
+  # Parse: "crate_name vX.Y.Z (license)"
+  name=$(echo "$line" | awk '{print $1}')
+  license=$(echo "$line" | sed 's/.*(\(.*\))$/\1/')
+
+  # Skip if no license found
+  test "$license" = "$line" && continue
+
+  # Trim whitespace
+  license=$(echo "$license" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+  if test -z "$license"; then
+    error "$name: NO LICENSE SPECIFIED"
+    violations=$((violations + 1))
+  elif ! is_license_allowed "$license"; then
+    error "$name: $license"
+    violations=$((violations + 1))
+  fi
+done <<EOF
+$license_output
+EOF
+
+if test $violations -ne 0; then
+  fail "Found $violations non-open-source or unrecognized license(s)"
 fi
+
+final_success "All dependencies use approved open-source licenses"
