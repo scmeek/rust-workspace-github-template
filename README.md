@@ -2,11 +2,52 @@
 
 This repository is intended to be a template for Rust projects hosted on GitHub.
 
+## Template Features
+
+- Local and CI implementations
+- Strict workspace-wide linting configuration
+- Dependency auditing
+  - Unused dependencies
+  - Dependency vulnerability checks
+  - Dependency licenses
+- Commit (Pull Request) standards and automated Release handling
+  - [Conventional Commits](https://www.conventionalcommits.org)
+  - [`release-plz`](https://github.com/release-plz/release-plz)
+- Modern and fast testing
+  - [`nextest`](https://nexte.st)
+  - [`cargo-llvm-cov`](https://github.com/taiki-e/cargo-llvm-cov) for coverage
+- Benchmarking
+  - [`criterion`](https://docs.rs/criterion/latest/criterion/)
+- GitHub templates
+  - `CODEOWNERS`
+  - Dependabot
+  - Pull request template
+  - Bug report template
+  - Feature request template
+  - Security policy
+  - Code of conduct
+  - Contributing guidelines
+- Sensible default dependencies
+- Pre-push git hooks for fast feedback
+- Project defaults
+  - `LICENSE` file
+
+### Assumptions
+
+- macOS used for local development
+
+### Considerations
+
+- The separation between "lib" and "bin" crates is intentional, as this template
+  prefers explicit API interfaces rather than shared "core" code. However, this,
+  of course, can be easily modified to your liking.
+
 ## After Cloning
 
 1. Update and uncomment `PROJECT_NAME` in `Makefile`.
 
-2. If using a different primary git branch than `main`, update `scripts/version-check.sh`.
+2. If using a different primary git branch than `main`, update
+   `scripts/version-check.sh`.
 
 3. Update `.github/CODEOWNERS`.
 
