@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          submodules: true
 
       - uses: dtolnay/rust-toolchain@1.91 # Also defined in workspace Cargo.toml
 
