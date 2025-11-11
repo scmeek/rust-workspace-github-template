@@ -76,23 +76,23 @@ map_clone = "deny"
 
 # Arithmetic
 checked_conversions = "deny"            # Suggest using checked conversions between numeric types
-cast_possible_truncation = "deny"       # Detect when casting might truncate a value
-cast_sign_loss = "deny"                 # Detect when casting might lose sign information
-cast_possible_wrap = "deny"             # Detect when casting might cause value to wrap around
-cast_precision_loss = "deny"            # Detect when casting might lose precision
+cast_possible_truncation = "deny"
+cast_sign_loss = "deny"
+cast_possible_wrap = "deny"
+cast_precision_loss = "deny"
 integer_division = "deny"               # Highlight potential bugs from integer division truncation
-arithmetic_side_effects = "deny"        # Detect arithmetic operations with potential side effects
+arithmetic_side_effects = "deny"
 unchecked_duration_subtraction = "deny" # Ensure duration subtraction won't cause underflow
 
 # Unwraps
-unwrap_used = "forbid"     # Prevent using .unwrap() which can cause panics
-expect_used = "forbid"     # Prevent using .expect() which can cause panics
+unwrap_used = "forbid"
+expect_used = "forbid"
 panicking_unwrap = "deny"  # Prevent unwrap on values known to cause panics
 option_env_unwrap = "deny" # Prevent unwrapping environment variables which might be absent
 
 # Unsafe code detection
 transmute_ptr_to_ref = "deny"     # Prevent unsafe transmutation from pointers to references
-transmute_undefined_repr = "deny" # Detect transmutes with potentially undefined representations
+transmute_undefined_repr = "deny"
 
 # Miscellaneous
 allow_attributes = "deny"
