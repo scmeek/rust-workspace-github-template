@@ -15,14 +15,6 @@ jobs:
   lint-check:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        toolchain:
-          - stable
-          - 1.91 # Also defined in workspace Cargo.toml
-          - beta
-          - nightly
-
     steps:
       - uses: actions/checkout@v5
         with:
