@@ -17,10 +17,13 @@ repository = "repo"
 [workspace.dependencies]
 lib = { path = "crates/lib" }
 
-# Crate dependencies
+anyhow = "1"
 criterion = { version = "0.7", features = ["html_reports"] } # Benchmarks
 derive-new = "0.7"
 rstest = "0.26"                                              # Tests
+serde = "1"
+thiserror = "2"
+tracing = "0.1"
 
 # -- Lints --
 
