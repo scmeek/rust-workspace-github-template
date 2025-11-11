@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - uses: dtolnay/rust-toolchain@1.91 # Also defined in workspace Cargo.toml
+      - uses: dtolnay/rust-toolchain@1.100 # Also defined in workspace Cargo.toml
 
       - uses: Swatinem/rust-cache@v2
 
