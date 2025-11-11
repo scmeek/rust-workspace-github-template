@@ -17,8 +17,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          fetch-depth: 0
+          persist-credentials: false
           submodules: true
+          fetch-depth: 0
 
       - uses: dtolnay/rust-toolchain@1.91 # Also defined in workspace Cargo.toml
 
