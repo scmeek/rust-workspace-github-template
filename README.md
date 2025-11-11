@@ -4,6 +4,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 ## Template Features
 
+- `Make` for project interactions, except for `cargo`-native actions
 - Local and CI implementations
   - Pre-push git hooks for fast feedback
   - Fast CI workflows for near-immediate Pull Request validations
