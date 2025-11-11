@@ -10,9 +10,20 @@ rust-version = "1.91"       # Also defined in GitHub Actions workflow runners
 
 categories = ["rust"]
 keywords = ["rust"]
+documentation = "documentation"
 license-file = "LICENSE"
 readme = "README.md"
 repository = "repo"
+
+publish = false
+
+exclude = [".github", "scripts"]
+
+[workspace.metadata]
+maintainers = [{ name = "name", email = "email" }]
+resources = [{ name = "resource name", url = "url" }]
+tags = ["rust"]
+notes = "notes"
 
 [workspace.dependencies]
 lib = { path = "crates/lib" }

@@ -60,7 +60,8 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
    - Update `.github/workflows/release-plz.yml` to new names
 
 5. Update workspace `Cargo.toml`.
-   - `authors`
+   - `workspace.package` section
+   - `workspace.metadata` section
 
 6. Update `benchmark.yml` to enable historical storage and PR comments of
    benchmarks, if desired.
