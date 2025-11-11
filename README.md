@@ -5,6 +5,8 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 ## Template Features
 
 - Local and CI implementations
+  - Pre-push git hooks for fast feedback
+  - Fast CI workflows for near-immediate Pull Request validations
 - Strict workspace-wide linting configuration
 - Dependency auditing
   - Unused dependencies
@@ -28,7 +30,6 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
   - Code of conduct
   - Contributing guidelines
 - Sensible default dependencies
-- Pre-push git hooks for fast feedback
 - Project defaults
   - `LICENSE` file
 
