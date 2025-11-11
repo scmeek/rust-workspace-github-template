@@ -18,4 +18,4 @@ info "Generating documentation with \`$DOC_CMD\`..."
 if ! $DOC_CMD; then
   fail "Documentation generation failed. Run \`$DOC_CMD\` and fix issues."
 fi
-success "Documentation generated successfully."
+final_success "Documentation generated successfully."

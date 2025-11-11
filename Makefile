@@ -43,6 +43,10 @@ l lint:  ## Check lints
 t test:  ## Run tests
 	$(SCRIPTS_DIR)/test.sh
 
+.PHONY: licenses
+licenses:  ## Check dependency licenses
+	$(SCRIPTS_DIR)/licenses-check.sh
+
 .PHONY: version
 v version:  ## Check semantic versioning
 	$(SCRIPTS_DIR)/version-check.sh
@@ -54,8 +58,3 @@ b build: ## Build project
 .PHONY: benchmark
 benchmark: ## Run benchmarks
 	$(SCRIPTS_DIR)/benchmark.sh
-
-.PHONY: view-benchmark
-view-benchmark: ## Open HTML wall-time benchmarks report
-	$(SCRIPTS_DIR)/benchmark.sh
-	open target/criterion/report/index.html

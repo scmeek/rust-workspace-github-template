@@ -19,4 +19,4 @@ SEMVER_CHECK_CMD="cargo semver-checks --all-features --baseline-rev $LAST_GIT_HA
 if ! $SEMVER_CHECK_CMD; then
   fail "Semantic versioning check failed.. Run \`$SEMVER_CHECK_CMD\` and fix issues."
 fi
-success "Semantic versioning check passed."
+final_success "Semantic versioning check passed."

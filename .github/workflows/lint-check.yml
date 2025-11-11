@@ -1,4 +1,4 @@
-name: Check Lints
+name: Check lints
 
 on:
   push:

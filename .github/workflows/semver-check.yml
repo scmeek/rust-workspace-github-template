@@ -1,17 +1,14 @@
-name: Check Dependencies
+name: Check semantic versioning
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
-  workflow_dispatch:
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  dependencies-check:
+  version-check:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,9 +18,7 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
 
-      - uses: taiki-e/install-action@v2
+      - name: Check semver compatibility - lib
+        uses: obi1kenobi/cargo-semver-checks-action@v2
         with:
-          tool: cargo-udeps # Also defined in scripts/dependencies.sh
-
-      - name: Find unused dependencies
-        run: cargo +nightly udeps
+          package: lib

@@ -12,6 +12,7 @@ rustup component add llvm-tools-preview
 
 cargo install --locked cargo-audit     # Also in .github/workflows/audit.yml
 cargo install --locked cargo-criterion # Also in .github/workflows/benchmark.yml
+cargo install --locked cargo-license   # Also in .github/workflows/licenses-check.yml
 cargo install --locked cargo-llvm-cov  # Also in .github/workflows/test.yml
 cargo install --locked cargo-nextest   # Also in .github/workflows/test.yml
 cargo install --locked cargo-semver-checks

@@ -14,4 +14,4 @@ info "Checking formatting with \`$FMT_CMD\`..."
 if ! $FMT_CMD; then
   fail "Code is not properly formatted. Run \`$FMT_CMD\` and fix issues."
 fi
-success "Code is properly formatted."
+final_success "Code is properly formatted."

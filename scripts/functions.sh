@@ -21,6 +21,10 @@ success() {
   echo "${GREEN}🎉 $1${NC}"
 }
 
+error() {
+  echo "${RED}‼️ $1${NC}"
+}
+
 final_success() {
   echo "${GREEN}✅ $1${NC}"
   exit 0
