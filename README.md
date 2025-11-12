@@ -57,6 +57,8 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 4. Update `template_bin` and `template_lib` crates.
    - Crate names and directories (if desired)
+     - _Note:_ `release-plz` and `cargo-semver-check` look at `crates.io` so be
+       conscious of that when selecting names if you are not planning to publish
    - Update "`bin`" crate dependency to "`lib`" crate
    - Update `release-plz.toml` to new names
    - Update `.github/workflows/release-plz.yml` to new names
