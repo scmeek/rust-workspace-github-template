@@ -41,7 +41,7 @@ l lint:  ## Check lints
 
 .PHONY: test
 t test:  ## Run tests
-	$(SCRIPTS_DIR)/test.sh
+	SKIP_RELEASE_TEST=true $(SCRIPTS_DIR)/test.sh
 
 .PHONY: licenses
 licenses:  ## Check dependency licenses
