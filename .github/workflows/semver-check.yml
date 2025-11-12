@@ -31,3 +31,10 @@ jobs:
         with:
           package: template_lib
           baseline: origin/main
+
+      - name: Check semver compatibility - template_bin
+        continue-on-error: true
+        uses: obi1kenobi/cargo-semver-checks-action@5b298c9520f7096a4683c0bd981a7ac5a7e249ae # v2.8
+        with:
+          package: template_bin
+          baseline: origin/main
