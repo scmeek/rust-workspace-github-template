@@ -1,5 +1,5 @@
 [package]
-name = "lib"
+name = "template-bin"
 version = "0.1.0"
 description.workspace = true
 authors.workspace = true
@@ -11,16 +11,8 @@ license-file.workspace = true
 readme.workspace = true
 repository.workspace = true
 
+[dependencies]
+template_lib = { workspace = true }
+
 [lints]
 workspace = true
-
-[dependencies]
-
-[dev-dependencies]
-criterion = { workspace = true }
-
-# Benchmarks (for local development)
-[[bench]]
-name = "criterion_benches"
-harness = false
-test = false

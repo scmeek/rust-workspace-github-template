@@ -1,6 +1,6 @@
 #![allow(clippy::print_stdout, reason = "template code")]
 
-use lib::add;
+use template_lib::add;
 
 fn main() {
     println!("Hello, world!");
