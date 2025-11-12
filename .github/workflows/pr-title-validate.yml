@@ -1,4 +1,5 @@
 name: Validate pull request title
+
 on:
   pull_request_target:
     types:
@@ -6,6 +7,7 @@ on:
       - reopened
       - synchronize
       - edited
+
 permissions: read-all
 
 jobs:

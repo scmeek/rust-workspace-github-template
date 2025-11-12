@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
 
+permissions: {}
+
 env:
   CARGO_TERM_COLOR: always
   RUST_DOC_SCOPE: --all-features
