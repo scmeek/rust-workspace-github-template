@@ -8,6 +8,8 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 - Local and CI implementations
   - Pre-push git hooks for fast feedback
   - Fast CI workflows for near-immediate Pull Request validations
+  - GitHub Actions static analysis and auditing
+    - [zizmor](https://github.com/zizmorcore/zizmor)
 - Strict workspace-wide linting configuration
 - Dependency auditing
   - Unused dependencies
