@@ -13,6 +13,8 @@ updates:
           - "*"
     commit-message:
       prefix: "build(dep)"
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -20,3 +22,5 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "build(dep)"
+    cooldown:
+      default-days: 7
