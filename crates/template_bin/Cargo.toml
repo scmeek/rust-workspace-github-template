@@ -1,5 +1,5 @@
 [package]
-name = "template-bin"
+name = "template_bin"
 version = "0.1.0"
 description.workspace = true
 authors.workspace = true
