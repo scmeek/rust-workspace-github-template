@@ -41,4 +41,11 @@ jobs:
         with:
           tool: cargo-nextest, cargo-llvm-cov # Also defined in scripts/test.sh
 
-      - run: cargo llvm-cov nextest --workspace $RUST_SCOPE
+      - name: Run doctests
+        run: cargo test --doc
+
+      - name: Run tests
+        run: cargo llvm-cov nextest --workspace $RUST_SCOPE
+
+      - name: Run tests (release)
+        run: cargo llvm-cov nextest --release --workspace $RUST_SCOPE

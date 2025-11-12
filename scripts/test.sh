@@ -13,9 +13,22 @@ fi
 
 echo ""
 
+DOC_TEST_CMD="cargo test --workspace --all-features --doc"
+info "Running doc tests with \`$DOC_TEST_CMD\`..."
+if ! $DOC_TEST_CMD; then
+  fail "Doc tests failed. Run \`$DOC_TEST_CMD\` and fix issues."
+fi
+
 TEST_CMD="cargo llvm-cov nextest --workspace $RUST_SCOPE" # Also in dependencies.sh
 info "Running tests with \`$TEST_CMD\`..."
 if ! $TEST_CMD; then
   fail "Tests failed. Run \`$TEST_CMD\` and fix issues."
 fi
+
+RELEASE_TEST_CMD="cargo llvm-cov nextest --release --workspace $RUST_SCOPE" # Also in dependencies.sh
+info "Running tests (release) with \`$RELEASE_TEST_CMD\`..."
+if ! $RELEASE_TEST_CMD; then
+  fail "Tests (release) failed. Run \`$RELEASE_TEST_CMD\` and fix issues."
+fi
+
 final_success "All tests passed."
