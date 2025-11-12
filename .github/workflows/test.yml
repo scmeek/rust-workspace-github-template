@@ -17,11 +17,6 @@ jobs:
 
     strategy:
       matrix:
-        toolchain:
-          - stable
-          - 1.91 # Also defined in workspace Cargo.toml
-          - beta
-          - nightly
         os:
           - ubuntu-latest
           - windows-latest
