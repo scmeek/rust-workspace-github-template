@@ -1,0 +1,71 @@
+name: Nightly
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["**"]
+  schedule:
+    - cron: "0 4 * * *" # Nightly, 4 AM UTC
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_SCOPE: --all-targets --all-features
+
+jobs:
+  test:
+    name: Test Rust ${{ matrix.toolchain }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain:
+          - stable
+          - "1.91" # Also defined in workspace Cargo.toml
+          - beta
+          - nightly
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+          submodules: true
+
+      - uses: dtolnay/rust-toolchain@{{ matrix.toolchain}}
+        with:
+          components: rustfmt, clippy
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-workspace-lints # Also defined in scripts/lint-check.sh
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.os }}-${{ matrix.toolchain }}
+
+      - name: Run doctests
+        run: cargo test --doc
+
+      - name: Run tests
+        run: cargo llvm-cov nextest --workspace $RUST_SCOPE
+
+      - name: Run tests (release)
+        run: cargo llvm-cov nextest --release --workspace $RUST_SCOPE
+
+      - name: Check formatting
+        run: ./scripts/format-check.sh
+        # No need to run on every OS
+        if: matrix.os == 'ubuntu-latest'
+
+      - name: Check lints
+        run: ./scripts/lint-check.sh
+        # No need to run on every OS
+        if: matrix.os == 'ubuntu-latest'
