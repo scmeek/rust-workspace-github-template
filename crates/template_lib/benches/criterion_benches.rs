@@ -1,6 +1,6 @@
 use criterion::{Criterion, criterion_group, criterion_main};
-use lib::add;
 use std::hint::black_box;
+use template_lib::add;
 
 fn bench_add(c: &mut Criterion) {
     c.bench_function("my_function", |b| {

@@ -42,9 +42,9 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 ### Considerations
 
-- The separation between "lib" and "bin" crates is intentional, as this template
-  prefers explicit API interfaces rather than shared "core" code. However, this,
-  of course, can be easily modified to your liking.
+- The separation between "template_lib" and "template_bin" crates is intentional,
+  as this template prefers explicit API interfaces rather than shared "core" code.
+  However, this, of course, can be easily modified to your liking.
 
 ## After Cloning
 
@@ -55,8 +55,10 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 3. Update `.github/CODEOWNERS`.
 
-4. Update `bin` and `lib` crates.
+4. Update `template_bin` and `template_lib` crates.
    - Crate names and directories (if desired)
+     - _Note:_ `release-plz` and `cargo-semver-check` look at `crates.io` so be
+       conscious of that when selecting names if you are not planning to publish
    - Update "`bin`" crate dependency to "`lib`" crate
    - Update `release-plz.toml` to new names
    - Update `.github/workflows/release-plz.yml` to new names
