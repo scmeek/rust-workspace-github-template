@@ -37,7 +37,7 @@ fi
 
 "${SCRIPTS_DIR}/format-check.sh"
 "${SCRIPTS_DIR}/lint-check.sh"
-"${SCRIPTS_DIR}/test.sh"
+SKIP_RELEASE_TEST=true "${SCRIPTS_DIR}/test.sh"
 
 echo ""
 final_success "Pre-push checks passed. Proceeding with push."

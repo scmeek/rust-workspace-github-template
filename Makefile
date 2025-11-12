@@ -40,8 +40,12 @@ l lint:  ## Check lints
 	$(SCRIPTS_DIR)/lint-check.sh
 
 .PHONY: test
-t test:  ## Run tests
+t test:  ## Run tests (debug build)
 	SKIP_RELEASE_TEST=true $(SCRIPTS_DIR)/test.sh
+
+.PHONY: test-all
+test-all:  ## Run all tests (include release build)
+	$(SCRIPTS_DIR)/test.sh
 
 .PHONY: licenses
 licenses:  ## Check dependency licenses
