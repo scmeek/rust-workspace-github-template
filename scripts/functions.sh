@@ -10,7 +10,7 @@ info() {
 }
 
 note() {
-  echo "${BLUE}ℹ️ ${NC}"
+  echo "${BLUE}🔷 $1${NC}"
 }
 
 warn() {
