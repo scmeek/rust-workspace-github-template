@@ -39,6 +39,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 ### Assumptions
 
 - macOS used for local development
+- `main` will be the default git branch
 
 ### Considerations
 
@@ -50,8 +51,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 1. Update and uncomment `PROJECT_NAME` in `Makefile`.
 
-2. If using a different primary git branch than `main`, update
-   `scripts/version-check.sh`.
+2. Delete `CHANGELOG.md`.
 
 3. Update `.github/CODEOWNERS`.
 
@@ -73,6 +73,20 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 7. Update `LICENSE`.
 
 8. Update or replace this `README.md`.
+
+9. Update GitHub repo
+   - Pull Request settings
+     - Disallow merge commits and rebase merging
+     - Only allow squash merging
+     - Default commit message should be Pull Request title (or some variation)
+     - Always suggest updating pull request branches
+     - Automatically delete head branches
+   - Ruleset
+     - Include default branch
+     - Require pull request before merging
+     - Require review from code owners
+     - Require status checks to pass
+     - Require branches to be up to date before merging
 
 ## Project Getting Started
 
