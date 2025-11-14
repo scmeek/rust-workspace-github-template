@@ -8,7 +8,7 @@
 
 ## Testing Details
 
-<!-- Please describe the tests that you ran to verify your changes, including steps for others to test. -->
+<!-- Please describe the tests that you ran to verify your changes, including steps for others to reproduce. -->
 
 ## Checklist
 
