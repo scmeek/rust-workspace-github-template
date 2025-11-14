@@ -1,8 +1,6 @@
 ## Description and Motivation
 
-<!-- Please include a summary of the changes and the related issue. Include relevant motivation and context. -->
-
-<!-- Closes #issue -->
+<!-- Closes <#issue>. Please include a summary of the changes and the related issue. Include relevant motivation and context. -->
 
 ## Type of Change
 
@@ -19,11 +17,10 @@
 ## Implementation Details
 
 -
--
 
 ## Testing
 
-Please describe the tests that you ran to verify your changes.
+<!-- Please describe the tests that you ran to verify your changes, including steps for others to test. -->
 
 - [ ] Unit and integration tests pass
 - [ ] All lints pass and code is formatted properly
@@ -53,4 +50,4 @@ Please describe the tests that you ran to verify your changes.
 
 ## Additional Notes & Related Issues
 
-<!-- Related #issue(s) -->
+<!-- Related <#issue(s)> -->
