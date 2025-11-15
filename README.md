@@ -51,7 +51,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 1. Update and uncomment `PROJECT_NAME` in `Makefile`.
 
-2. Delete `CHANGELOG.md`.
+2. Delete `crates/template_lib/CHANGELOG.md` and `crates/template_bin/CHANGELOG.md`.
 
 3. Update `.github/CODEOWNERS`.
 
