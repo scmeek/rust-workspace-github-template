@@ -75,7 +75,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 <!-- FIXME: Specify exact settings. -->
 
-9. Update GitHub repo
+9. Update GitHub repo settings
    - Pull Request settings
      - Disallow merge commits and rebase merging
      - Only allow squash merging
@@ -88,6 +88,9 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
      - Require review from code owners
      - Require status checks to pass
      - Require branches to be up to date before merging
+   - Workflow permissions (Settings → Actions → General)
+     - Read repository contents and packages permissions (only)
+     - Allow GitHub Actions to create and approve pull requests
 
 ## Project Getting Started
 
