@@ -73,6 +73,8 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 8. Update or replace this `README.md`.
 
+<!-- FIXME: Specify exact settings. -->
+
 9. Update GitHub repo
    - Pull Request settings
      - Disallow merge commits and rebase merging
