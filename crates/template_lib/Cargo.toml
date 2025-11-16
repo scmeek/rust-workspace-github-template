@@ -17,7 +17,7 @@ workspace = true
 [dependencies]
 
 [dev-dependencies]
-criterion = { workspace = true }
+criterion.workspace = true
 
 # Benchmarks (for local development)
 [[bench]]
