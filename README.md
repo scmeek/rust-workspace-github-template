@@ -51,7 +51,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 1. Update and uncomment `PROJECT_NAME` in `Makefile`.
 
-2. Delete `CHANGELOG.md`.
+2. Delete `crates/template_lib/CHANGELOG.md` and `crates/template_bin/CHANGELOG.md`.
 
 3. Update `.github/CODEOWNERS`.
 
@@ -61,20 +61,34 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
        conscious of that when selecting names if you are not planning to publish
    - Update "`bin`" crate dependency to "`lib`" crate
    - Update `release-plz.toml` to new names
-   - Update `.github/workflows/release-plz.yml` to new names
 
 5. Update workspace `Cargo.toml`.
    - `workspace.package` section
    - `workspace.metadata` section
 
-6. Update `benchmark.yml` to enable historical storage and PR comments of
-   benchmarks, if desired.
+6. Use GitHub pages for docs and benchmark
+   1. Create `gh-pages` branch
+
+      ```sh
+      git checkout --orphan gh-pages
+      git rm -rf .
+      git commit --allow-empty -m "Initial commit"
+      git push -u origin gh-pages
+      ```
+
+   2. Create ruleset for `gh-pages`
+   3. Configure GitHub repo settings for GitHub Pages
+      - Deploy from a branch (`gh-pages`)
+   4. Enable deploying documentation in `documentation-generate.yml`
+   5. Update `benchmark.yml` to enable historical storage and PR comments of benchmarks
 
 7. Update `LICENSE`.
 
 8. Update or replace this `README.md`.
 
-9. Update GitHub repo
+<!-- FIXME: Specify exact settings. -->
+
+9. Update GitHub repo settings
    - Pull Request settings
      - Disallow merge commits and rebase merging
      - Only allow squash merging
@@ -87,6 +101,9 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
      - Require review from code owners
      - Require status checks to pass
      - Require branches to be up to date before merging
+   - Workflow permissions (Settings → Actions → General)
+     - Read repository contents and packages permissions (only)
+     - Allow GitHub Actions to create and approve pull requests
 
 ## Project Getting Started
 

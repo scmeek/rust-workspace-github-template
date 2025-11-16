@@ -28,3 +28,10 @@ jobs:
 
       - name: Generate documentation
         run: ./scripts/documentation-generate.sh
+
+      - name: Deploy docs to gh-pages
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0
+        if: false # Requires a `gh-pages` branch
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/doc
