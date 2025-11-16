@@ -66,8 +66,21 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
    - `workspace.package` section
    - `workspace.metadata` section
 
-6. Update `benchmark.yml` to enable historical storage and PR comments of
-   benchmarks, if desired.
+6. Use GitHub pages for docs and benchmark
+   1. Create `gh-pages` branch
+
+      ```sh
+      git checkout --orphan gh-pages
+      git rm -rf .
+      git commit --allow-empty -m "Initial commit"
+      git push -u origin gh-pages
+      ```
+
+   2. Create ruleset for `gh-pages`
+   3. Configure GitHub repo settings for GitHub Pages
+      - Deploy from a branch (`gh-pages`)
+   4. Enable deploying documentation in `documentation-generate.yml`
+   5. Update `benchmark.yml` to enable historical storage and PR comments of benchmarks
 
 7. Update `LICENSE`.
 
