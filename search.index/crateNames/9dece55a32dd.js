@@ -1,0 +1,1 @@
+rd_("ltemplate_binltemplate_lib")
