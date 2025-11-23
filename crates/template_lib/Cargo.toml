@@ -17,10 +17,11 @@ workspace = true
 [dependencies]
 
 [dev-dependencies]
-criterion = { workspace = true }
+criterion.workspace = true
 
-# Benchmarks (for local development)
+# Benchmarks
 [[bench]]
-name = "criterion_benches"
+name = "criterion_benches" # Also in benchmark.sh and benchmark.yml
+bench = true
 harness = false
 test = false

@@ -5,32 +5,36 @@ BLUE='\033[1;34m'
 MAGENTA='\033[0;35m'
 NC='\033[0m' # No Color
 
+_print() {
+  printf '%b%s%s%b\n' "$1" "$2" "$3" "$NC"
+}
+
 info() {
-  echo "${YELLOW}==> $1${NC}"
+  _print "${YELLOW}" "==> " "$1"
 }
 
 note() {
-  echo "${BLUE}🔷 $1${NC}"
+  _print "${BLUE}" "" "$1"
 }
 
 warn() {
-  echo "${MAGENTA}🚨 $1${NC}"
+  _print "${MAGENTA}" "" "$1"
 }
 
 success() {
-  echo "${GREEN}🎉 $1${NC}"
+  _print "${GREEN}" "✅ " "$1"
 }
 
 error() {
-  echo "${RED}‼️ $1${NC}"
+  _print "${RED}" "🚨 " "$1"
 }
 
 final_success() {
-  echo "${GREEN}✅ $1${NC}"
+  _print "${GREEN}" "🎉 " "$1"
   exit 0
 }
 
 fail() {
-  echo "${RED}💥 $1${NC}"
+  _print "${RED}" "💥 " "$1"
   exit 1
 }

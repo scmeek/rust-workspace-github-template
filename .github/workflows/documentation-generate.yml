@@ -3,8 +3,10 @@ name: Generate documentation
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
-permissions: {}
+permissions:
+  contents: write
 
 env:
   CARGO_TERM_COLOR: always
@@ -12,6 +14,7 @@ env:
 
 jobs:
   documentation-generate:
+    if: startsWith(github.ref, 'refs/heads/main')
     runs-on: ubuntu-latest
 
     steps:
@@ -28,3 +31,9 @@ jobs:
 
       - name: Generate documentation
         run: ./scripts/documentation-generate.sh
+
+      - name: Deploy docs to gh-pages
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/doc

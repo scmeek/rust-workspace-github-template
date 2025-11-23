@@ -59,6 +59,6 @@ v version:  ## Check semantic versioning
 b build: ## Build project
 	@echo "Use \`cargo\` to build project"
 
-.PHONY: benchmark
-benchmark: ## Run benchmarks
+.PHONY: bench
+bench: ## Run benchmarks
 	$(SCRIPTS_DIR)/benchmark.sh
