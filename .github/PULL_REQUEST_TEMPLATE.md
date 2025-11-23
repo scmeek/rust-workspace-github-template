@@ -10,37 +10,39 @@
 
 <!-- Please describe the tests that you ran to verify your changes, including steps for others to reproduce. -->
 
-## Checklist
+## Reminders
 
-- [ ] My PR title and commits are formatted correctly
+- Format PR title and commits correctly
   - PR title format follows the format defined in `CONTRIBUTING.md`
   - Commits follow the [Conventional Commits](https://www.conventionalcommits.org/) specification
     - ✨ `feat:` for new features
     - 🪲 `fix:` for bug fixes
-    - 📜 `docs:` for documentation changes
-    - ⚡️ `perf`: for performance improvement
-    - 🧩 `refactor:` for code refactoring
-    - 🤖 `ci:` for CI/CD changes
-    - 🧺 `chore:` for maintenance tasks
+    - `docs:` for documentation changes
+    - `ci:` for CI/CD changes
+    - `test:` for testing changes
+    - `build:` for build or toolchain changes
+    - `refactor:` for code refactoring
+    - `perf`: for performance improvement
+    - `style:` for cosmetic or UI changes
+    - `chore:` for maintenance tasks
     - 💥 **Add `!` after type in PR title for breaking changes**
       - Fix or feature that would cause existing functionality to not work as
         it previously did
-- [ ] I have run `make version` locally to check for appropriate applied type above
-  - **I have NOT updated version numbers in `Cargo.toml`**
+- Run `make version` locally to check for appropriate applied type above
+  - **Do NOT updated version numbers in `Cargo.toml`**
     - These are managed automatically by `release-plz`
-- [ ] My code follows the style guidelines of this project
-- [ ] I have performed a self-review of my own code
-- [ ] I have made corresponding changes to the documentation
-  - I have commented my code, particularly in hard-to-understand areas
-- [ ] New and existing unit tests pass locally with my changes
-  - New tests have been added that prove the fix is effective or that the
-    feature works
+- Follow the code style guidelines of this project
+- Perform a self-review of own code
+- Make corresponding changes to the documentation
+  - Comment code, particularly in hard-to-understand areas
+- Ensure new and existing unit tests pass locally with my changes
+  - Add new tests that prove the fix is effective or that the feature works
   - Unit and integration tests pass
   - All lints pass and code is formatted properly
   - Documentation builds
   - Benchmarks run
-  - My changes generate no new warnings
-- [ ] Any dependent changes have been merged and published
+  - No new warnings generated
+- Merge and publish any dependent changes
 
 ## Additional Notes & Related Issues
 
