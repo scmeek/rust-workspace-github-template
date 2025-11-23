@@ -66,6 +66,7 @@ jobs:
           tool: cargo-criterion # Also defined in scripts/benchmark.sh
 
       - name: Run main benchmarks
+        # Also in benchmark.yml
         run: |
           cargo bench --bench criterion_benches --color never
       - name: Publish Criterion HTML + JSON to gh-pages
