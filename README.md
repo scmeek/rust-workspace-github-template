@@ -86,8 +86,6 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 8. Update or replace this `README.md`.
 
-<!-- FIXME: Specify exact settings. -->
-
 9. Update GitHub repo settings
    - Pull Request settings
      - Disallow merge commits and rebase merging
@@ -96,13 +94,28 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
      - Always suggest updating pull request branches
      - Automatically delete head branches
    - Ruleset
-     - Include default branch
-     - Require pull request before merging
-     - Require review from code owners
-     - Require status checks to pass
-     - Require branches to be up to date before merging
+     - Default branch
+       - Require linear history
+       - Require pull request before merging
+       - Require review from code owners
+       - Squash as the allowed merge method for Pull Requests
+       - Require status checks to pass
+         - audit
+         - benchmark-compare-pr
+         - format-check
+         - licenses-check
+         - lint-check
+         - pr-title-validate
+         - unused-dependencies-check
+         - zizmor
+         - test (macos-latest)
+         - test (ubuntu-latest)
+         - test (windows-latest)
+       - Require branches to be up to date before merging
+       - Block for pushes
    - Workflow permissions (Settings → Actions → General)
-     - Read repository contents and packages permissions (only)
+     - Read and write permissions
+       - For `gh-pages` updates
      - Allow GitHub Actions to create and approve pull requests
 
 ## Project Getting Started
