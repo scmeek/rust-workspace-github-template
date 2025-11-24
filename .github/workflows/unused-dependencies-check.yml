@@ -22,7 +22,7 @@ jobs:
           persist-credentials: false
           submodules: true
 
-      - uses: dtolnay/rust-toolchain@0f44b27771c32bda9f458f75a1e241b09791b331 # v1.91.1
+      - uses: dtolnay/rust-toolchain@0b1efabc08b657293548b77fb76cc02d26091c7e # v1.91.1
         with:
           toolchain: 1.91 # Also defined in workspace Cargo.toml
 
