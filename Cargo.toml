@@ -29,7 +29,7 @@ notes = "notes"
 template_lib = { path = "crates/template_lib" }
 
 anyhow = "1"
-criterion = { version = "0.7", features = ["html_reports"] } # Benchmarks
+criterion = { version = "0.8", features = ["html_reports"] } # Benchmarks
 derive-new = "0.7"
 rstest = "0.26"                                              # Tests
 serde = "1"
