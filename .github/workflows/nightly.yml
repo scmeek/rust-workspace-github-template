@@ -16,7 +16,7 @@ env:
   RUST_SCOPE: --all-targets --all-features
 
 jobs:
-  test:
+  nightly:
     name: Test Rust ${{ matrix.toolchain }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
 
