@@ -1,3 +1,4 @@
+#![doc = include_str!("../README.md")]
 #![allow(clippy::print_stdout, reason = "template code")]
 
 use template_lib::add;
