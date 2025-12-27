@@ -6,7 +6,7 @@ members = ["crates/template_bin", "crates/template_lib"]
 description = "description"
 authors = ["authors"]
 edition = "2024"
-rust-version = "1.91"       # Also defined in GitHub Actions workflow runners
+rust-version = "1.92"       # Also defined in GitHub Actions workflow runners
 
 categories = ["rust"]
 keywords = ["rust"]

@@ -25,7 +25,7 @@ jobs:
       matrix:
         toolchain:
           - stable
-          - "1.91" # Also defined in workspace Cargo.toml
+          - "1.92" # Also defined in workspace Cargo.toml
           - beta
           - nightly
         os:
@@ -39,7 +39,7 @@ jobs:
           persist-credentials: false
           submodules: true
 
-      - uses: dtolnay/rust-toolchain@0f44b27771c32bda9f458f75a1e241b09791b331 # v1.91.1
+      - uses: dtolnay/rust-toolchain@9bc92bc5598b4f3bec5d910d352094982cb0c3b9 # v1.92
         with:
           toolchain: ${{ matrix.toolchain }}
           components: rustfmt, clippy
