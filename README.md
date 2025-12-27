@@ -61,6 +61,8 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
        conscious of that when selecting names if you are not planning to publish
    - Update "`bin`" crate dependency to "`lib`" crate
    - Update `release-plz.toml` to new names
+   - Update each crate's `README.md`
+     - `README.md` are exported in Rust docs for its crate
 
 5. Update workspace `Cargo.toml`.
    - `workspace.package` section
