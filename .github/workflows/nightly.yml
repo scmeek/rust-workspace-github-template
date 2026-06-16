@@ -40,7 +40,7 @@ jobs:
           submodules: true
 
       # Also defined in workspace Cargo.toml
-      - uses: dtolnay/rust-toolchain@master
+      - uses: dtolnay/rust-toolchain@6190aa5fb88a88ee71c12769924bbe63a9ab152e # v1.96
         with:
           toolchain: ${{ matrix.toolchain }}
           components: rustfmt, clippy
