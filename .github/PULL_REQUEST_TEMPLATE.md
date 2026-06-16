@@ -1,24 +1,23 @@
-## Description and Motivation
+## Summary
 
-<!-- Closes <#issue>. Include a summary of the changes and the related issue. Include relevant motivation and context. -->
+<!-- Closes <#issue>. Include a brief summary of the changes, motivation, and
+the related issue. -->
 
-## Implementation Details
+### Implementation details
 
 -
 
-## Testing Details
+## How this was tested
 
 <!-- Describe the reproducible tests that verify the changes. -->
 
 ## Reminders
 
 - Format PR title and commits correctly
-  - PR title format follows the format defined in `CONTRIBUTING.md`
-    - ✨ `feat:` for new features
-    - 🪲 `fix:` for bug fixes
-    - 💥 **Add `!` after type in PR title for breaking changes**
-    - _See [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) for other types_
-- Follow the code style guidelines of this project
+  - ✨ `feat:` for new features
+  - 🪲 `fix:` for bug fixes
+  - 💥 **Add `!` after type in PR title for breaking changes**
+  - _See [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) for other types_
 - Perform a self-review of own code
 - Make corresponding changes to the documentation and comments for hard-to-
   understand code
