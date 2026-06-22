@@ -39,7 +39,7 @@ jobs:
           persist-credentials: false
           submodules: true
 
-      - uses: dtolnay/rust-toolchain@3c5f7ea28cd621ae0bf5283f0e981fb97b8a7af9 # master
+      - uses: dtolnay/rust-toolchain@67ef31d5b988238dd797d409d6f9574278e20537 # master
         with:
           toolchain: ${{ matrix.toolchain }}
           components: rustfmt, clippy
@@ -48,7 +48,7 @@ jobs:
         with:
           key: ${{ matrix.os }}-${{ matrix.toolchain }}
 
-      - uses: taiki-e/install-action@0631aa6515c7d545823c67cfae7ef4fc7f490154 # v2.81.8
+      - uses: taiki-e/install-action@15449e3094499af05d8d964a1c884208e4b8b595 # v2.81.11
         with:
           tool: cargo-workspace-lints, cargo-nextest, cargo-llvm-cov # Also defined in scripts/lint-check.sh
 
