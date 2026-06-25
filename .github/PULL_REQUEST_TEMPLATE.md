@@ -23,6 +23,6 @@ the related issue. -->
   understand code
 - Ensure new and existing unit and integration tests pass
 
-## Additional Notes & Related Issues
+## Additional notes
 
-<!-- Related <#issue(s)> -->
+<!-- Related <#issue(s)>. -->
