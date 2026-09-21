@@ -70,6 +70,8 @@ This project uses a Cargo workspace. When adding new crates:
 1. Add the crate directory to the workspace in the root `Cargo.toml`
 2. Ensure consistent versioning across workspace members
 3. Use workspace dependencies where appropriate
+4. Inherit workspace lints with `[lints] workspace = true` and package publishing
+   policy with `publish.workspace = true` under `[package]`
 
 ## Pull Requests
 

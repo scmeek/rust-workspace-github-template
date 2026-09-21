@@ -67,6 +67,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 5. Update workspace `Cargo.toml`.
    - `workspace.package` section
      - Keep `license` consistent with `LICENSE`.
+     - Crates inherit `publish = false`; change this explicitly if publishing to crates.io.
    - `workspace.metadata` section
 
 6. Use GitHub pages for docs and benchmark
