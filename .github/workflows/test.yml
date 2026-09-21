@@ -9,15 +9,20 @@ on:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 env:
   CARGO_TERM_COLOR: always
   RUST_SCOPE: --all-features --all-targets
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
+      fail-fast: false
       matrix:
         os:
           - ubuntu-latest
@@ -33,6 +38,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de # master
         with:
           toolchain: "1.96" # Also defined in workspace Cargo.toml
+          components: llvm-tools-preview
 
       - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
 
@@ -41,10 +47,10 @@ jobs:
           tool: cargo-nextest, cargo-llvm-cov # Also defined in scripts/test.sh
 
       - name: Run doctests
-        run: cargo test --doc
+        run: cargo test --locked --workspace --all-features --doc
 
       - name: Run tests
-        run: cargo llvm-cov nextest --workspace $RUST_SCOPE
+        run: cargo llvm-cov nextest --locked --workspace $RUST_SCOPE
 
       - name: Run tests (release)
-        run: cargo llvm-cov nextest --release --workspace $RUST_SCOPE
+        run: cargo llvm-cov nextest --locked --release --workspace $RUST_SCOPE
