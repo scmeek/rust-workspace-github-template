@@ -82,7 +82,7 @@ cast_possible_wrap = "deny"
 cast_precision_loss = "deny"
 integer_division = "deny"               # Highlight potential bugs from integer division truncation
 arithmetic_side_effects = "deny"
-unchecked_duration_subtraction = "deny" # Ensure duration subtraction won't cause underflow
+unchecked_time_subtraction = "deny" # Ensure time subtraction won't cause underflow
 
 # Unwraps
 unwrap_used = "forbid"
