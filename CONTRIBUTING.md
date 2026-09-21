@@ -10,8 +10,9 @@ By participating in this project, you agree to abide by our Code of Conduct (see
 
 ### Prerequisites
 
-- Rust (latest stable version recommended)
+- Rust 1.96 or newer
 - Git
+- Make and `jq` for the local check scripts
 - Familiarity with Cargo and Rust workspace projects
 
 ## Development Workflow

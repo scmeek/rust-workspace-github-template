@@ -11,7 +11,7 @@ rust-version = "1.96"       # Also defined in GitHub Actions workflow runners
 categories = ["rust"]
 keywords = ["rust"]
 documentation = "documentation"
-license-file = "LICENSE"
+license = "MIT"
 readme = "README.md"
 repository = "repo"
 

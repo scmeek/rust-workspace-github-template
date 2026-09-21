@@ -49,7 +49,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 ## After Cloning
 
-1. Update and uncomment `PROJECT_NAME` in `Makefile`.
+1. Install Rust 1.96 or newer, Make, and `jq` (used by the license checker).
 
 2. Delete `crates/template_lib/CHANGELOG.md` and `crates/template_bin/CHANGELOG.md`.
 
@@ -66,6 +66,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 5. Update workspace `Cargo.toml`.
    - `workspace.package` section
+     - Keep `license` consistent with `LICENSE`.
    - `workspace.metadata` section
 
 6. Use GitHub pages for docs and benchmark
@@ -134,3 +135,15 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
    make hooks
    make deps
    ```
+
+3. Run local checks
+
+   ```sh
+   make format lint test licenses
+   sh scripts/tests/licenses-check.sh
+   ```
+
+The license checker compares complete SPDX expressions against the explicit list
+in `scripts/licenses-check.sh`. Missing licenses and new expressions fail the
+check and require review, including dependencies that only specify a custom
+license file.

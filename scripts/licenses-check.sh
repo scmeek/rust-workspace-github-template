@@ -7,11 +7,21 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/.." && pwd)}"
 
 . "${SCRIPTS_DIR}/functions.sh"
 
+cd "$PROJECT_ROOT"
+
+command -v jq >/dev/null 2>&1 || fail "Install jq to check dependency licenses."
+
+# Exact SPDX expressions approved by this template. Review new expressions before
+# adding them; deliberately do not treat these strings as regular expressions.
 ALLOWED_LICENSES="
 MIT
 Apache-2.0
 Apache-2.0 OR MIT
 MIT OR Apache-2.0
+MIT OR Unlicense
+Apache-2.0 OR BSD-2-Clause OR MIT
+Apache-2.0 OR BSL-1.0
+(Apache-2.0 OR MIT) AND Unicode-3.0
 BSD-2-Clause
 BSD-3-Clause
 ISC
@@ -53,49 +63,39 @@ BSL-1.0
 NCSA
 "
 
-is_license_allowed() {
-  local license="$1"
-  echo "$ALLOWED_LICENSES" | grep -q "^${license}$"
-}
-
 echo ""
 
 info "Running dependency licenses check..."
 
-license_output=$(cargo license 2>/dev/null) # Also in dependencies.sh
+if ! license_output=$(cargo license --json --all-features); then
+  fail "Could not read dependency licenses."
+fi
+
+# Reject malformed or empty reports instead of silently checking no dependencies.
+if ! printf '%s\n' "$license_output" | jq -e '
+  type == "array" and length > 0 and all(.[];
+    (.name | type == "string") and
+    (.version | type == "string") and
+    (.license == null or (.license | type == "string")))
+' >/dev/null; then
+  fail "Invalid dependency license report."
+fi
 
 echo ""
 echo "📋 Dependency Licenses:"
-echo "$license_output"
+printf '%s\n' "$license_output" | jq -r '.[] | "\(.name) v\(.version): \(.license // "NO LICENSE SPECIFIED")"'
 echo ""
 
-violations=0
-while IFS= read -r line; do
-  test -z "$line" && continue
+violations=$(printf '%s\n' "$license_output" | jq -r --arg allowed "$ALLOWED_LICENSES" '
+  ($allowed | split("\n") | map(select(length > 0))) as $approved |
+  .[] | .license as $license |
+  select($license == null or ($approved | index($license)) == null) |
+  "\(.name) v\(.version): \(.license // "NO LICENSE SPECIFIED")"
+')
 
-  # Parse: "crate_name vX.Y.Z (license)"
-  name=$(echo "$line" | awk '{print $1}')
-  license=$(echo "$line" | sed 's/.*(\(.*\))$/\1/')
-
-  # Skip if no license found
-  test "$license" = "$line" && continue
-
-  # Trim whitespace
-  license=$(echo "$license" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-
-  if test -z "$license"; then
-    error "$name: NO LICENSE SPECIFIED"
-    violations=$((violations + 1))
-  elif ! is_license_allowed "$license"; then
-    error "$name: $license"
-    violations=$((violations + 1))
-  fi
-done <<EOF
-$license_output
-EOF
-
-if test $violations -ne 0; then
-  fail "Found $violations non-open-source or unrecognized license(s)"
+if test -n "$violations"; then
+  error "$violations"
+  fail "Found missing or unapproved license expressions. Review scripts/licenses-check.sh."
 fi
 
 final_success "All dependencies use approved open-source licenses"
