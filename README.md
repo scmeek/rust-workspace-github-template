@@ -83,8 +83,8 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
    2. Create ruleset for `gh-pages`
    3. Configure GitHub repo settings for GitHub Pages
       - Deploy from a branch (`gh-pages`)
-   4. Enable deploying documentation in `documentation-generate.yml`
-   5. Update `benchmark.yml` to enable historical storage and PR comments of benchmarks
+   4. Review `documentation-generate.yml` and `benchmark.yml`: deployment is enabled
+      on `main`, and both workflows share the `gh-pages` branch.
 
 7. Update `LICENSE`.
 
