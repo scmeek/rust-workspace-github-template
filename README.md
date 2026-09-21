@@ -110,6 +110,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
          - licenses-check
          - lint-check
          - pr-title-validate
+         - semver-check
          - unused-dependencies-check
          - zizmor
          - test (macos-latest)
