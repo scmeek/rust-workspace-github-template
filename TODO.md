@@ -18,8 +18,8 @@ roadmap belongs to the template; generated projects can remove it.
 
 ## 3. CI scope and maintenance
 
-- [ ] Keep PR checks focused: formatting, Clippy, three-OS tests, Linux coverage, dependency policy, and workflow validation.
-- [ ] Move broader toolchain/feature matrices and release tests to scheduled runs.
+- [x] Keep PR checks focused: formatting, Clippy, three-OS tests, Linux coverage, dependency policy, semver compatibility, and workflow validation.
+- [x] Move broader toolchain/feature matrices and release tests to scheduled runs.
 - [ ] Make benchmarking, Pages, and release automation explicit setup choices.
 - [ ] Cancel superseded PR runs and provide a stable aggregate required check.
 - [ ] Run formatting on one pinned toolchain.
@@ -59,6 +59,7 @@ Keep the example minimal; expanding its behavior and test coverage is out of sco
 - [ ] Add `actionlint` and ShellCheck alongside zizmor.
 - [ ] Evaluate `cargo-machete` for fast checks and keep `udeps` optional.
 - [ ] Add `typos` for documentation and source spelling.
+- [ ] Investigate `cargo-careful`, `cargo-mutants`, `hydro`, and Miri; add the tools that are appropriate for this template.
 
 ## 9. Roadmap cleanup
 
