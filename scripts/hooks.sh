@@ -12,6 +12,7 @@ hook_source="$SCRIPTS_DIR/pre-push-hook"
 
 if [ -e "$hook_path" ] || [ -L "$hook_path" ]; then
   if cmp -s "$hook_source" "$hook_path"; then
+    chmod +x "$hook_path"
     final_success "Pre-push hook is already installed."
   fi
   fail "An existing hook was preserved at $hook_path. Integrate scripts/git-pre-push.sh manually."
