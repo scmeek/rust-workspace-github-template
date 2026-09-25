@@ -8,7 +8,7 @@ on:
 permissions:
   actions: read
   contents: read
-  pull-requests: write
+  pull-requests: read
   security-events: write
 
 concurrency:
@@ -28,11 +28,8 @@ jobs:
   msrv:
     uses: ./.github/workflows/msrv.yml
 
-  audit:
-    uses: ./.github/workflows/audit.yml
-
-  licenses:
-    uses: ./.github/workflows/licenses-check.yml
+  dependency-policy:
+    uses: ./.github/workflows/dependency-policy.yml
 
   semver:
     uses: ./.github/workflows/semver-check.yml
@@ -54,8 +51,7 @@ jobs:
       - lint
       - test
       - msrv
-      - audit
-      - licenses
+      - dependency-policy
       - semver
       - unused-dependencies
       - workflow-security
@@ -69,8 +65,7 @@ jobs:
             ${{ needs.lint.result }}
             ${{ needs.test.result }}
             ${{ needs.msrv.result }}
-            ${{ needs.audit.result }}
-            ${{ needs.licenses.result }}
+            ${{ needs.dependency-policy.result }}
             ${{ needs.semver.result }}
             ${{ needs.unused-dependencies.result }}
             ${{ needs.workflow-security.result }}

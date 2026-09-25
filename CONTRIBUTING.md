@@ -12,7 +12,7 @@ By participating in this project, you agree to abide by our Code of Conduct (see
 
 - Rust 1.98.1 or newer
 - Git
-- `just` and `jq` for the local check scripts (see README.md for installation)
+- `just` for the local check scripts (see README.md for installation)
 - `cargo-workspace-lints` (`cargo install --locked cargo-workspace-lints`)
 - Familiarity with Cargo and Rust workspace projects
 

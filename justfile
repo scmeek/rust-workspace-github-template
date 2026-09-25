@@ -31,7 +31,7 @@ hooks:
 deps:
     "$SCRIPTS_DIR/dependencies.sh"
 
-# Audit dependencies for security vulnerabilities
+# Check dependency advisories, licenses, bans, and sources
 audit:
     "$SCRIPTS_DIR/audit.sh"
 
@@ -57,7 +57,7 @@ test-all:
 
 # Check dependency licenses
 licenses:
-    "$SCRIPTS_DIR/licenses-check.sh"
+    "$SCRIPTS_DIR/audit.sh" licenses
 
 # Check semantic versioning
 version:

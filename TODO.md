@@ -26,8 +26,8 @@ roadmap belongs to the template; generated projects can remove it.
 
 ## 4. Dependency policy
 
-- [ ] Replace the custom license checker with `cargo-deny` and an explicitly reviewed policy.
-- [ ] Consolidate overlapping advisory, license, dependency-ban, and source checks.
+- [x] Replace the custom license checker with `cargo-deny` and an explicitly reviewed policy.
+- [x] Consolidate overlapping advisory, license, dependency-ban, and source checks.
 
 ## 5. Lint policy
 

@@ -9,10 +9,9 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/.." && pwd)}"
 
 echo ""
 
-info "Running dependencies audit..."
+info "Checking dependency policy..."
 
-AUDIT_CMD="cargo audit" # Also in dependencies.sh
-if ! $AUDIT_CMD; then
-  fail "Dependencies audit failed.. Run \`$AUDIT_CMD\` and fix issues."
+if ! cargo deny --locked --workspace check "$@"; then
+  fail "Dependency policy check failed. Review the diagnostics and deny.toml."
 fi
-final_success "Dependencies passed audit."
+final_success "Dependencies passed policy checks."

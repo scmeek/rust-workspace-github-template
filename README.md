@@ -15,6 +15,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
   - Unused dependencies
   - Dependency vulnerability checks
   - Dependency licenses
+  - Dependency bans and allowed sources, configured with the other policies in `deny.toml`
 - Commit (Pull Request) standards and automated release handling
   - [Conventional Commits](https://www.conventionalcommits.org)
   - [`release-plz`](https://github.com/release-plz/release-plz)
@@ -49,7 +50,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 | `crates/template_lib/benches/` | Benchmarks of the public library API |
 | `crates/template_bin/src/` | Thin executable: call the library and handle process output/errors |
 | `scripts/` | Shared local and CI checks; scripts resolve the workspace root themselves |
-| `scripts/tests/` | Regression tests for script behavior |
+| `deny.toml` | Dependency advisory, license, ban, and source policy |
 | `justfile` | Discoverable local commands delegating to Cargo or the scripts |
 | `.github/workflows/` | CI orchestration and deployment/release infrastructure to configure for your project |
 
@@ -71,11 +72,10 @@ Use GitHub's **Use this template** button, clone your new repository, and follow
 this manual setup checklist from the repository root. Project initialization
 requires no helper script or Python dependency.
 
-1. Install Rustup, `just`, and `jq` (used by the license checker). Rustup will
+1. Install Rustup and `just`. Rustup will
    install the pinned toolchain and components from `rust-toolchain.toml` when
    you run commands in the repository. Install `just` with
-   `cargo install --locked just`, or on macOS install both tools with
-   `brew install just jq`.
+   `cargo install --locked just`, or on macOS use `brew install just`.
 
 2. Delete `crates/template_lib/CHANGELOG.md` and `crates/template_bin/CHANGELOG.md`.
 
@@ -219,9 +219,10 @@ requires no helper script or Python dependency.
 repository toolchain file supplies `llvm-tools-preview`. CI also exercises
 tests through nextest.
 `just deps` installs the broader audit, coverage, benchmark, and release tools;
-it is optional for routine development. With `jq` installed, `just licenses`
-checks dependency licenses. Run `sh scripts/tests/licenses-check.sh` to test
-the license checker.
+it is optional for routine development. To install only the dependency policy
+checker, run `cargo install --locked cargo-deny --version 0.20.2`. `just audit`
+runs all four checks; `just licenses` runs only the license check. CI runs the
+same policy check for pull requests and pushes to `main`.
 
 Install the optional pre-push hook with `just hooks`. It runs formatting, lint,
 and debug test checks and preserves any existing hook. Git worktrees and custom
@@ -229,7 +230,14 @@ hook paths are supported. Use `SKIP_PRE_PUSH=true git push` to bypass local chec
 when needed; CI still runs. The hook checks the working tree, so it normally
 requires a clean tree (`SKIP_UNCOMMITTED_CHECK=true` bypasses that guard).
 
-The license checker compares complete SPDX expressions against the explicit list
-in `scripts/licenses-check.sh`. Missing licenses and new expressions fail the
-check and require review, including dependencies that only specify a custom
-license file.
+Dependency policy lives in `deny.toml` and covers all workspace crates, features,
+platforms, and development dependencies. The initial license allowlist is MIT,
+Apache-2.0, and Unicode-3.0; review additions for your project's needs. `cargo-deny`
+evaluates SPDX expressions and can identify licenses from license files. Unknown
+or unapproved licenses fail the check. Private workspace crates are checked too.
+Sources are restricted to crates.io unless explicitly approved. Wildcard version
+requirements fail, with an exception for path or approved Git dependencies in
+unpublished crates and development dependencies; duplicate versions produce
+warnings. Yanked crates and unmaintained or unsound advisories fail the check.
+No crate-specific bans or advisory exceptions are configured initially. Document reasons when adding
+exceptions. Advisory checks fetch the RustSec database and require network access.
