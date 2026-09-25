@@ -1,7 +1,7 @@
 # Template improvement roadmap
 
 Work through these in order, keeping independent improvements reviewable. This
-roadmap belongs to the template; generated projects can remove it.
+is a temporary development roadmap; delete it after completion (see item 9).
 
 ## 1. Manual project initialization
 
