@@ -45,7 +45,7 @@ is a temporary development roadmap; delete it after completion (see item 9).
 - [x] Add tool diagnostics.
 - [x] Support Git worktrees and preserve existing hooks during installation.
 - [x] Make pre-push checks lightweight and optional; separate coverage from routine tests.
-- [ ] Separate core development tooling from benchmark/release tooling and pin tool versions.
+- [x] Separate core development tooling from benchmark/release tooling and pin tool versions.
 
 ## 7. Example organization
 

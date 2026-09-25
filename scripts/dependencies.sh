@@ -7,14 +7,22 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/.." && pwd)}"
 
 . "${SCRIPTS_DIR}/functions.sh"
 
-# Install llvm-tools-preview (required for llvm-cov)
-rustup component add llvm-tools-preview
+group=${1:-core}
+if [ "$#" -gt 1 ]; then
+  fail 'Usage: dependencies.sh [core|checks|bench|release|ci|all]'
+fi
+case "$group" in
+  core|checks|bench|release|ci|all) ;;
+  *) fail "Unknown tool group: $group. Choose core, checks, bench, release, ci, or all." ;;
+esac
 
-cargo install --locked cargo-deny --version 0.20.2 # Also in .github/workflows/dependency-policy.yml
-cargo install --locked cargo-criterion # Local benchmark runner
-cargo install --locked cargo-llvm-cov  # Also in .github/workflows/test.yml
-cargo install --locked cargo-nextest   # Also in .github/workflows/test.yml
-cargo install --locked cargo-semver-checks --version 0.50.0 # Supports the pinned Rust toolchain's rustdoc format.
-cargo install --locked cargo-workspace-lints # Also in lint-check.yml and nightly.yml
-cargo install --locked cargo-udeps           # Also in .github/workflows/unused-dependencies-check.yml
-cargo install --locked release-plz --version 0.3.169 # Also defined in .github/workflows/release-plz.yml; fixes Git-only path dependencies.
+# Rust components come from rust-toolchain.toml. Extra groups install only their
+# own tools; use all to install every group. Cargo skips an exact version that
+# is already installed, and propagates installation failures via set -e.
+while read -r tool_group package version; do
+  case "$tool_group" in ''|\#*) continue ;; esac
+  if [ "$group" = all ] || [ "$group" = "$tool_group" ]; then
+    info "Installing $package $version ($tool_group)"
+    cargo install --locked "$package" --version "=$version"
+  fi
+done < "$SCRIPTS_DIR/tools.txt"

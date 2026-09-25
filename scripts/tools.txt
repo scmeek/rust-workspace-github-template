@@ -1,0 +1,11 @@
+# Local tool groups and exact Cargo package versions.
+# Keep matching versions in .github/workflows in sync when updating these pins.
+# group   package                 version
+core      cargo-workspace-lints    0.1.4
+checks    cargo-deny               0.20.2
+checks    cargo-semver-checks      0.50.0
+checks    cargo-llvm-cov           0.6.21
+bench     cargo-criterion          1.1.0
+release   release-plz              0.3.169
+ci        cargo-nextest            0.9.111
+ci        cargo-udeps              0.1.60

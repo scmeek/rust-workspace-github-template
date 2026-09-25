@@ -95,8 +95,8 @@ requires no helper script or Python dependency.
    - Directories may retain their existing names. If you rename them, also update
      `[workspace].members`, the library's dependency `path`, and both
      `changelog_path` values in `release-plz.toml`.
-   - Update both package names in `release-plz.toml`, the `package` input and
-     step label in `.github/workflows/semver-check.yml`, and the `--package`
+   - Update both package names in `release-plz.toml`, the step label in
+     `.github/workflows/semver-check.yml`, and the `--package`
      argument in `scripts/version-check.sh`.
    - Update each crate's `README.md`; these files are included in crate rustdocs.
 
@@ -202,7 +202,7 @@ requires no helper script or Python dependency.
    rustfmt and Clippy components and `just`
 
    ```sh
-   cargo install --locked cargo-workspace-lints
+   just deps
    just doctor
    just check
    ```
@@ -215,7 +215,7 @@ requires no helper script or Python dependency.
    ```
 
 `just doctor` checks core tools, the active Rust toolchain, and optional tools,
-including versions pinned in the installer. It prints corrective commands and
+including versions pinned in `scripts/tools.txt`. It prints corrective commands and
 exits unsuccessfully only when a core requirement is missing or mismatched.
 It does not install or update anything. If `just` itself is unavailable, run
 `sh scripts/doctor.sh` directly. This checks tooling, not project compilation;
@@ -225,16 +225,39 @@ run `just check` afterward to validate the workspace.
 `just coverage` collects coverage separately and requires `cargo-llvm-cov`; the
 repository toolchain file supplies `llvm-tools-preview`. CI also exercises
 tests through nextest.
-`just deps` installs the broader audit, coverage, benchmark, and release tools;
-it is optional for routine development. To install only the dependency policy
-checker, run `cargo install --locked cargo-deny --version 0.20.2`. `just audit`
-runs all four checks; `just licenses` runs only the license check. CI runs the
-same policy check for pull requests and pushes to `main`.
+
+`just deps` installs only the workspace lint checker needed by `just check`.
+Add other tool groups as needed:
+
+| Command | Tools | Purpose |
+| --- | --- | --- |
+| `just deps` (or `just deps core`) | cargo-workspace-lints | Routine local checks |
+| `just deps checks` | cargo-deny, cargo-semver-checks, cargo-llvm-cov | Dependency policy, API compatibility, coverage |
+| `just deps bench` | cargo-criterion | Local benchmarks |
+| `just deps release` | release-plz | Run release tooling locally |
+| `just deps ci` | cargo-nextest, cargo-udeps | Reproduce CI test and unused-dependency checks |
+| `just deps all` | All of the above | Full local toolset |
+
+Each group installs only its listed tools. Versions are pinned in
+[`scripts/tools.txt`](scripts/tools.txt), shared by the installer and doctor.
+The installer uses exact versions and each tool's published lockfile; rerunning
+it skips tools already at the selected version. To update a pin, also update
+matching workflow versions and validate the associated command. To install tools
+without `just`, run `bash scripts/dependencies.sh <group>`.
+
+Rust components remain managed by `rust-toolchain.toml`. Running
+`cargo +nightly udeps` additionally requires a nightly toolchain
+(`rustup toolchain install nightly`). CI installs its own tools, and release
+automation remains part of the template regardless of whether you install the
+release CLI locally.
+
+`just audit` runs all four checks; `just licenses` runs only the license check.
+CI runs the same policy check for pull requests and pushes to `main`.
 
 `just version` checks the library API against the locally fetched `origin/main`;
 run `git fetch origin` first, or select a baseline with `just version <revision>`.
-It requires `cargo-semver-checks` 0.50.0 for the pinned Rust toolchain
-(`cargo install --locked cargo-semver-checks --version 0.50.0`).
+It requires `cargo-semver-checks` from `just deps checks`; its pin supports the
+repository's Rust toolchain.
 CI uses the PR's exact base commit. Manual CI runs accept a `baseline-rev` input
 (default `origin/main`); choose an earlier revision when checking `main` itself.
 Workflow security findings fail CI directly, without requiring GitHub Advanced

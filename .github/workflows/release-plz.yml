@@ -35,6 +35,6 @@ jobs:
         uses: release-plz/action@8e61445f0b34e7c6d985255f2f1f05a36eb350dc # v0.5.137
         with:
           # 0.3.167 tries to package unpublished path dependencies in Git-only mode.
-          version: 0.3.169 # Also defined in scripts/dependencies.sh
+          version: 0.3.169 # Also defined in scripts/tools.txt
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_PLZ_TOKEN || secrets.GITHUB_TOKEN }}

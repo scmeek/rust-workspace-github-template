@@ -27,9 +27,9 @@ fmt:
 hooks:
     "$SCRIPTS_DIR/hooks.sh"
 
-# Install project dependencies
-deps:
-    "$SCRIPTS_DIR/dependencies.sh"
+# Install pinned tools: core (default), checks, bench, release, ci, or all
+deps group="core":
+    "$SCRIPTS_DIR/dependencies.sh" {{quote(group)}}
 
 # Diagnose local tool availability and pinned versions without installing anything
 doctor:

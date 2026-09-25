@@ -42,7 +42,7 @@ jobs:
 
       - uses: taiki-e/install-action@3f74d7c16a4242f1c95561e98edc25d36adb4375 # v2.87.12
         with:
-          tool: cargo-nextest # Also defined in scripts/test.sh
+          tool: cargo-nextest@0.9.111 # Also defined in scripts/tools.txt
 
       - name: Run doctests
         run: cargo test --locked --workspace --all-features --doc
@@ -68,7 +68,7 @@ jobs:
 
       - uses: taiki-e/install-action@3f74d7c16a4242f1c95561e98edc25d36adb4375 # v2.87.12
         with:
-          tool: cargo-nextest, cargo-llvm-cov # Also defined in scripts/test.sh
+          tool: cargo-nextest@0.9.111, cargo-llvm-cov@0.6.21 # Also defined in scripts/tools.txt
 
       - name: Run Linux coverage
         run: cargo llvm-cov nextest --locked --workspace --all-features --all-targets

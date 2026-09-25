@@ -42,20 +42,12 @@ check_cargo_tool() {
   tool=$1
   importance=$2
   purpose=$3
-  # Reuse the installer's pins instead of maintaining a second version list.
-  expected=$(awk -v tool="$tool" '$1 == "cargo" && $2 == "install" {
-    for (i = 3; i <= NF; i++) {
-      if ($i == "#") break
-      if ($i == tool) found = 1
-      if ($i == "--version") version = $(i + 1)
-    }
-    if (found) { print version; exit }
-    version = ""
-  }' "$SCRIPTS_DIR/dependencies.sh")
-  fix="cargo install --locked $tool"
-  if [ -n "$expected" ]; then
-    fix="$fix --version $expected"
+  expected=$(awk -v tool="$tool" '$1 !~ /^#/ && $2 == tool { print $3; exit }' "$SCRIPTS_DIR/tools.txt")
+  if [ -z "$expected" ]; then
+    printf 'Missing version pin for %s in scripts/tools.txt\n' "$tool" >&2
+    exit 1
   fi
+  fix="cargo install --locked $tool --version =$expected"
   if [ "$tool" = release-plz ] || [ "$tool" = cargo-workspace-lints ]; then
     # workspace-lints exposes --version on its binary, not its Cargo subcommand.
     check_command "$importance" "$tool ($purpose)" "$fix" "$expected" "$tool" --version
