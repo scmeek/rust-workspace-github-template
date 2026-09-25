@@ -95,8 +95,9 @@ requires no helper script or Python dependency.
    - Directories may retain their existing names. If you rename them, also update
      `[workspace].members`, the library's dependency `path`, and both
      `changelog_path` values in `release-plz.toml`.
-   - Update both package names in `release-plz.toml` and the `package` input and
-     step label in `.github/workflows/semver-check.yml`.
+   - Update both package names in `release-plz.toml`, the `package` input and
+     step label in `.github/workflows/semver-check.yml`, and the `--package`
+     argument in `scripts/version-check.sh`.
    - Update each crate's `README.md`; these files are included in crate rustdocs.
 
 5. Update workspace `Cargo.toml`.
@@ -223,6 +224,12 @@ checker, run `cargo install --locked cargo-deny --version 0.20.2`. `just audit`
 runs all four checks; `just licenses` runs only the license check. CI runs the
 same policy check for pull requests and pushes to `main`.
 
+`just version` checks the library API against the locally fetched `origin/main`;
+run `git fetch origin` first, or select a baseline with `just version <revision>`.
+It requires `cargo-semver-checks` 0.50.0 for the pinned Rust toolchain
+(`cargo install --locked cargo-semver-checks --version 0.50.0`).
+CI uses the PR's exact base commit. Manual CI runs accept a `baseline-rev` input
+(default `origin/main`); choose an earlier revision when checking `main` itself.
 Workflow security findings fail CI directly, without requiring GitHub Advanced
 Security or a separate code-scanning ruleset.
 

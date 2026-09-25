@@ -5,6 +5,11 @@ on:
     branches: [main]
     types: [opened, synchronize, reopened, edited]
   workflow_dispatch:
+    inputs:
+      baseline-rev:
+        description: Git revision to compare library APIs against
+        default: origin/main
+        type: string
 
 permissions:
   contents: read
@@ -32,6 +37,8 @@ jobs:
 
   semver:
     uses: ./.github/workflows/semver-check.yml
+    with:
+      baseline-rev: ${{ inputs.baseline-rev || 'origin/main' }}
 
   unused-dependencies:
     uses: ./.github/workflows/unused-dependencies-check.yml

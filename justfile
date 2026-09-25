@@ -60,8 +60,8 @@ licenses:
     "$SCRIPTS_DIR/audit.sh" licenses
 
 # Check semantic versioning
-version:
-    "$SCRIPTS_DIR/version-check.sh"
+version baseline="origin/main":
+    "$SCRIPTS_DIR/version-check.sh" {{quote(baseline)}}
 
 # Build all workspace crates
 build:

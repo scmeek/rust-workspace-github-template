@@ -2,9 +2,19 @@ name: Check semantic versioning
 
 on:
   workflow_dispatch:
+    inputs:
+      baseline-rev:
+        description: Git revision to compare library APIs against
+        default: origin/main
+        type: string
   workflow_call:
+    inputs:
+      baseline-rev:
+        default: origin/main
+        type: string
 
-permissions: {}
+permissions:
+  contents: read
 
 env:
   CARGO_TERM_COLOR: always
@@ -30,4 +40,6 @@ jobs:
         uses: obi1kenobi/cargo-semver-checks-action@6b69fcf40e9b5fb17adeb57e4b6ecd020649a239 # v2.9
         with:
           package: template_lib
-          baseline-rev: ${{ github.event.pull_request.base.sha }}
+          rust-toolchain: manual
+          feature-group: all-features
+          baseline-rev: ${{ github.event.pull_request.base.sha || inputs.baseline-rev }}
