@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
   workflow_call:
 
-permissions: {}
+permissions:
+  contents: read
 
 defaults:
   run:

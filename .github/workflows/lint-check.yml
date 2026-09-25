@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
   workflow_call:
 
-permissions: {}
+permissions:
+  contents: read
 
 env:
   CARGO_TERM_COLOR: always

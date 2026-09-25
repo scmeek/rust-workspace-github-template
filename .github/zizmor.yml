@@ -1,0 +1,7 @@
+rules:
+  self-repository:
+    ignore:
+      # These are workflow calls resolved at the caller's commit, not actions
+      # loaded from the runner's filesystem. Keep ./ until actionlint supports
+      # GitHub's new $/ syntax (actionlint 1.7.12 rejects it).
+      - ci.yml

@@ -171,8 +171,7 @@ requires no helper script or Python dependency.
        - Require branches to be up to date before merging
        - Block for pushes
    - Workflow permissions (Settings → Actions → General)
-     - Read and write permissions
-       - For `gh-pages` updates
+     - Keep the default token read-only; workflows request their required permissions.
      - Allow GitHub Actions to create and approve pull requests
 
 11. Verify the customized workspace before committing.
@@ -223,6 +222,9 @@ it is optional for routine development. To install only the dependency policy
 checker, run `cargo install --locked cargo-deny --version 0.20.2`. `just audit`
 runs all four checks; `just licenses` runs only the license check. CI runs the
 same policy check for pull requests and pushes to `main`.
+
+Workflow security findings fail CI directly, without requiring GitHub Advanced
+Security or a separate code-scanning ruleset.
 
 Install the optional pre-push hook with `just hooks`. It runs formatting, lint,
 and debug test checks and preserves any existing hook. Git worktrees and custom

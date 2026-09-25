@@ -3,13 +3,12 @@ name: CI
 on:
   pull_request:
     branches: [main]
+    types: [opened, synchronize, reopened, edited]
   workflow_dispatch:
 
 permissions:
-  actions: read
   contents: read
   pull-requests: read
-  security-events: write
 
 concurrency:
   group: ci-${{ github.event.pull_request.number || github.ref }}
