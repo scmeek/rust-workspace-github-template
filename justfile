@@ -16,6 +16,13 @@ alias t := test
 alias v := version
 alias b := build
 
+# Run routine checks using the Rust toolchain
+check: format lint test docs
+
+# Apply formatting
+fmt:
+    cargo fmt --all
+
 # Attach git hooks
 hooks:
     "$SCRIPTS_DIR/hooks.sh"
@@ -40,7 +47,7 @@ format:
 lint:
     "$SCRIPTS_DIR/lint-check.sh"
 
-# Run tests (debug build)
+# Run tests and doctests (debug build)
 test:
     SKIP_RELEASE_TEST=true "$SCRIPTS_DIR/test.sh"
 
@@ -56,9 +63,13 @@ licenses:
 version:
     "$SCRIPTS_DIR/version-check.sh"
 
-# Show how to build the project
+# Build all workspace crates
 build:
-    printf '%s\n' 'Use `cargo` to build project'
+    cargo build --locked --workspace
+
+# Collect coverage (requires cargo-llvm-cov and llvm-tools-preview)
+coverage:
+    cargo llvm-cov --locked --workspace --all-features --all-targets
 
 # Run benchmarks
 bench:

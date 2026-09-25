@@ -45,6 +45,11 @@ Types: `feat`, `fix`, `build`, `chore`, `ci`, `docs`, `style`, `refactor`, `perf
 
 ### Rust Style
 
+Run `just check` for formatting, workspace lint inheritance, Clippy, debug tests,
+doctests, and rustdoc.
+Use `just fmt` to apply formatting and `just test-all` to include release tests.
+These checks do not require the optional coverage or release tools.
+
 The lint policy in `Cargo.toml` applies through `[lints] workspace = true` in
 every crate. `cargo-workspace-lints` checks that inheritance locally and in CI.
 

@@ -41,14 +41,25 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 - macOS used for local development
 - `main` will be the default git branch
 
-### Considerations
+### Workspace organization
 
-- The separation between "template_lib" and "template_bin" crates is intentional,
-  as this template prefers explicit API interfaces rather than shared "core" code.
-  However, this, of course, can be easily modified to your liking.
+| Location | Responsibility |
+| --- | --- |
+| `crates/template_lib/src/` | Reusable behavior, with unit tests beside the code |
+| `crates/template_lib/benches/` | Benchmarks of the public library API |
+| `crates/template_bin/src/` | Thin executable: call the library and handle process output/errors |
+| `scripts/` | Shared local and CI checks; scripts resolve the workspace root themselves |
+| `scripts/tests/` | Regression tests for script behavior |
+| `justfile` | Discoverable local commands delegating to Cargo or the scripts |
+| `.github/workflows/` | CI orchestration and deployment/release infrastructure to configure for your project |
+
+Keep the two crates when the application has reusable behavior. A library-only
+project can remove the binary and its entries in the workspace and release
+configuration. Add dependencies only to the crates that use them; share version
+requirements through `[workspace.dependencies]` when useful.
 
 The Rust 2024 workspace uses resolver 3 for Rust-version-aware dependency
-selection. `Cargo.lock` is committed; lint and documentation checks use `--locked`.
+selection. `Cargo.lock` is committed and routine checks use `--locked`.
 
 ## After Cloning
 
@@ -179,19 +190,34 @@ requires no helper script or Python dependency.
    just
    ```
 
-2. Initialize your development environment
+2. Install the workspace lint checker, then run routine checks with Rust's
+   rustfmt and Clippy components and `just`
 
    ```sh
-   just hooks
-   just deps
+   cargo install --locked cargo-workspace-lints
+   just check
    ```
 
-3. Run local checks
+3. Apply formatting or run individual checks
 
    ```sh
-   just format lint test licenses
-   sh scripts/tests/licenses-check.sh
+   just fmt
+   just build test
    ```
+
+`just test` runs debug tests and doctests; `just test-all` also runs release tests.
+`just coverage` collects coverage separately and requires `cargo-llvm-cov` and
+the `llvm-tools-preview` component. CI also exercises tests through nextest.
+`just deps` installs the broader audit, coverage, benchmark, and release tools;
+it is optional for routine development. With `jq` installed, `just licenses`
+checks dependency licenses. Run `sh scripts/tests/licenses-check.sh` to test
+the license checker.
+
+Install the optional pre-push hook with `just hooks`. It runs formatting, lint,
+and debug test checks and preserves any existing hook. Git worktrees and custom
+hook paths are supported. Use `SKIP_PRE_PUSH=true git push` to bypass local checks
+when needed; CI still runs. The hook checks the working tree, so it normally
+requires a clean tree (`SKIP_UNCOMMITTED_CHECK=true` bypasses that guard).
 
 The license checker compares complete SPDX expressions against the explicit list
 in `scripts/licenses-check.sh`. Missing licenses and new expressions fail the

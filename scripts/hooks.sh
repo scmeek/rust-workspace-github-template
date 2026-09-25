@@ -2,17 +2,22 @@
 
 set -eu
 
-SCRIPTS_DIR="${SCRIPTS_DIR:-$(dirname -- "$(readlink -f -- "$0")")}"
+SCRIPTS_DIR="${SCRIPTS_DIR:-$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)}"
 PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/.." && pwd)}"
 
 . "${SCRIPTS_DIR}/functions.sh"
 
-if [ -z "${RUST_SCOPE+x}" ]; then
-  RUST_SCOPE="--all-targets --all-features"
+hook_path=$(git rev-parse --git-path hooks/pre-push)
+hook_source="$SCRIPTS_DIR/pre-push-hook"
+
+if [ -e "$hook_path" ] || [ -L "$hook_path" ]; then
+  if cmp -s "$hook_source" "$hook_path"; then
+    final_success "Pre-push hook is already installed."
+  fi
+  fail "An existing hook was preserved at $hook_path. Integrate scripts/git-pre-push.sh manually."
 fi
 
-echo ""
-
-info "Attaching git hooks..."
-ln -sf "${SCRIPTS_DIR}/git-pre-push.sh" .git/hooks/pre-push
-final_success "Attached git hooks."
+mkdir -p "$(dirname -- "$hook_path")"
+cp "$hook_source" "$hook_path"
+chmod +x "$hook_path"
+final_success "Installed optional pre-push checks. Use SKIP_PRE_PUSH=true to bypass them."

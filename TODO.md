@@ -39,11 +39,12 @@ roadmap belongs to the template; generated projects can remove it.
 
 ## 6. Developer experience
 
-- [ ] Make scripts independent of the caller's working directory and handle paths containing spaces.
+- [x] Make scripts independent of the caller's working directory and handle paths containing spaces.
 - [x] Replace Make with `just`, preserving recipes and aliases.
-- [ ] Add formatting application, aggregate checks, and tool diagnostics.
-- [ ] Support Git worktrees and preserve existing hooks during installation.
-- [ ] Make pre-push checks lightweight and optional; separate coverage from routine tests.
+- [x] Add formatting application and aggregate checks.
+- [ ] Add tool diagnostics.
+- [x] Support Git worktrees and preserve existing hooks during installation.
+- [x] Make pre-push checks lightweight and optional; separate coverage from routine tests.
 - [ ] Separate core development tooling from benchmark/release tooling and pin tool versions.
 
 ## 7. Example organization
@@ -58,5 +59,3 @@ Keep the example minimal; expanding its behavior and test coverage is out of sco
 - [ ] Add `actionlint` and ShellCheck alongside zizmor.
 - [ ] Evaluate `cargo-machete` for fast checks and keep `udeps` optional.
 - [ ] Add `typos` for documentation and source spelling.
-- [ ] Add `assert_cmd` with the CLI integration-test example.
-- Optional follow-up: use `proptest` when the example has useful invariants; avoid speculative dependencies.

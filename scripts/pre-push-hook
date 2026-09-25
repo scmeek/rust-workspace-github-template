@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+
+# Resolve the current worktree at invocation time; hooks may be shared by worktrees.
+PROJECT_ROOT=$(git rev-parse --show-toplevel)
+SCRIPTS_DIR="$PROJECT_ROOT/scripts"
+export PROJECT_ROOT SCRIPTS_DIR
+exec "$SCRIPTS_DIR/git-pre-push.sh" "$@"

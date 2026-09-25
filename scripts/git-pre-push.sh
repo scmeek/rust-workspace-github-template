@@ -23,8 +23,12 @@ set -eu
 _REMOTE="${1:-}"
 _URL="${2:-}"
 
-SCRIPTS_DIR="${SCRIPTS_DIR:-$(dirname -- "$(readlink -f -- "$0")")}"
-PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/.." && pwd)}"
+if [ "${SKIP_PRE_PUSH:-false}" = "true" ]; then
+  exit 0
+fi
+
+PROJECT_ROOT="${PROJECT_ROOT:-$(git rev-parse --show-toplevel)}"
+SCRIPTS_DIR="$PROJECT_ROOT/scripts"
 
 . "${SCRIPTS_DIR}/functions.sh"
 
