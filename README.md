@@ -49,26 +49,48 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 ## After Cloning
 
+Use GitHub's **Use this template** button, clone your new repository, and follow
+this manual setup checklist from the repository root. Project initialization
+requires no helper script or Python dependency.
+
 1. Install Rust 1.96 or newer, Make, and `jq` (used by the license checker).
 
 2. Delete `crates/template_lib/CHANGELOG.md` and `crates/template_bin/CHANGELOG.md`.
 
-3. Update `.github/CODEOWNERS`.
+3. Replace `@scmeek` in `.github/CODEOWNERS` with your GitHub username or a team
+   with access to the repository.
 
-4. Update `template_bin` and `template_lib` crates.
-   - Crate names and directories (if desired)
-     - _Note:_ `release-plz` and `cargo-semver-check` look at `crates.io` so be
-       conscious of that when selecting names if you are not planning to publish
-   - Update "`bin`" crate dependency to "`lib`" crate
-   - Update `release-plz.toml` to new names
-   - Update each crate's `README.md`
-     - `README.md` are exported in Rust docs for its crate
+4. Rename the crates consistently. For example, for a project named
+   `weather-station`, use `weather-station-lib` and `weather-station-bin`.
+   - Set `[package].name` in both `crates/*/Cargo.toml` files.
+   - Rename the `template_lib` dependency key in both `[workspace.dependencies]`
+     in the root `Cargo.toml` and `[dependencies]` in the binary's manifest to
+     `weather-station-lib`, retaining `.workspace = true` in the binary.
+   - Update imports in `crates/template_bin/src/main.rs` and
+     `crates/template_lib/benches/criterion_benches.rs` to
+     `use weather_station_lib::add;`. Rust imports use underscores for hyphens
+     in package names.
+   - Directories may retain their existing names. If you rename them, also update
+     `[workspace].members`, the library's dependency `path`, and both
+     `changelog_path` values in `release-plz.toml`.
+   - Update both package names in `release-plz.toml` and the `package` input and
+     step label in `.github/workflows/semver-check.yml`.
+   - Update each crate's `README.md`; these files are included in crate rustdocs.
 
 5. Update workspace `Cargo.toml`.
-   - `workspace.package` section
-     - Keep `license` consistent with `LICENSE`.
-     - Crates inherit `publish = false`; change this explicitly if publishing to crates.io.
-   - `workspace.metadata` section
+   - Replace `description`, `authors`, `repository`, categories, and keywords in
+     `[workspace.package]`. Set `repository` to your new GitHub repository URL
+     and set `documentation` to your documentation URL, or remove it until ready.
+   - Keep `license` consistent with `LICENSE`.
+   - Replace or remove the placeholder maintainers, resources, tags, and notes
+     in `[workspace.metadata]`.
+   - Publishing is disabled in both `[workspace.package]` and `release-plz.toml`.
+     Leave both `publish = false` settings for an unpublished project. To publish,
+     enable both settings, verify crate-name availability, and configure registry
+     authentication in the release workflow. The existing workflow only supplies
+     `GITHUB_TOKEN`.
+   - Run `cargo check --workspace --all-targets` to update `Cargo.lock` for the new
+     package names, then review and commit the lockfile with the manifest changes.
 
 6. Use GitHub pages for docs and benchmark
    1. Create `gh-pages` branch
@@ -88,7 +110,12 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 7. Update `LICENSE`.
 
-8. Update or replace this `README.md`.
+8. Update or replace this `README.md`. Review `CONTRIBUTING.md`,
+   `CODE_OF_CONDUCT.md`, `SECURITY.md`, and `.github/ISSUE_TEMPLATE/` for project
+   policies, contacts, and links. Enable the repository features those documents
+   reference, such as Discussions and private vulnerability reporting, or adjust
+   the documents. The template's [TODO.md](TODO.md) roadmap can be removed from
+   your new project.
 
 9. Update GitHub repo settings
    - Pull Request settings
@@ -122,6 +149,22 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
      - Read and write permissions
        - For `gh-pages` updates
      - Allow GitHub Actions to create and approve pull requests
+
+10. Verify the customized workspace before committing.
+
+    ```sh
+    cargo fmt --all --check
+    cargo check --workspace --all-targets --locked
+    cargo test --workspace --locked
+    cargo clippy --workspace --all-targets --locked -- -D warnings
+    git grep -n -E 'template_lib|template_bin|rust-workspace-github-template|scmeek'
+    git diff --check
+    git diff
+    ```
+
+    Review any remaining template references; directory paths are expected if
+    you kept the original directory names. `git grep` exits with status 1 when
+    no matches remain. Run the local checks below after installing their tools.
 
 ## Project Getting Started
 
