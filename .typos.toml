@@ -1,0 +1,3 @@
+[files]
+# Skip generated dependency metadata and Git internals (including worktree pointers).
+extend-exclude = ["Cargo.lock", ".git"]

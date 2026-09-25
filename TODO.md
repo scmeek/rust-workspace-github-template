@@ -56,10 +56,10 @@ Keep the example minimal; expanding its behavior and test coverage is out of sco
 
 ## 8. Additional tooling
 
-- [ ] Add `actionlint` and ShellCheck alongside zizmor.
-- [ ] Evaluate `cargo-machete` for fast checks and keep `udeps` optional.
-- [ ] Add `typos` for documentation and source spelling.
-- [ ] Investigate `cargo-careful`, `cargo-mutants`, `hydro`, and Miri; add the tools that are appropriate for this template.
+- [x] Add `actionlint` and ShellCheck alongside zizmor.
+- [x] Evaluate `cargo-machete` for fast checks and keep `udeps` optional.
+- [x] Add `typos` for documentation and source spelling.
+- [x] Investigate `cargo-careful`, `cargo-mutants`, `hydro`, and Miri; add the tools that are appropriate for this template.
 
 ## 9. Roadmap cleanup
 

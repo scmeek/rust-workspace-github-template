@@ -25,8 +25,8 @@ check_command() {
   shift 4
   if output=$("$@" 2>&1); then
     first_line=$(printf '%s\n' "$output" | head -n 1)
-    # Version commands report the version as their second whitespace-delimited field.
-    actual=$(printf '%s\n' "$first_line" | awk '{print $2}')
+    # Most commands prefix their version with a name; machete prints only the version.
+    actual=$(printf '%s\n' "$first_line" | awk '{print (NF == 1 ? $1 : $2)}')
     if [ -n "$expected" ] && [ "$actual" != "$expected" ]; then
       problem "$importance" "$label: $first_line; expected $expected" "$fix"
     else
@@ -47,10 +47,28 @@ check_cargo_tool() {
     printf 'Missing version pin for %s in scripts/tools.txt\n' "$tool" >&2
     exit 1
   fi
-  fix="cargo install --locked $tool --version =$expected"
-  if [ "$tool" = release-plz ] || [ "$tool" = cargo-workspace-lints ]; then
+  fix="cargo install --locked $tool --version '=$expected'"
+  # cargo-careful 0.4.10 has no version flag; cargo install records its version.
+  if [ "$tool" = cargo-careful ]; then
+    if ! command -v cargo-careful >/dev/null 2>&1; then
+      problem "$importance" "$tool ($purpose) is missing" "$fix"
+    else
+      metadata="${CARGO_HOME:-$HOME/.cargo}/.crates.toml"
+      actual=''
+      if [ -r "$metadata" ]; then
+        actual=$(sed -n 's/^"cargo-careful \([^ ]*\) .*/\1/p' "$metadata")
+      fi
+      if [ "$actual" = "$expected" ]; then
+        printf 'OK: %s (%s) (%s)\n' "$tool" "$purpose" "$actual"
+      else
+        problem "$importance" "$tool is available; Cargo records version '${actual:-unknown}', expected $expected" "$fix"
+      fi
+    fi
+    return
+  fi
+  if [ "$tool" = release-plz ] || [ "$tool" = cargo-workspace-lints ] || [ "$tool" = typos-cli ]; then
     # workspace-lints exposes --version on its binary, not its Cargo subcommand.
-    check_command "$importance" "$tool ($purpose)" "$fix" "$expected" "$tool" --version
+    check_command "$importance" "$tool ($purpose)" "$fix" "$expected" "${tool%-cli}" --version
   else
     check_command "$importance" "$tool ($purpose)" "$fix" "$expected" cargo "${tool#cargo-}" --version
   fi
@@ -80,6 +98,8 @@ check_command REQUIRED Cargo "rustup toolchain install $pinned" '' cargo --versi
 check_command REQUIRED rustfmt "rustup component add --toolchain $pinned rustfmt" '' cargo fmt --version
 check_command REQUIRED Clippy "rustup component add --toolchain $pinned clippy" '' cargo clippy --version
 check_cargo_tool cargo-workspace-lints REQUIRED 'just check / just lint'
+check_cargo_tool cargo-machete REQUIRED 'just check / just unused'
+check_cargo_tool typos-cli REQUIRED 'just check / just spelling'
 
 printf '\n%s\n' 'Optional tools (not required for just check)'
 check_cargo_tool cargo-deny OPTIONAL 'just audit / just licenses'
@@ -93,8 +113,13 @@ else
 fi
 check_cargo_tool cargo-criterion OPTIONAL 'just bench'
 check_cargo_tool cargo-nextest OPTIONAL 'CI test runner'
-check_cargo_tool cargo-udeps OPTIONAL 'CI unused dependency check; execution also needs nightly'
+check_cargo_tool cargo-udeps OPTIONAL 'just udeps; execution also needs nightly'
 check_cargo_tool release-plz OPTIONAL 'release automation'
+check_cargo_tool cargo-mutants OPTIONAL 'just mutants'
+check_cargo_tool cargo-careful OPTIONAL 'just careful; execution also needs nightly and rust-src'
+check_command OPTIONAL actionlint 'brew install actionlint (CI pins 1.7.12)' '' actionlint -version
+check_command OPTIONAL ShellCheck 'brew install shellcheck (CI pins 0.11.0)' '' shellcheck --version
+check_command OPTIONAL Miri 'rustup toolchain install nightly --component miri --component rust-src' '' cargo +nightly miri --version
 
 printf '\n'
 if [ "$problems" -gt 0 ]; then

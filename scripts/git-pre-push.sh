@@ -30,6 +30,7 @@ fi
 PROJECT_ROOT="${PROJECT_ROOT:-$(git rev-parse --show-toplevel)}"
 SCRIPTS_DIR="$PROJECT_ROOT/scripts"
 
+# shellcheck source=scripts/functions.sh
 . "${SCRIPTS_DIR}/functions.sh"
 
 if [ "${SKIP_UNCOMMITTED_CHECK:-false}" != "true" ] && [ -n "$(git status --porcelain)" ]; then

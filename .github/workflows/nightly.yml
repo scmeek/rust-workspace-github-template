@@ -60,10 +60,10 @@ jobs:
         run: cargo test --locked --workspace --all-features --doc
 
       - name: Run tests
-        run: cargo nextest run --locked --workspace $RUST_SCOPE
+        run: cargo nextest run --locked --workspace --all-targets --all-features
 
       - name: Run tests (release)
-        run: cargo nextest run --locked --release --workspace $RUST_SCOPE
+        run: cargo nextest run --locked --release --workspace --all-targets --all-features
 
       - name: Check lints
         run: ./scripts/lint-check.sh
@@ -93,5 +93,6 @@ jobs:
 
       - name: Run tests and doctests for this feature selection
         run: |
-          cargo test --locked --workspace --all-targets $FEATURE_FLAGS
-          cargo test --locked --workspace --doc $FEATURE_FLAGS
+          read -r -a feature_flags <<< "$FEATURE_FLAGS"
+          cargo test --locked --workspace --all-targets "${feature_flags[@]}"
+          cargo test --locked --workspace --doc "${feature_flags[@]}"

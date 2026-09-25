@@ -5,6 +5,7 @@ set -eu
 SCRIPTS_DIR="${SCRIPTS_DIR:-$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)}"
 PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/.." && pwd)}"
 
+# shellcheck source=scripts/functions.sh
 . "${SCRIPTS_DIR}/functions.sh"
 
 hook_path=$(git rev-parse --git-path hooks/pre-push)

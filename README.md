@@ -10,6 +10,8 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
   - Fast CI workflows for near-immediate Pull Request validations
   - GitHub Actions static analysis and auditing
     - [zizmor](https://github.com/zizmorcore/zizmor)
+    - [actionlint](https://github.com/rhysd/actionlint) and [ShellCheck](https://www.shellcheck.net/)
+- Documentation and source spelling with [typos](https://github.com/crate-ci/typos)
 - Strict workspace-wide linting configuration
 - Dependency auditing
   - Unused dependencies
@@ -198,7 +200,7 @@ requires no helper script or Python dependency.
    just
    ```
 
-2. Install the workspace lint checker, then run routine checks with Rust's
+2. Install the core check tools, then run routine checks with Rust's
    rustfmt and Clippy components and `just`
 
    ```sh
@@ -226,16 +228,17 @@ run `just check` afterward to validate the workspace.
 repository toolchain file supplies `llvm-tools-preview`. CI also exercises
 tests through nextest.
 
-`just deps` installs only the workspace lint checker needed by `just check`.
+`just deps` installs the workspace lint checker, cargo-machete, and typos needed by `just check`.
 Add other tool groups as needed:
 
 | Command | Tools | Purpose |
 | --- | --- | --- |
-| `just deps` (or `just deps core`) | cargo-workspace-lints | Routine local checks |
+| `just deps` (or `just deps core`) | cargo-workspace-lints, cargo-machete, typos-cli | Routine local checks |
 | `just deps checks` | cargo-deny, cargo-semver-checks, cargo-llvm-cov | Dependency policy, API compatibility, coverage |
 | `just deps bench` | cargo-criterion | Local benchmarks |
 | `just deps release` | release-plz | Run release tooling locally |
-| `just deps ci` | cargo-nextest, cargo-udeps | Reproduce CI test and unused-dependency checks |
+| `just deps ci` | cargo-nextest | Reproduce the CI test runner |
+| `just deps deep` | cargo-udeps, cargo-mutants, cargo-careful | Optional dependency, mutation, and runtime checks |
 | `just deps all` | All of the above | Full local toolset |
 
 Each group installs only its listed tools. Versions are pinned in
@@ -280,3 +283,66 @@ unpublished crates and development dependencies; duplicate versions produce
 warnings. Yanked crates and unmaintained or unsound advisories fail the check.
 No crate-specific bans or advisory exceptions are configured initially. Document reasons when adding
 exceptions. Advisory checks fetch the RustSec database and require network access.
+
+### Workflow and spelling checks
+
+`just workflows` runs actionlint (including ShellCheck on workflow `run` blocks)
+and ShellCheck on the repository shell scripts. Install these native tools
+separately, for example `brew install actionlint shellcheck` on macOS. CI pins
+**actionlint 1.7.12** and **ShellCheck 0.11.0** in `zizmor.yml`; use those upstream
+releases when reproducing CI exactly. `just doctor` reports their availability.
+They are optional locally and required in CI, alongside zizmor.
+
+`just spelling` runs typos over source, documentation, and hidden configuration.
+`.typos.toml` excludes Git internals and the generated Cargo lockfile; ordinary
+Git ignore rules also apply. Add narrow word exceptions only for real project
+terminology. Spelling is part of `just check` and the required workflow checks.
+
+### Unused dependencies and deeper testing
+
+`just unused` runs [cargo-machete](https://github.com/bnjbvr/cargo-machete), a fast
+source-based check with no nightly compilation. It runs in `just check` and CI.
+Its heuristic can miss dependencies or report false positives, especially with
+macros; review findings before removal and document any package-specific
+`[package.metadata.cargo-machete].ignored` entries. For compiler-based analysis,
+install `just deps deep` and nightly Rust, then run `just udeps` explicitly.
+
+The following checks are opt-in and do not gate PRs:
+
+- `just careful` uses [cargo-careful](https://github.com/RalfJung/cargo-careful)
+  from `just deps deep` to run workspace tests and doctests with extra runtime
+  checks and a standard library built with debug assertions. First run
+  `rustup toolchain install nightly --component rust-src`. The first execution
+  builds and caches a checked standard library. This runs natively and supports
+  code that cannot run under Miri, but detects fewer kinds of undefined behavior.
+- `just mutants` uses [cargo-mutants](https://mutants.rs/) from `just deps deep`
+  to change source behavior and check whether tests catch each change. It writes
+  reports to `mutants.out/` (ignored by Git) and returns a failure for missed
+  mutants. On the minimal example it catches two mutants and misses removal of
+  the binary's output: the smoke test does not assert stdout. Use the report to
+  guide tests as real behavior is added. Runs can be expensive on larger projects.
+- `just miri` runs library and binary tests with [Miri](https://github.com/rust-lang/miri)
+  to detect undefined behavior on executed paths. First run
+  `rustup toolchain install nightly --component miri --component rust-src`.
+  Benchmarks are excluded; Miri has execution and platform limitations and can
+  be much slower than native tests. It is most useful as unsafe or complex
+  memory-sensitive behavior is introduced.
+
+GitHub Actions also offers **Optional careful tests** (`careful.yml`) and
+**Optional mutation testing** (`mutants.yml`). Both use only `workflow_dispatch`:
+select the workflow in Actions, choose **Run workflow**, and select a branch.
+GitHub exposes the dispatch button once the workflow exists on the default
+branch. Neither workflow is called by the required CI workflow or runs on PRs
+or a schedule. Both invoke the same scripts as their local `just` recipes.
+
+The mutation workflow uploads `mutants.out/` as the `mutation-report` artifact,
+retained for 14 days, including when missed mutants fail the check. Inspect
+`missed.txt`, `outcomes.json`, and the individual logs to investigate results.
+Failures remain visible on these optional runs. The careful job has a 30-minute
+limit and mutation testing a 60-minute limit; adjust them as the project grows.
+Cargo-careful follows rolling nightly, so compiler changes can require a tool
+update independently of the pinned development toolchain.
+
+[Hydro](https://hydro.run/) was also evaluated. It is a distributed programming
+framework with its own simulation testing, rather than a general checker for
+an existing workspace. Adopt it only when the project needs that programming model.

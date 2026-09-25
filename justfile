@@ -16,8 +16,8 @@ alias t := test
 alias v := version
 alias b := build
 
-# Run routine checks using the Rust toolchain
-check: format lint test docs
+# Run routine Rust, spelling, and unused dependency checks
+check: format lint test docs spelling unused
 
 # Apply formatting
 fmt:
@@ -27,7 +27,7 @@ fmt:
 hooks:
     "$SCRIPTS_DIR/hooks.sh"
 
-# Install pinned tools: core (default), checks, bench, release, ci, or all
+# Install pinned tools: core (default), checks, bench, release, ci, deep, or all
 deps group="core":
     "$SCRIPTS_DIR/dependencies.sh" {{quote(group)}}
 
@@ -78,3 +78,31 @@ coverage:
 # Run benchmarks
 bench:
     "$SCRIPTS_DIR/benchmark.sh"
+
+# Check GitHub Actions and shell scripts (requires actionlint and ShellCheck)
+workflows:
+    sh "$SCRIPTS_DIR/workflow-check.sh"
+
+# Check documentation and source spelling
+spelling:
+    typos --hidden
+
+# Quickly find unused dependencies without compiling
+unused:
+    cargo machete
+
+# Compiler-based unused dependency analysis (requires nightly and deps deep)
+udeps:
+    cargo +nightly udeps --locked --workspace --all-targets --all-features
+
+# Evaluate test effectiveness (requires deps deep; results in mutants.out)
+mutants:
+    sh "$SCRIPTS_DIR/mutants.sh"
+
+# Interpret library and binary tests for undefined behavior (requires nightly Miri)
+miri:
+    cargo +nightly miri test --locked --workspace --lib --bins
+
+# Run tests with extra runtime checks (requires deps deep and nightly rust-src)
+careful:
+    sh "$SCRIPTS_DIR/careful.sh"

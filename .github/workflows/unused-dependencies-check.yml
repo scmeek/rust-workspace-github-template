@@ -22,15 +22,9 @@ jobs:
           persist-credentials: false
           submodules: true
 
-      - uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de # master
-        with:
-          toolchain: nightly # cargo-udeps requires nightly Rust
-
-      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
-
       - uses: taiki-e/install-action@3f74d7c16a4242f1c95561e98edc25d36adb4375 # v2.87.12
         with:
-          tool: cargo-udeps@0.1.60 # Also defined in scripts/tools.txt
+          tool: cargo-machete@0.9.2 # Also defined in scripts/tools.txt
 
       - name: Find unused dependencies
-        run: cargo +nightly udeps --locked --workspace --all-targets --all-features
+        run: cargo machete

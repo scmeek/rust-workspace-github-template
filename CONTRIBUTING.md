@@ -13,7 +13,7 @@ By participating in this project, you agree to abide by our Code of Conduct (see
 - Rust 1.98.1 or newer
 - Git
 - `just` for the local check scripts (see README.md for installation)
-- `cargo-workspace-lints` (`cargo install --locked cargo-workspace-lints`)
+- Core check tools (`just deps` installs the pinned versions)
 - Familiarity with Cargo and Rust workspace projects
 
 ## Development Workflow
@@ -46,7 +46,9 @@ Types: `feat`, `fix`, `build`, `chore`, `ci`, `docs`, `style`, `refactor`, `perf
 ### Rust Style
 
 Run `just check` for formatting, workspace lint inheritance, Clippy, debug tests,
-doctests, and rustdoc.
+doctests, rustdoc, spelling, and unused dependencies.
+Run `just workflows` after changing workflows or shell scripts; it needs
+actionlint and ShellCheck (see README.md).
 Use `just fmt` to apply formatting and `just test-all` to include release tests.
 These checks do not require the optional coverage or release tools.
 

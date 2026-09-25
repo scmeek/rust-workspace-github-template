@@ -1,5 +1,6 @@
+# shellcheck shell=sh
 # Shared setup: run Cargo and Git from the workspace root.
-cd "$PROJECT_ROOT"
+cd "$PROJECT_ROOT" || exit 1
 export PROJECT_ROOT SCRIPTS_DIR
 
 RED='\033[0;31m'
