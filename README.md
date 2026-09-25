@@ -117,26 +117,17 @@ requires no helper script or Python dependency.
    - Run `cargo check --workspace --all-targets` to update `Cargo.lock` for the new
      package names, then review and commit the lockfile with the manifest changes.
 
-6. Choose whether to publish docs and benchmarks with GitHub Pages (optional)
-   Keep these workflows only if the project needs published documentation or
-   benchmark history. Otherwise delete `documentation-generate.yml`,
-   `benchmark.yml`, the benchmark configuration and dependencies, and the
-   corresponding `just bench` and script entries.
+6. Choose whether to publish docs and benchmarks with GitHub Pages (optional).
+   Remove `documentation-generate.yml` if published docs are unnecessary.
+   Remove `benchmark.yml` if published benchmark reports are unnecessary; local
+   benchmarks can still be kept. If benchmarks are unwanted altogether, also
+   remove their source, manifest configuration, Criterion dependency, installer
+   entry, `just bench` recipe, and script.
 
-   1. Create `gh-pages` branch
-
-      ```sh
-      git checkout --orphan gh-pages
-      git rm -rf .
-      git commit --allow-empty -m "Initial commit"
-      git push -u origin gh-pages
-      ```
-
-   2. Create ruleset for `gh-pages`
-   3. Configure GitHub repo settings for GitHub Pages
-      - Deploy from a branch (`gh-pages`)
-   4. Review `documentation-generate.yml` and `benchmark.yml`: deployment is
-      enabled on `main`, and both workflows share the `gh-pages` branch.
+   For either publication workflow, run it on `main` to create `gh-pages`
+   automatically, then configure Settings → Pages to deploy from that branch's
+   root. Any `gh-pages` ruleset must allow the workflow to push. Both workflows
+   preserve each other's files on this shared branch.
 
 7. Configure the release automation
    Keep `release-plz.toml` and `.github/workflows/release-plz.yml` as part of the

@@ -33,26 +33,12 @@ jobs:
 
       - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
 
-      - uses: taiki-e/install-action@3f74d7c16a4242f1c95561e98edc25d36adb4375 # v2.87.12
-        with:
-          tool: cargo-criterion # Also defined in scripts/benchmark.sh
-
       - name: Run main benchmarks
-        # Also in benchmark.yml
-        run: |
-          cargo bench --bench criterion_benches --color never
+        run: cargo bench --locked --workspace --bench criterion_benches --color never
       - name: Publish Criterion HTML + JSON to gh-pages
         uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./target/criterion
           destination_dir: benchmark-history
-          keep_files: true
-
-      - name: Publish baseline JSON for PR comparison
-        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./target/criterion
-          destination_dir: benchmark-data/latest
           keep_files: true
