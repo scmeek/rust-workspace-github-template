@@ -12,7 +12,7 @@ By participating in this project, you agree to abide by our Code of Conduct (see
 
 - Rust 1.96 or newer
 - Git
-- Make and `jq` for the local check scripts
+- `just` and `jq` for the local check scripts (see README.md for installation)
 - Familiarity with Cargo and Rust workspace projects
 
 ## Development Workflow
@@ -45,8 +45,8 @@ Types: `feat`, `fix`, `build`, `chore`, `ci`, `docs`, `style`, `refactor`, `perf
 ### Rust Style
 
 - Follow the official [Rust Style Guide](https://doc.rust-lang.org/nightly/style-guide/)
-- Properly format code (`make format`)
-- Pass all lints (`make lint`)
+- Check formatting (`just format`); apply formatting with `cargo fmt --all`
+- Pass all lints (`just lint`)
 - Write idiomatic Rust code
 
 ### Documentation

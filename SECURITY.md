@@ -55,8 +55,8 @@ Currently, we do not have a bug bounty program. However, we deeply appreciate th
 We use `cargo audit` in our CI/CD pipeline to check for known vulnerabilities in our dependencies. You can also run it locally:
 
 ```bash
-make deps
-make audit
+just deps
+just audit
 ```
 
 ## Security Best Practices for Users

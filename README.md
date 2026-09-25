@@ -4,7 +4,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 ## Template Features
 
-- `Make` for project interactions, except for `cargo`-native actions
+- `just` for project interactions, except for `cargo`-native actions
 - Local and CI implementations
   - Pre-push git hooks for fast feedback
   - Fast CI workflows for near-immediate Pull Request validations
@@ -53,7 +53,9 @@ Use GitHub's **Use this template** button, clone your new repository, and follow
 this manual setup checklist from the repository root. Project initialization
 requires no helper script or Python dependency.
 
-1. Install Rust 1.96 or newer, Make, and `jq` (used by the license checker).
+1. Install Rust 1.96 or newer, `just`, and `jq` (used by the license checker).
+   Install `just` with `cargo install --locked just`, or on macOS install both
+   tools with `brew install just jq`.
 
 2. Delete `crates/template_lib/CHANGELOG.md` and `crates/template_bin/CHANGELOG.md`.
 
@@ -171,20 +173,20 @@ requires no helper script or Python dependency.
 1. Interact with the repo
 
    ```sh
-   make help
+   just
    ```
 
 2. Initialize your development environment
 
    ```sh
-   make hooks
-   make deps
+   just hooks
+   just deps
    ```
 
 3. Run local checks
 
    ```sh
-   make format lint test licenses
+   just format lint test licenses
    sh scripts/tests/licenses-check.sh
    ```
 
