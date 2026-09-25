@@ -14,7 +14,7 @@ roadmap belongs to the template; generated projects can remove it.
 
 - [ ] Add `rust-toolchain.toml` and centralize the development toolchain and components.
 - [ ] Keep minimum-supported-Rust testing separate from the development toolchain.
-- [ ] Adopt resolver 3 for Rust-version-aware dependency selection.
+- [x] Adopt resolver 3 for Rust-version-aware dependency selection.
 
 ## 3. CI scope and maintenance
 
@@ -31,13 +31,11 @@ roadmap belongs to the template; generated projects can remove it.
 
 ## 5. Lint policy
 
-- [ ] Remove redundant lint groups and document the pedantic policy and exceptions.
-- [ ] Use `deny` rather than `forbid` for unwrap/expect to permit justified local exceptions.
-- [ ] Review blanket arithmetic, indexing, division, and loop restrictions.
-- [ ] Permit intentional binary output with a specific justification.
-- [ ] Prefer reasoned `#[expect]` exceptions and check unfulfilled expectations.
-- [ ] Enable strict rustdoc checks.
-- [ ] Replace silent overflow fallback in the example with explicit failure and boundary tests.
+- [x] Remove redundant lint groups and document the pedantic policy and exceptions.
+- [x] Use `deny` rather than `forbid` for unwrap/expect to permit justified local exceptions.
+- [x] Review blanket arithmetic, indexing, division, and loop restrictions.
+- [x] Prefer reasoned `#[expect]` exceptions and check unfulfilled expectations.
+- [x] Enable strict rustdoc checks.
 
 ## 6. Developer experience
 
@@ -50,9 +48,10 @@ roadmap belongs to the template; generated projects can remove it.
 
 ## 7. Example organization
 
-- [ ] Keep the two-crate layout with a thin binary and reusable library behavior.
-- [ ] Demonstrate a documented public API, typed failure, a doctest, and a process-level CLI test.
-- [ ] Remove unused dependency suggestions and placeholder metadata from the baseline.
+Keep the example minimal; expanding its behavior and test coverage is out of scope.
+
+- [x] Keep the two-crate layout with a thin binary and reusable library behavior.
+- [x] Remove unused dependency suggestions and placeholder metadata from the baseline.
 
 ## 8. Additional tooling
 

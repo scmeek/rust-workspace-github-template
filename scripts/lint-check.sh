@@ -13,16 +13,12 @@ fi
 
 echo ""
 
-CHECK_CMD="cargo workspace-lints" # Also in dependencies.sh
-info "Running workspace lints enforcement check..."
-if ! $CHECK_CMD; then
-  fail "A crate is missing workspace.lints."
+CHECK_CMD="cargo check --locked --workspace $RUST_SCOPE"
+info "Checking workspace lint inheritance..."
+if ! cargo workspace-lints; then
+  fail "Workspace lint inheritance check failed. Ensure each crate has [lints] workspace = true and cargo-workspace-lints is installed (cargo install --locked cargo-workspace-lints)."
 fi
-success "Workspace lints are properly enforced."
 
-echo ""
-
-CHECK_CMD="cargo check $RUST_SCOPE"
 info "Checking code compilation with \`$CHECK_CMD\`..."
 if ! $CHECK_CMD; then
   fail "Code did not compile. Run \`$CHECK_CMD\` and fix issues."
@@ -31,11 +27,11 @@ success "Code compiles."
 
 echo ""
 
-CLIPPY_CMD="cargo clippy $RUST_SCOPE"
+CLIPPY_CMD="cargo clippy --locked --workspace $RUST_SCOPE -- -D warnings"
 info "Running clippy linter with \`$CLIPPY_CMD\`..."
 if ! $CLIPPY_CMD; then
   fail "Clippy found issues. Run \`$CLIPPY_CMD\` and fix issues."
 fi
 success "Clippy linter passed."
 
-final_success "Lint configuration and all lints passed."
+final_success "Compilation and Clippy checks passed."

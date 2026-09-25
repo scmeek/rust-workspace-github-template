@@ -13,7 +13,9 @@ fi
 
 echo ""
 
-DOC_CMD="cargo doc --no-deps $RUST_DOC_SCOPE"
+RUSTDOCFLAGS="${RUSTDOCFLAGS:-} -D warnings"
+export RUSTDOCFLAGS
+DOC_CMD="cargo doc --locked --workspace --no-deps $RUST_DOC_SCOPE"
 info "Generating documentation with \`$DOC_CMD\`..."
 if ! $DOC_CMD; then
   fail "Documentation generation failed. Run \`$DOC_CMD\` and fix issues."

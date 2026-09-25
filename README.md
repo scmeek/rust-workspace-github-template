@@ -32,7 +32,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
   - Security policy
   - Code of conduct
   - Contributing guidelines
-- Sensible default dependencies
+- No external runtime dependencies; Criterion is a development dependency
 - Project defaults
   - `LICENSE` file
 
@@ -46,6 +46,9 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 - The separation between "template_lib" and "template_bin" crates is intentional,
   as this template prefers explicit API interfaces rather than shared "core" code.
   However, this, of course, can be easily modified to your liking.
+
+The Rust 2024 workspace uses resolver 3 for Rust-version-aware dependency
+selection. `Cargo.lock` is committed; lint and documentation checks use `--locked`.
 
 ## After Cloning
 
@@ -80,12 +83,12 @@ requires no helper script or Python dependency.
    - Update each crate's `README.md`; these files are included in crate rustdocs.
 
 5. Update workspace `Cargo.toml`.
-   - Replace `description`, `authors`, `repository`, categories, and keywords in
+   - Update `description` and `repository` in
      `[workspace.package]`. Set `repository` to your new GitHub repository URL
-     and set `documentation` to your documentation URL, or remove it until ready.
+     and add publication metadata such as authors, categories, keywords, and a
+     documentation URL when applicable. Each crate must opt into any new shared
+     fields with `<field>.workspace = true`.
    - Keep `license` consistent with `LICENSE`.
-   - Replace or remove the placeholder maintainers, resources, tags, and notes
-     in `[workspace.metadata]`.
    - Publishing is disabled in both `[workspace.package]` and `release-plz.toml`.
      Leave both `publish = false` settings for an unpublished project. To publish,
      enable both settings, verify crate-name availability, and configure registry
