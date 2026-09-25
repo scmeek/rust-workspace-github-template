@@ -31,6 +31,10 @@ hooks:
 deps:
     "$SCRIPTS_DIR/dependencies.sh"
 
+# Diagnose local tool availability and pinned versions without installing anything
+doctor:
+    "$SCRIPTS_DIR/doctor.sh"
+
 # Check dependency advisories, licenses, bans, and sources
 audit:
     "$SCRIPTS_DIR/audit.sh"

@@ -203,6 +203,7 @@ requires no helper script or Python dependency.
 
    ```sh
    cargo install --locked cargo-workspace-lints
+   just doctor
    just check
    ```
 
@@ -212,6 +213,13 @@ requires no helper script or Python dependency.
    just fmt
    just build test
    ```
+
+`just doctor` checks core tools, the active Rust toolchain, and optional tools,
+including versions pinned in the installer. It prints corrective commands and
+exits unsuccessfully only when a core requirement is missing or mismatched.
+It does not install or update anything. If `just` itself is unavailable, run
+`sh scripts/doctor.sh` directly. This checks tooling, not project compilation;
+run `just check` afterward to validate the workspace.
 
 `just test` runs debug tests and doctests; `just test-all` also runs release tests.
 `just coverage` collects coverage separately and requires `cargo-llvm-cov`; the

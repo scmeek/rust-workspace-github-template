@@ -42,7 +42,7 @@ is a temporary development roadmap; delete it after completion (see item 9).
 - [x] Make scripts independent of the caller's working directory and handle paths containing spaces.
 - [x] Replace Make with `just`, preserving recipes and aliases.
 - [x] Add formatting application and aggregate checks.
-- [ ] Add tool diagnostics.
+- [x] Add tool diagnostics.
 - [x] Support Git worktrees and preserve existing hooks during installation.
 - [x] Make pre-push checks lightweight and optional; separate coverage from routine tests.
 - [ ] Separate core development tooling from benchmark/release tooling and pin tool versions.
