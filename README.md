@@ -15,13 +15,13 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
   - Unused dependencies
   - Dependency vulnerability checks
   - Dependency licenses
-- Commit (Pull Request) standards and automated Release handling
+- Commit (Pull Request) standards and automated release handling
   - [Conventional Commits](https://www.conventionalcommits.org)
   - [`release-plz`](https://github.com/release-plz/release-plz)
 - Modern and fast testing
   - [`nextest`](https://nexte.st)
   - [`cargo-llvm-cov`](https://github.com/taiki-e/cargo-llvm-cov) for coverage
-- Benchmarking
+- Optional benchmarking
   - [`criterion`](https://docs.rs/criterion/latest/criterion/)
 - GitHub templates
   - `CODEOWNERS`
@@ -114,7 +114,12 @@ requires no helper script or Python dependency.
    - Run `cargo check --workspace --all-targets` to update `Cargo.lock` for the new
      package names, then review and commit the lockfile with the manifest changes.
 
-6. Use GitHub pages for docs and benchmark
+6. Choose whether to publish docs and benchmarks with GitHub Pages (optional)
+   Keep these workflows only if the project needs published documentation or
+   benchmark history. Otherwise delete `documentation-generate.yml`,
+   `benchmark.yml`, the benchmark configuration and dependencies, and the
+   corresponding `just bench` and script entries.
+
    1. Create `gh-pages` branch
 
       ```sh
@@ -127,19 +132,28 @@ requires no helper script or Python dependency.
    2. Create ruleset for `gh-pages`
    3. Configure GitHub repo settings for GitHub Pages
       - Deploy from a branch (`gh-pages`)
-   4. Review `documentation-generate.yml` and `benchmark.yml`: deployment is enabled
-      on `main`, and both workflows share the `gh-pages` branch.
+   4. Review `documentation-generate.yml` and `benchmark.yml`: deployment is
+      enabled on `main`, and both workflows share the `gh-pages` branch.
 
-7. Update `LICENSE`.
+7. Configure the release automation
+   Keep `release-plz.toml`, `.github/workflows/release-plz.yml`, and the
+   release-specific changelog files as part of the template's release process.
+   Update the package names, changelog paths, repository metadata, and
+   publishing settings for the new project. Publishing remains disabled until
+   the project explicitly enables it and configures registry authentication.
+   Semver checking remains an independent pull request safeguard for library
+   APIs.
 
-8. Update or replace this `README.md`. Review `CONTRIBUTING.md`,
+8. Update `LICENSE`.
+
+9. Update or replace this `README.md`. Review `CONTRIBUTING.md`,
    `CODE_OF_CONDUCT.md`, `SECURITY.md`, and `.github/ISSUE_TEMPLATE/` for project
    policies, contacts, and links. Enable the repository features those documents
    reference, such as Discussions and private vulnerability reporting, or adjust
    the documents. The template's [TODO.md](TODO.md) roadmap can be removed from
    your new project.
 
-9. Update GitHub repo settings
+10. Update GitHub repo settings
    - Pull Request settings
      - Disallow merge commits and rebase merging
      - Only allow squash merging
@@ -154,7 +168,7 @@ requires no helper script or Python dependency.
        - Squash as the allowed merge method for Pull Requests
        - Require status checks to pass
          - audit
-         - benchmark-compare-pr
+         - coverage
          - format-check
          - licenses-check
          - lint-check
@@ -172,7 +186,7 @@ requires no helper script or Python dependency.
        - For `gh-pages` updates
      - Allow GitHub Actions to create and approve pull requests
 
-10. Verify the customized workspace before committing.
+11. Verify the customized workspace before committing.
 
     ```sh
     cargo fmt --all --check

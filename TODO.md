@@ -20,7 +20,7 @@ roadmap belongs to the template; generated projects can remove it.
 
 - [x] Keep PR checks focused: formatting, Clippy, three-OS tests, Linux coverage, dependency policy, semver compatibility, and workflow validation.
 - [x] Move broader toolchain/feature matrices and release tests to scheduled runs.
-- [ ] Make benchmarking, Pages, and release automation explicit setup choices.
+- [x] Make benchmarking and Pages explicit setup choices while keeping release automation as a core template opinion.
 - [ ] Cancel superseded PR runs and provide a stable aggregate required check.
 - [ ] Run formatting on one pinned toolchain.
 
