@@ -13,7 +13,7 @@ roadmap belongs to the template; generated projects can remove it.
 ## 2. Toolchain configuration
 
 - [x] Add `rust-toolchain.toml` and centralize the development toolchain and components.
-- [ ] Keep minimum-supported-Rust testing separate from the development toolchain.
+- [x] Keep minimum-supported-Rust testing separate from the development toolchain.
 - [x] Adopt resolver 3 for Rust-version-aware dependency selection.
 
 ## 3. CI scope and maintenance
@@ -59,3 +59,7 @@ Keep the example minimal; expanding its behavior and test coverage is out of sco
 - [ ] Add `actionlint` and ShellCheck alongside zizmor.
 - [ ] Evaluate `cargo-machete` for fast checks and keep `udeps` optional.
 - [ ] Add `typos` for documentation and source spelling.
+
+## 9. Roadmap cleanup
+
+- [ ] Delete this `TODO.md` once all roadmap items are complete and committed.
