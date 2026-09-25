@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+  security-events: write
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  format:
+    uses: ./.github/workflows/format-check.yml
+
+  lint:
+    uses: ./.github/workflows/lint-check.yml
+
+  test:
+    uses: ./.github/workflows/test.yml
+
+  msrv:
+    uses: ./.github/workflows/msrv.yml
+
+  audit:
+    uses: ./.github/workflows/audit.yml
+
+  licenses:
+    uses: ./.github/workflows/licenses-check.yml
+
+  semver:
+    uses: ./.github/workflows/semver-check.yml
+
+  unused-dependencies:
+    uses: ./.github/workflows/unused-dependencies-check.yml
+
+  workflow-security:
+    uses: ./.github/workflows/zizmor.yml
+
+  pr-title:
+    uses: ./.github/workflows/pr-title-validate.yml
+
+  required:
+    name: Required checks
+    if: always()
+    needs:
+      - format
+      - lint
+      - test
+      - msrv
+      - audit
+      - licenses
+      - semver
+      - unused-dependencies
+      - workflow-security
+      - pr-title
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check required workflow results
+        env:
+          RESULTS: >-
+            ${{ needs.format.result }}
+            ${{ needs.lint.result }}
+            ${{ needs.test.result }}
+            ${{ needs.msrv.result }}
+            ${{ needs.audit.result }}
+            ${{ needs.licenses.result }}
+            ${{ needs.semver.result }}
+            ${{ needs.unused-dependencies.result }}
+            ${{ needs.workflow-security.result }}
+            ${{ needs.pr-title.result }}
+        run: |
+          for result in $RESULTS; do
+            if [ "$result" != success ]; then
+              echo "A required workflow did not succeed: $result"
+              exit 1
+            fi
+          done

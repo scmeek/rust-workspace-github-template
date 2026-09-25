@@ -167,18 +167,7 @@ requires no helper script or Python dependency.
        - Require review from code owners
        - Squash as the allowed merge method for Pull Requests
        - Require status checks to pass
-         - audit
-         - coverage
-         - format-check
-         - licenses-check
-         - lint-check
-         - pr-title-validate
-         - semver-check
-         - unused-dependencies-check
-         - zizmor
-         - test (macos-latest)
-         - test (ubuntu-latest)
-         - test (windows-latest)
+         - CI / Required checks
        - Require branches to be up to date before merging
        - Block for pushes
    - Workflow permissions (Settings → Actions → General)

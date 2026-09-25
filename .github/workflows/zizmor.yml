@@ -3,8 +3,7 @@ name: Analyze GitHub Actions security
 on:
   push:
     branches: ["main"]
-  pull_request:
-    branches: ["**"]
+  workflow_call:
 
 permissions: {}
 

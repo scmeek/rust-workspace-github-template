@@ -1,12 +1,7 @@
 name: Validate pull request title
 
 on:
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
-      - edited
+  workflow_call:
 
 permissions: read-all
 
