@@ -29,7 +29,7 @@ jobs:
       matrix:
         toolchain:
           - stable
-          - "1.98.1" # Also defined in workspace Cargo.toml
+          - "1.98.1" # Also defined in rust-toolchain.toml
           - beta
           - nightly
         os:

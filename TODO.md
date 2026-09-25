@@ -12,7 +12,7 @@ roadmap belongs to the template; generated projects can remove it.
 
 ## 2. Toolchain configuration
 
-- [ ] Add `rust-toolchain.toml` and centralize the development toolchain and components.
+- [x] Add `rust-toolchain.toml` and centralize the development toolchain and components.
 - [ ] Keep minimum-supported-Rust testing separate from the development toolchain.
 - [x] Adopt resolver 3 for Rust-version-aware dependency selection.
 

@@ -60,6 +60,10 @@ requirements through `[workspace.dependencies]` when useful.
 
 The Rust 2024 workspace uses resolver 3 for Rust-version-aware dependency
 selection. `Cargo.lock` is committed and routine checks use `--locked`.
+The repository's `rust-toolchain.toml` pins the development toolchain and
+installs rustfmt, Clippy, and `llvm-tools-preview` automatically. The
+`rust-version` in `Cargo.toml` remains the compatibility floor; test that
+minimum version separately when supporting older Rust releases.
 
 ## After Cloning
 
@@ -67,9 +71,11 @@ Use GitHub's **Use this template** button, clone your new repository, and follow
 this manual setup checklist from the repository root. Project initialization
 requires no helper script or Python dependency.
 
-1. Install Rust 1.98.1 or newer, `just`, and `jq` (used by the license checker).
-   Install `just` with `cargo install --locked just`, or on macOS install both
-   tools with `brew install just jq`.
+1. Install Rustup, `just`, and `jq` (used by the license checker). Rustup will
+   install the pinned toolchain and components from `rust-toolchain.toml` when
+   you run commands in the repository. Install `just` with
+   `cargo install --locked just`, or on macOS install both tools with
+   `brew install just jq`.
 
 2. Delete `crates/template_lib/CHANGELOG.md` and `crates/template_bin/CHANGELOG.md`.
 
@@ -206,8 +212,9 @@ requires no helper script or Python dependency.
    ```
 
 `just test` runs debug tests and doctests; `just test-all` also runs release tests.
-`just coverage` collects coverage separately and requires `cargo-llvm-cov` and
-the `llvm-tools-preview` component. CI also exercises tests through nextest.
+`just coverage` collects coverage separately and requires `cargo-llvm-cov`; the
+repository toolchain file supplies `llvm-tools-preview`. CI also exercises
+tests through nextest.
 `just deps` installs the broader audit, coverage, benchmark, and release tools;
 it is optional for routine development. With `jq` installed, `just licenses`
 checks dependency licenses. Run `sh scripts/tests/licenses-check.sh` to test
