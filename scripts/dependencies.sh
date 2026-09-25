@@ -17,4 +17,4 @@ cargo install --locked cargo-nextest   # Also in .github/workflows/test.yml
 cargo install --locked cargo-semver-checks --version 0.50.0 # Supports the pinned Rust toolchain's rustdoc format.
 cargo install --locked cargo-workspace-lints # Also in lint-check.yml and nightly.yml
 cargo install --locked cargo-udeps           # Also in .github/workflows/unused-dependencies-check.yml
-cargo install --locked release-plz
+cargo install --locked release-plz --version 0.3.169 # Also defined in .github/workflows/release-plz.yml; fixes Git-only path dependencies.

@@ -107,11 +107,13 @@ requires no helper script or Python dependency.
      documentation URL when applicable. Each crate must opt into any new shared
      fields with `<field>.workspace = true`.
    - Keep `license` consistent with `LICENSE`.
-   - Publishing is disabled in both `[workspace.package]` and `release-plz.toml`.
-     Leave both `publish = false` settings for an unpublished project. To publish,
-     enable both settings, verify crate-name availability, and configure registry
-     authentication in the release workflow. The existing workflow only supplies
-     `GITHUB_TOKEN`.
+   - Registry publishing is disabled. Release-plz uses `git_only = true` to
+     version unpublished crates from Git tags and create GitHub releases.
+     To publish to crates.io, set `git_only = false` and `publish = true` in
+     `release-plz.toml`, enable publishing in `[workspace.package]`, add version
+     requirements alongside publishable path dependencies, and
+     configure `CARGO_REGISTRY_TOKEN` in the release workflow. Verify crate-name
+     availability first.
    - Run `cargo check --workspace --all-targets` to update `Cargo.lock` for the new
      package names, then review and commit the lockfile with the manifest changes.
 
@@ -137,13 +139,19 @@ requires no helper script or Python dependency.
       enabled on `main`, and both workflows share the `gh-pages` branch.
 
 7. Configure the release automation
-   Keep `release-plz.toml`, `.github/workflows/release-plz.yml`, and the
-   release-specific changelog files as part of the template's release process.
+   Keep `release-plz.toml` and `.github/workflows/release-plz.yml` as part of the
+   template's release process. Release-plz recreates the changelogs removed in
+   step 2 using the new project's history.
    Update the package names, changelog paths, repository metadata, and
-   publishing settings for the new project. Publishing remains disabled until
-   the project explicitly enables it and configures registry authentication.
-   Semver checking remains an independent pull request safeguard for library
-   APIs.
+   publishing settings for the new project. Git tags use `<crate>-v<version>`;
+   GitHub releases do not require registry publication.
+
+   Configure a `RELEASE_PLZ_TOKEN` repository secret with Contents and Pull
+   requests read/write permissions so release PRs trigger CI. The workflow
+   falls back to `GITHUB_TOKEN`; with that fallback, a maintainer must close
+   and reopen each release PR after bot updates to trigger required checks.
+   See [release-plz's token setup](https://release-plz.dev/docs/github/token).
+   Semver checking remains an independent pull request safeguard for library APIs.
 
 8. Update `LICENSE`.
 
