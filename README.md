@@ -53,7 +53,7 @@ Use GitHub's **Use this template** button, clone your new repository, and follow
 this manual setup checklist from the repository root. Project initialization
 requires no helper script or Python dependency.
 
-1. Install Rust 1.96 or newer, `just`, and `jq` (used by the license checker).
+1. Install Rust 1.98.1 or newer, `just`, and `jq` (used by the license checker).
    Install `just` with `cargo install --locked just`, or on macOS install both
    tools with `brew install just jq`.
 

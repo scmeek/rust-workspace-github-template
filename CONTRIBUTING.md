@@ -10,7 +10,7 @@ By participating in this project, you agree to abide by our Code of Conduct (see
 
 ### Prerequisites
 
-- Rust 1.96 or newer
+- Rust 1.98.1 or newer
 - Git
 - `just` and `jq` for the local check scripts (see README.md for installation)
 - Familiarity with Cargo and Rust workspace projects
