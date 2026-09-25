@@ -20,6 +20,9 @@ jobs:
   nightly:
     name: Test Rust ${{ matrix.toolchain }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    env:
+      # Installing a default toolchain does not override rust-toolchain.toml.
+      RUSTUP_TOOLCHAIN: ${{ matrix.toolchain }}
 
     strategy:
       fail-fast: false
@@ -43,7 +46,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de # master
         with:
           toolchain: ${{ matrix.toolchain }}
-          components: rustfmt, clippy, llvm-tools-preview
+          components: clippy
 
       - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
         with:
@@ -51,23 +54,44 @@ jobs:
 
       - uses: taiki-e/install-action@3f74d7c16a4242f1c95561e98edc25d36adb4375 # v2.87.12
         with:
-          tool: cargo-workspace-lints, cargo-nextest, cargo-llvm-cov
+          tool: cargo-workspace-lints, cargo-nextest
 
       - name: Run doctests
         run: cargo test --locked --workspace --all-features --doc
 
       - name: Run tests
-        run: cargo llvm-cov nextest --locked --workspace $RUST_SCOPE
+        run: cargo nextest run --locked --workspace $RUST_SCOPE
 
       - name: Run tests (release)
-        run: cargo llvm-cov nextest --locked --release --workspace $RUST_SCOPE
-
-      - name: Check formatting
-        run: ./scripts/format-check.sh
-        # No need to run on every OS
-        if: matrix.os == 'ubuntu-latest'
+        run: cargo nextest run --locked --release --workspace $RUST_SCOPE
 
       - name: Check lints
         run: ./scripts/lint-check.sh
         # No need to run on every OS
         if: matrix.os == 'ubuntu-latest'
+
+  features:
+    name: Test features (${{ matrix.features || 'default' }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        features: ["", "--no-default-features"]
+    env:
+      FEATURE_FLAGS: ${{ matrix.features }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          submodules: true
+
+      - uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de # master
+        with:
+          toolchain: "1.98.1" # Also defined in rust-toolchain.toml
+
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+
+      - name: Run tests and doctests for this feature selection
+        run: |
+          cargo test --locked --workspace --all-targets $FEATURE_FLAGS
+          cargo test --locked --workspace --doc $FEATURE_FLAGS

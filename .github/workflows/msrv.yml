@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
   workflow_call:
 
-permissions: {}
+permissions:
+  contents: read
 
 env:
   CARGO_TERM_COLOR: always
@@ -14,6 +15,9 @@ env:
 jobs:
   msrv:
     runs-on: ubuntu-latest
+    env:
+      # Override rust-toolchain.toml; keep this aligned with Cargo.toml's MSRV.
+      RUSTUP_TOOLCHAIN: "1.98.1"
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -23,10 +27,12 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de # master
         with:
-          # Keep this in sync with workspace.package.rust-version in Cargo.toml.
-          toolchain: "1.98.1"
+          toolchain: ${{ env.RUSTUP_TOOLCHAIN }}
 
       - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
 
       - name: Run tests on the minimum supported Rust version
         run: cargo test --locked --workspace --all-targets --all-features
+
+      - name: Run doctests on the minimum supported Rust version
+        run: cargo test --locked --workspace --all-features --doc
