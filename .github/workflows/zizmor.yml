@@ -36,8 +36,28 @@ jobs:
 
       - uses: taiki-e/install-action@3f74d7c16a4242f1c95561e98edc25d36adb4375 # v2.87.12
         with:
-          # Rust tool pins also live in scripts/tools.txt; native pins in README.md.
-          tool: actionlint@1.7.12, shellcheck@0.11.0, typos-cli@1.50.2
+          tool: shellcheck@0.11.0 # Also documented in README.md.
+          fallback: none
+
+      # actionlint is not a Cargo crate; this install-action pin also predates typos 1.50.2.
+      - name: Install actionlint and typos from verified releases
+        shell: bash
+        run: |
+          tools_dir="$RUNNER_TEMP/static-check-tools"
+          mkdir -p "$tools_dir/bin"
+          cd "$tools_dir"
+          # Keep versions aligned with README.md and scripts/tools.txt; update hashes too.
+          curl --fail --silent --show-error --location --retry 3 \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz \
+            --output actionlint.tar.gz
+          curl --fail --silent --show-error --location --retry 3 \
+            https://github.com/crate-ci/typos/releases/download/v1.50.2/typos-v1.50.2-x86_64-unknown-linux-musl.tar.gz \
+            --output typos.tar.gz
+          echo '8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  actionlint.tar.gz' | sha256sum --check --strict
+          echo 'abcb3e257c7c2abeff4d903f7fe68071357637605bdb283ce2251f44bc70dc09  typos.tar.gz' | sha256sum --check --strict
+          tar -xzf actionlint.tar.gz -C bin actionlint
+          tar -xzf typos.tar.gz -C bin ./typos
+          echo "$tools_dir/bin" >> "$GITHUB_PATH"
 
       - name: Check workflows and shell scripts
         run: sh scripts/workflow-check.sh
