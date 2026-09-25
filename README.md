@@ -152,8 +152,7 @@ requires no helper script or Python dependency.
    `CODE_OF_CONDUCT.md`, `SECURITY.md`, and `.github/ISSUE_TEMPLATE/` for project
    policies, contacts, and links. Enable the repository features those documents
    reference, such as Discussions and private vulnerability reporting, or adjust
-   the documents. The template's [TODO.md](TODO.md) roadmap can be removed from
-   your new project.
+   the documents.
 
 10. Update GitHub repo settings
    - Pull Request settings
