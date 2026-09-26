@@ -108,7 +108,8 @@ requires no helper script or Python dependency.
      and add publication metadata such as authors, categories, keywords, and a
      documentation URL when applicable. Each crate must opt into any new shared
      fields with `<field>.workspace = true`.
-   - Keep `license` consistent with `LICENSE`.
+   - Set the project's license in `LICENSE`; the workspace references that file
+     through `license-file`, inherited by each crate.
    - Registry publishing is disabled. Release-plz uses `git_only = true` to
      version unpublished crates from Git tags and create GitHub releases.
      To publish to crates.io, set `git_only = false` and `publish = true` in

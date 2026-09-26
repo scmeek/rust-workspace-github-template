@@ -7,7 +7,7 @@ description = "A minimal Rust workspace with a library and command-line applicat
 edition = "2024"
 rust-version = "1.98.1"       # Also defined in GitHub Actions workflow runners
 
-license = "MIT"
+license-file = "LICENSE"
 repository = "https://github.com/scmeek/rust-workspace-github-template"
 
 publish = false
