@@ -1,41 +1,43 @@
-name: Check lints
+name: Optional mutation testing
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
-  workflow_call:
 
 permissions:
   contents: read
 
 env:
   CARGO_TERM_COLOR: always
-  RUST_SCOPE: --all-targets --all-features
 
 jobs:
-  lint-check:
+  mutants:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-          submodules: true
 
       - uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de # master
         with:
           toolchain: "1.98.1" # Also defined in rust-toolchain.toml
-          components: clippy
 
       - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+        with:
+          key: mutants
 
       - uses: taiki-e/install-action@3f74d7c16a4242f1c95561e98edc25d36adb4375 # v2.87.12
         with:
-          tool: cargo-workspace-lints@0.1.4 # Also defined in scripts/tools.txt
+          tool: cargo-mutants@27.1.0 # Also defined in scripts/tools.txt
 
-      - name: Check lints
-        run: ./scripts/lint-check.sh
+      - name: Run mutation tests
+        run: sh scripts/mutants.sh
 
-      - name: Check documentation
-        run: ./scripts/documentation-generate.sh
+      - name: Upload mutation reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: mutation-report
+          path: mutants.out/
+          if-no-files-found: warn
+          retention-days: 14

@@ -14,7 +14,7 @@ env:
 
 jobs:
   documentation-generate:
-    if: startsWith(github.ref, 'refs/heads/main')
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +25,7 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de # master
         with:
-          toolchain: "1.96" # Also defined in workspace Cargo.toml
+          toolchain: "1.98.1" # Also defined in rust-toolchain.toml
 
       - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
 
@@ -37,3 +37,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./target/doc
+          keep_files: true # Preserve benchmark reports on the shared gh-pages branch

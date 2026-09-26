@@ -1,119 +1,115 @@
 [workspace]
-resolver = "2"
+resolver = "3"
 members = ["crates/template_bin", "crates/template_lib"]
 
 [workspace.package]
-description = "description"
-authors = ["authors"]
+description = "A minimal Rust workspace with a library and command-line application"
 edition = "2024"
-rust-version = "1.96"       # Also defined in GitHub Actions workflow runners
+rust-version = "1.98.1"       # Also defined in GitHub Actions workflow runners
 
-categories = ["rust"]
-keywords = ["rust"]
-documentation = "documentation"
 license-file = "LICENSE"
-readme = "README.md"
-repository = "repo"
+repository = "https://github.com/scmeek/rust-workspace-github-template"
 
 publish = false
-
-exclude = [".github", "scripts"]
-
-[workspace.metadata]
-maintainers = [{ name = "name", email = "email" }]
-resources = [{ name = "resource name", url = "url" }]
-tags = ["rust"]
-notes = "notes"
 
 [workspace.dependencies]
 template_lib = { path = "crates/template_lib" }
 
-anyhow = "1"
 criterion = { version = "0.8", features = ["html_reports"] } # Benchmarks
-derive-new = "0.7"
-rstest = "0.26"                                              # Tests
-serde = "1"
-thiserror = "2"
-tracing = "0.1"
 
 # -- Lints --
 
 [workspace.lints.rust]
-# warnings = "deny"
+# Safe by default; narrowly scoped, reasoned exceptions remain possible.
 unsafe_code = "deny"
-arithmetic_overflow = "deny"    # Prevent operations that would cause integer overflow
-unnecessary_transmutes = "deny" # Prevent unsafe transmutations
+unsafe_op_in_unsafe_fn = "deny"
+unused_must_use = "deny"
+let_underscore_lock = "deny"
+unfulfilled_lint_expectations = "deny"
+arithmetic_overflow = "deny"
+unnecessary_transmutes = "deny"
+future_incompatible = { level = "deny", priority = -1 }
+rust_2018_idioms = { level = "deny", priority = -1 }
+unreachable_pub = "deny"
+unused_lifetimes = "deny"
 
 [workspace.lints.clippy]
 
-# Blanket foundation rules
+# Broad maintained groups. `all` includes correctness, suspicious, style,
+# complexity, and performance; `pedantic` adds casts, API docs, and idioms.
 all = { level = "deny", priority = -1 }
-cargo = { level = "deny", priority = -1 }
-complexity = { level = "deny", priority = -1 }
-correctness = { level = "deny", priority = -1 }
-panic = { level = "deny", priority = -1 }
 pedantic = { level = "deny", priority = -1 }
-perf = { level = "deny", priority = -1 }
-style = { level = "deny", priority = -1 }
-suspicious = { level = "deny", priority = -1 }
+cargo = { level = "deny", priority = -1 }
 
-# Macros
-dbg_macro = "warn"
+# Publication metadata belongs to each generated project. Transitive dependency
+# duplication is not always under our control.
+cargo_common_metadata = "allow"
+multiple_crate_versions = "allow"
+
+# Selected restriction lints: do not enable the whole contradictory group.
+# Tests can unwrap/expect/panic and print, as configured in clippy.toml.
+dbg_macro = "deny"
 todo = "deny"
 unimplemented = "deny"
-
-# Style and clarity
-wildcard_imports = "deny"
-needless_borrow = "deny"
-clone_on_ref_ptr = "deny"
-redundant_clone = "deny"
-
-# Performance
-unnecessary_to_owned = "deny"
-inefficient_to_string = "deny"
-large_enum_variant = "deny"
-map_clone = "deny"
-
-# Arithmetic
-checked_conversions = "deny"            # Suggest using checked conversions between numeric types
-cast_possible_truncation = "deny"
-cast_sign_loss = "deny"
-cast_possible_wrap = "deny"
-cast_precision_loss = "deny"
-integer_division = "deny"               # Highlight potential bugs from integer division truncation
-arithmetic_side_effects = "deny"
-unchecked_duration_subtraction = "deny" # Ensure duration subtraction won't cause underflow
-
-# Unwraps
-unwrap_used = "forbid"
-expect_used = "forbid"
-panicking_unwrap = "deny"  # Prevent unwrap on values known to cause panics
-option_env_unwrap = "deny" # Prevent unwrapping environment variables which might be absent
-
-# Unsafe code detection
-transmute_ptr_to_ref = "deny"     # Prevent unsafe transmutation from pointers to references
-transmute_undefined_repr = "deny"
-
-# Miscellaneous
-allow_attributes = "deny"
-allow_attributes_without_reason = "deny"
+panic = "deny"
+unwrap_used = "deny"
+expect_used = "deny"
 exit = "deny"
-indexing_slicing = "deny"                # Avoid direct array indexing and use safer methods like .get()
-infinite_loop = "deny"
-join_absolute_paths = "deny"             # Prevent issues when joining paths with absolute paths
-let_underscore_must_use = "deny"
-map_err_ignore = "deny"
-missing_assert_message = "warn"
-multiple_crate_versions = "allow"        # Can't control dependencies of dependencies
-must_use_candidate = "deny"
 print_stdout = "deny"
 print_stderr = "deny"
+
+# Make discarded work, hidden errors, and path replacement explicit.
+let_underscore_must_use = "deny"
+let_underscore_future = "deny"
+map_err_ignore = "deny"
+unused_result_ok = "deny"
+mem_forget = "deny"
+path_buf_push_overwrite = "deny"
+string_slice = "deny"
+unchecked_time_subtraction = "deny"
+try_err = "deny"
+
+# Document exceptions and unsafe invariants if unsafe is explicitly permitted.
+allow_attributes = "deny"
+allow_attributes_without_reason = "deny"
+undocumented_unsafe_blocks = "deny"
+multiple_unsafe_ops_per_block = "deny"
+
+# Readability and avoidable allocation without prescribing a source-code layout.
+clone_on_ref_ptr = "deny"
 redundant_type_annotations = "deny"
 rest_pat_in_fully_bound_structs = "deny"
-return_and_then = "deny"
-serde_api_misuse = "deny"                # Prevent incorrect usage of Serde's serialization/deserialization API
-string_slice = "deny"
-try_err = "deny"
-undocumented_unsafe_blocks = "deny"
 unneeded_field_pattern = "deny"
-uninit_vec = "deny"                      # Prevent creating uninitialized vectors which is unsafe
+missing_assert_message = "warn"
+
+# Additional opt-in nursery/restriction checks. Avoid enabling every experimental
+# style rule or automatically enabling new nursery additions on toolchain updates.
+as_ptr_cast_mut = "deny"
+collection_is_never_read = "deny"
+debug_assert_with_mut_call = "deny"
+empty_drop = "deny"
+equatable_if_let = "deny"
+iter_on_empty_collections = "deny"
+iter_on_single_items = "deny"
+large_futures = "deny"
+needless_collect = "deny"
+non_send_fields_in_send_ty = "deny"
+readonly_write_lock = "deny"
+redundant_clone = "deny"
+redundant_pub_crate = "deny"
+return_and_then = "deny"
+significant_drop_in_scrutinee = "deny"
+suspicious_operation_groupings = "deny"
+unused_peekable = "deny"
+unused_rounding = "deny"
+use_self = "deny"
+
+[workspace.lints.rustdoc]
+broken_intra_doc_links = "deny"
+private_intra_doc_links = "deny"
+invalid_codeblock_attributes = "deny"
+invalid_html_tags = "deny"
+invalid_rust_codeblocks = "deny"
+bare_urls = "deny"
+redundant_explicit_links = "deny"
+unescaped_backticks = "deny"

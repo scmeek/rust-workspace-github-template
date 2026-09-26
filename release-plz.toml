@@ -1,6 +1,9 @@
 [workspace]
 changelog_update = true
 publish = false
+# Version and release private crates using Git tags instead of crates.io.
+git_only = true
+git_tag_name = "{{ package }}-v{{ version }}"
 
 [changelog]
 header = """# Changelog\n

@@ -4,24 +4,27 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 ## Template Features
 
-- `Make` for project interactions, except for `cargo`-native actions
+- `just` for project interactions, except for `cargo`-native actions
 - Local and CI implementations
   - Pre-push git hooks for fast feedback
   - Fast CI workflows for near-immediate Pull Request validations
   - GitHub Actions static analysis and auditing
     - [zizmor](https://github.com/zizmorcore/zizmor)
+    - [actionlint](https://github.com/rhysd/actionlint) and [ShellCheck](https://www.shellcheck.net/)
+- Documentation and source spelling with [typos](https://github.com/crate-ci/typos)
 - Strict workspace-wide linting configuration
 - Dependency auditing
   - Unused dependencies
   - Dependency vulnerability checks
   - Dependency licenses
-- Commit (Pull Request) standards and automated Release handling
+  - Dependency bans and allowed sources, configured with the other policies in `deny.toml`
+- Commit (Pull Request) standards and automated release handling
   - [Conventional Commits](https://www.conventionalcommits.org)
   - [`release-plz`](https://github.com/release-plz/release-plz)
 - Modern and fast testing
   - [`nextest`](https://nexte.st)
   - [`cargo-llvm-cov`](https://github.com/taiki-e/cargo-llvm-cov) for coverage
-- Benchmarking
+- Optional benchmarking
   - [`criterion`](https://docs.rs/criterion/latest/criterion/)
 - GitHub templates
   - `CODEOWNERS`
@@ -32,7 +35,7 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
   - Security policy
   - Code of conduct
   - Contributing guidelines
-- Sensible default dependencies
+- No external runtime dependencies; Criterion is a development dependency
 - Project defaults
   - `LICENSE` file
 
@@ -41,54 +44,118 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 - macOS used for local development
 - `main` will be the default git branch
 
-### Considerations
+### Workspace organization
 
-- The separation between "template_lib" and "template_bin" crates is intentional,
-  as this template prefers explicit API interfaces rather than shared "core" code.
-  However, this, of course, can be easily modified to your liking.
+| Location | Responsibility |
+| --- | --- |
+| `crates/template_lib/src/` | Reusable behavior, with unit tests beside the code |
+| `crates/template_lib/benches/` | Benchmarks of the public library API |
+| `crates/template_bin/src/` | Thin executable: call the library and handle process output/errors |
+| `scripts/` | Shared local and CI checks; scripts resolve the workspace root themselves |
+| `deny.toml` | Dependency advisory, license, ban, and source policy |
+| `justfile` | Discoverable local commands delegating to Cargo or the scripts |
+| `.github/workflows/` | CI orchestration and deployment/release infrastructure to configure for your project |
+
+Keep the two crates when the application has reusable behavior. A library-only
+project can remove the binary and its entries in the workspace and release
+configuration. Add dependencies only to the crates that use them; share version
+requirements through `[workspace.dependencies]` when useful.
+
+The Rust 2024 workspace uses resolver 3 for Rust-version-aware dependency
+selection. `Cargo.lock` is committed and routine checks use `--locked`.
+The repository's `rust-toolchain.toml` pins the development toolchain and
+installs rustfmt, Clippy, and `llvm-tools-preview` automatically. The
+`rust-version` in `Cargo.toml` remains the compatibility floor; test that
+minimum version separately when supporting older Rust releases.
 
 ## After Cloning
 
-1. Update and uncomment `PROJECT_NAME` in `Makefile`.
+Use GitHub's **Use this template** button, clone your new repository, and follow
+this manual setup checklist from the repository root. Project initialization
+requires no helper script or Python dependency.
+
+1. Install Rustup and `just`. Rustup will
+   install the pinned toolchain and components from `rust-toolchain.toml` when
+   you run commands in the repository. Install `just` with
+   `cargo install --locked just`, or on macOS use `brew install just`.
 
 2. Delete `crates/template_lib/CHANGELOG.md` and `crates/template_bin/CHANGELOG.md`.
 
-3. Update `.github/CODEOWNERS`.
+3. Replace `@scmeek` in `.github/CODEOWNERS` with your GitHub username or a team
+   with access to the repository.
 
-4. Update `template_bin` and `template_lib` crates.
-   - Crate names and directories (if desired)
-     - _Note:_ `release-plz` and `cargo-semver-check` look at `crates.io` so be
-       conscious of that when selecting names if you are not planning to publish
-   - Update "`bin`" crate dependency to "`lib`" crate
-   - Update `release-plz.toml` to new names
-   - Update each crate's `README.md`
-     - `README.md` are exported in Rust docs for its crate
+4. Rename the crates consistently. For example, for a project named
+   `weather-station`, use `weather-station-lib` and `weather-station-bin`.
+   - Set `[package].name` in both `crates/*/Cargo.toml` files.
+   - Rename the `template_lib` dependency key in both `[workspace.dependencies]`
+     in the root `Cargo.toml` and `[dependencies]` in the binary's manifest to
+     `weather-station-lib`, retaining `.workspace = true` in the binary.
+   - Update imports in `crates/template_bin/src/main.rs` and
+     `crates/template_lib/benches/criterion_benches.rs` to
+     `use weather_station_lib::add;`. Rust imports use underscores for hyphens
+     in package names.
+   - Directories may retain their existing names. If you rename them, also update
+     `[workspace].members`, the library's dependency `path`, and both
+     `changelog_path` values in `release-plz.toml`.
+   - Update both package names in `release-plz.toml`, the step label in
+     `.github/workflows/semver-check.yml`, and the `--package`
+     argument in `scripts/version-check.sh`.
+   - Update each crate's `README.md`; these files are included in crate rustdocs.
 
 5. Update workspace `Cargo.toml`.
-   - `workspace.package` section
-   - `workspace.metadata` section
+   - Update `description` and `repository` in
+     `[workspace.package]`. Set `repository` to your new GitHub repository URL
+     and add publication metadata such as authors, categories, keywords, and a
+     documentation URL when applicable. Each crate must opt into any new shared
+     fields with `<field>.workspace = true`.
+   - Set the project's license in `LICENSE`; the workspace references that file
+     through `license-file`, inherited by each crate.
+   - Registry publishing is disabled. Release-plz uses `git_only = true` to
+     version unpublished crates from Git tags and create GitHub releases.
+     To publish to crates.io, set `git_only = false` and `publish = true` in
+     `release-plz.toml`, enable publishing in `[workspace.package]`, add version
+     requirements alongside publishable path dependencies, and
+     configure `CARGO_REGISTRY_TOKEN` in the release workflow. Verify crate-name
+     availability first.
+   - Run `cargo check --workspace --all-targets` to update `Cargo.lock` for the new
+     package names, then review and commit the lockfile with the manifest changes.
 
-6. Use GitHub pages for docs and benchmark
-   1. Create `gh-pages` branch
+6. Choose whether to publish docs and benchmarks with GitHub Pages (optional).
+   Remove `documentation-generate.yml` if published docs are unnecessary.
+   Remove `benchmark.yml` if published benchmark reports are unnecessary; local
+   benchmarks can still be kept. If benchmarks are unwanted altogether, also
+   remove their source, manifest configuration, Criterion dependency, installer
+   entry, `just bench` recipe, and script.
 
-      ```sh
-      git checkout --orphan gh-pages
-      git rm -rf .
-      git commit --allow-empty -m "Initial commit"
-      git push -u origin gh-pages
-      ```
+   For either publication workflow, run it on `main` to create `gh-pages`
+   automatically, then configure Settings → Pages to deploy from that branch's
+   root. Any `gh-pages` ruleset must allow the workflow to push. Both workflows
+   preserve each other's files on this shared branch.
 
-   2. Create ruleset for `gh-pages`
-   3. Configure GitHub repo settings for GitHub Pages
-      - Deploy from a branch (`gh-pages`)
-   4. Enable deploying documentation in `documentation-generate.yml`
-   5. Update `benchmark.yml` to enable historical storage and PR comments of benchmarks
+7. Configure the release automation
+   Keep `release-plz.toml` and `.github/workflows/release-plz.yml` as part of the
+   template's release process. Release-plz recreates the changelogs removed in
+   step 2 using the new project's history.
+   Update the package names, changelog paths, repository metadata, and
+   publishing settings for the new project. Git tags use `<crate>-v<version>`;
+   GitHub releases do not require registry publication.
 
-7. Update `LICENSE`.
+   Configure a `RELEASE_PLZ_TOKEN` repository secret with Contents and Pull
+   requests read/write permissions so release PRs trigger CI. The workflow
+   falls back to `GITHUB_TOKEN`; with that fallback, a maintainer must close
+   and reopen each release PR after bot updates to trigger required checks.
+   See [release-plz's token setup](https://release-plz.dev/docs/github/token).
+   Semver checking remains an independent pull request safeguard for library APIs.
 
-8. Update or replace this `README.md`.
+8. Update `LICENSE`.
 
-9. Update GitHub repo settings
+9. Update or replace this `README.md`. Review `CONTRIBUTING.md`,
+   `CODE_OF_CONDUCT.md`, `SECURITY.md`, and `.github/ISSUE_TEMPLATE/` for project
+   policies, contacts, and links. Enable the repository features those documents
+   reference, such as Discussions and private vulnerability reporting, or adjust
+   the documents.
+
+10. Update GitHub repo settings
    - Pull Request settings
      - Disallow merge commits and rebase merging
      - Only allow squash merging
@@ -102,35 +169,190 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
        - Require review from code owners
        - Squash as the allowed merge method for Pull Requests
        - Require status checks to pass
-         - audit
-         - benchmark-compare-pr
-         - format-check
-         - licenses-check
-         - lint-check
-         - pr-title-validate
-         - unused-dependencies-check
-         - zizmor
-         - test (macos-latest)
-         - test (ubuntu-latest)
-         - test (windows-latest)
+         - CI / Required checks
        - Require branches to be up to date before merging
        - Block for pushes
    - Workflow permissions (Settings → Actions → General)
-     - Read and write permissions
-       - For `gh-pages` updates
+     - Keep the default token read-only; workflows request their required permissions.
      - Allow GitHub Actions to create and approve pull requests
+
+11. Verify the customized workspace before committing.
+
+    ```sh
+    cargo fmt --all --check
+    cargo check --workspace --all-targets --locked
+    cargo test --workspace --locked
+    cargo clippy --workspace --all-targets --locked -- -D warnings
+    git grep -n -E 'template_lib|template_bin|rust-workspace-github-template|scmeek'
+    git diff --check
+    git diff
+    ```
+
+    Review any remaining template references; directory paths are expected if
+    you kept the original directory names. `git grep` exits with status 1 when
+    no matches remain. Run the local checks below after installing their tools.
 
 ## Project Getting Started
 
 1. Interact with the repo
 
    ```sh
-   make help
+   just
    ```
 
-2. Initialize your development environment
+2. Install the core check tools, then run routine checks with Rust's
+   rustfmt and Clippy components and `just`
 
    ```sh
-   make hooks
-   make deps
+   just deps
+   just doctor
+   just check
    ```
+
+3. Apply formatting or run individual checks
+
+   ```sh
+   just fmt
+   just build test
+   ```
+
+`just doctor` checks core tools, the active Rust toolchain, and optional tools,
+including versions pinned in `scripts/tools.txt`. It prints corrective commands and
+exits unsuccessfully only when a core requirement is missing or mismatched.
+It does not install or update anything. If `just` itself is unavailable, run
+`sh scripts/doctor.sh` directly. This checks tooling, not project compilation;
+run `just check` afterward to validate the workspace.
+
+`just test` runs debug tests and doctests; `just test-all` also runs release tests.
+`just coverage` collects coverage separately and requires `cargo-llvm-cov`; the
+repository toolchain file supplies `llvm-tools-preview`. CI also exercises
+tests through nextest.
+
+`just deps` installs the workspace lint checker, cargo-machete, and typos needed by
+`just check`, plus actionlint and ShellCheck needed by `just workflows`.
+Add other tool groups as needed:
+
+| Command | Tools | Purpose |
+| --- | --- | --- |
+| `just deps` (or `just deps core`) | cargo-workspace-lints, cargo-machete, typos-cli, actionlint, ShellCheck | Routine local and workflow checks |
+| `just deps checks` | cargo-deny, cargo-semver-checks, cargo-llvm-cov | Dependency policy, API compatibility, coverage |
+| `just deps bench` | cargo-criterion | Local benchmarks |
+| `just deps release` | release-plz | Run release tooling locally |
+| `just deps ci` | cargo-nextest | Reproduce the CI test runner |
+| `just deps deep` | cargo-udeps, cargo-mutants, cargo-careful | Optional dependency, mutation, and runtime checks |
+| `just deps all` | All of the above | Full local toolset |
+
+Each group installs only its listed tools. Cargo tool versions are pinned in
+[`scripts/tools.txt`](scripts/tools.txt), shared by the installer and doctor.
+The installer uses exact versions and each tool's published lockfile; rerunning
+it skips tools already at the selected version. To update a pin, also update
+matching workflow versions and validate the associated command. To install tools
+without `just`, run `bash scripts/dependencies.sh <group>`.
+
+For actionlint and ShellCheck, the installer keeps tools already on `PATH` and
+installs missing tools through Homebrew when available. Without Homebrew, install
+them using your system package manager or the upstream releases linked below;
+`just deps` fails with installation guidance until both tools are available.
+Native package versions follow the package manager; CI pins are documented below.
+
+Rust components remain managed by `rust-toolchain.toml`. Running
+`cargo +nightly udeps` additionally requires a nightly toolchain
+(`rustup toolchain install nightly`). CI installs its own tools, and release
+automation remains part of the template regardless of whether you install the
+release CLI locally.
+
+`just audit` runs all four checks; `just licenses` runs only the license check.
+CI runs the same policy check for pull requests and pushes to `main`.
+
+`just version` checks the library API against the locally fetched `origin/main`;
+run `git fetch origin` first, or select a baseline with `just version <revision>`.
+It requires `cargo-semver-checks` from `just deps checks`; its pin supports the
+repository's Rust toolchain.
+CI uses the PR's exact base commit. Manual CI runs accept a `baseline-rev` input
+(default `origin/main`); choose an earlier revision when checking `main` itself.
+Workflow security findings fail CI directly, without requiring GitHub Advanced
+Security or a separate code-scanning ruleset.
+
+Install the optional pre-push hook with `just hooks`. It runs formatting, lint,
+and debug test checks and preserves any existing hook. Git worktrees and custom
+hook paths are supported. Use `SKIP_PRE_PUSH=true git push` to bypass local checks
+when needed; CI still runs. The hook checks the working tree, so it normally
+requires a clean tree (`SKIP_UNCOMMITTED_CHECK=true` bypasses that guard).
+
+Dependency policy lives in `deny.toml` and covers all workspace crates, features,
+platforms, and development dependencies. The initial license allowlist is MIT,
+Apache-2.0, and Unicode-3.0; review additions for your project's needs. `cargo-deny`
+evaluates SPDX expressions and can identify licenses from license files. Unknown
+or unapproved licenses fail the check. Private workspace crates are checked too.
+Sources are restricted to crates.io unless explicitly approved. Wildcard version
+requirements fail, with an exception for path or approved Git dependencies in
+unpublished crates and development dependencies; duplicate versions produce
+warnings. Yanked crates and unmaintained or unsound advisories fail the check.
+No crate-specific bans or advisory exceptions are configured initially. Document reasons when adding
+exceptions. Advisory checks fetch the RustSec database and require network access.
+
+### Workflow and spelling checks
+
+`just workflows` runs actionlint (including ShellCheck on workflow `run` blocks)
+and ShellCheck on the repository shell scripts. `just deps` includes both tools
+in the default setup and installs them through Homebrew when missing. On systems
+without Homebrew, use your package manager or the
+[actionlint releases](https://github.com/rhysd/actionlint/releases) and
+[ShellCheck releases](https://github.com/koalaman/shellcheck/releases).
+CI pins **actionlint 1.7.12** and **ShellCheck 0.11.0** in `zizmor.yml`; use those
+releases when reproducing CI exactly. `just doctor` reports missing workflow
+tools as required setup failures. CI also runs zizmor.
+
+`just spelling` runs typos over source, documentation, and hidden configuration.
+`.typos.toml` excludes Git internals and the generated Cargo lockfile; ordinary
+Git ignore rules also apply. Add narrow word exceptions only for real project
+terminology. Spelling is part of `just check` and the required workflow checks.
+
+### Unused dependencies and deeper testing
+
+`just unused` runs [cargo-machete](https://github.com/bnjbvr/cargo-machete), a fast
+source-based check with no nightly compilation. It runs in `just check` and CI.
+Its heuristic can miss dependencies or report false positives, especially with
+macros; review findings before removal and document any package-specific
+`[package.metadata.cargo-machete].ignored` entries. For compiler-based analysis,
+install `just deps deep` and nightly Rust, then run `just udeps` explicitly.
+
+The following checks are opt-in and do not gate PRs:
+
+- `just careful` uses [cargo-careful](https://github.com/RalfJung/cargo-careful)
+  from `just deps deep` to run workspace tests and doctests with extra runtime
+  checks and a standard library built with debug assertions. First run
+  `rustup toolchain install nightly --component rust-src`. The first execution
+  builds and caches a checked standard library. This runs natively and supports
+  code that cannot run under Miri, but detects fewer kinds of undefined behavior.
+- `just mutants` uses [cargo-mutants](https://mutants.rs/) from `just deps deep`
+  to change source behavior and check whether tests catch each change. It writes
+  reports to `mutants.out/` (ignored by Git) and returns a failure for missed
+  mutants. On the minimal example it catches two mutants and misses removal of
+  the binary's output: the smoke test does not assert stdout. Use the report to
+  guide tests as real behavior is added. Runs can be expensive on larger projects.
+- `just miri` runs library and binary tests with [Miri](https://github.com/rust-lang/miri)
+  to detect undefined behavior on executed paths. First run
+  `rustup toolchain install nightly --component miri --component rust-src`.
+  Benchmarks are excluded; Miri has execution and platform limitations and can
+  be much slower than native tests. It is most useful as unsafe or complex
+  memory-sensitive behavior is introduced.
+
+GitHub Actions also offers **Optional careful tests** (`careful.yml`) and
+**Optional mutation testing** (`mutants.yml`). Both use only `workflow_dispatch`:
+select the workflow in Actions, choose **Run workflow**, and select a branch.
+GitHub exposes the dispatch button once the workflow exists on the default
+branch. Neither workflow is called by the required CI workflow or runs on PRs
+or a schedule. Both invoke the same scripts as their local `just` recipes.
+
+The mutation workflow uploads `mutants.out/` as the `mutation-report` artifact,
+retained for 14 days, including when missed mutants fail the check. Inspect
+`missed.txt`, `outcomes.json`, and the individual logs to investigate results.
+Failures remain visible on these optional runs. The careful job has a 30-minute
+limit and mutation testing a 60-minute limit; adjust them as the project grows.
+Cargo-careful follows rolling nightly, so compiler changes can require a tool
+update independently of the pinned development toolchain.
+
+[Hydro](https://hydro.run/) was also evaluated. It is a distributed programming
+framework with its own simulation testing, rather than a general checker for
+an existing workspace. Adopt it only when the project needs that programming model.

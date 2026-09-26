@@ -52,11 +52,11 @@ Currently, we do not have a bug bounty program. However, we deeply appreciate th
 
 ## Dependencies
 
-We use `cargo audit` in our CI/CD pipeline to check for known vulnerabilities in our dependencies. You can also run it locally:
+We use `cargo-deny` in CI to check dependency advisories, licenses, bans, and sources against `deny.toml`. You can also run it locally:
 
 ```bash
-make deps
-make audit
+just deps
+just audit
 ```
 
 ## Security Best Practices for Users
@@ -65,7 +65,7 @@ We recommend:
 
 1. Always use the latest stable version
 2. Regularly update dependencies using `cargo update`
-3. Run `cargo audit` to check for known vulnerabilities in dependencies
+3. Run `just audit` to check dependency advisories and policy
 4. Follow the principle of least privilege when deploying
 5. Keep your Rust toolchain updated
 6. Review our security advisories regularly

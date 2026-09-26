@@ -2,21 +2,24 @@
 
 set -eu
 
-SCRIPTS_DIR="${SCRIPTS_DIR:-$(dirname -- "$(readlink -f -- "$0")")}"
+SCRIPTS_DIR="${SCRIPTS_DIR:-$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)}"
 PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/.." && pwd)}"
 
+# shellcheck source=scripts/functions.sh
 . "${SCRIPTS_DIR}/functions.sh"
 
-PRIMARY_BRANCH_NAME="main"
+baseline="${1:-origin/main}"
 
 echo ""
 
 info "Running semantic versioning check..."
 
-LAST_GIT_HASH=$(git rev-parse "${PRIMARY_BRANCH_NAME}")
+if ! baseline_sha=$(git rev-parse --verify --end-of-options "${baseline}^{commit}"); then
+  fail "Cannot resolve baseline '$baseline'. Fetch origin or pass a local revision: just version <revision>."
+fi
 
-SEMVER_CHECK_CMD="cargo semver-checks --all-features --baseline-rev $LAST_GIT_HASH" # Also in dependencies.sh
-if ! $SEMVER_CHECK_CMD; then
-  fail "Semantic versioning check failed.. Run \`$SEMVER_CHECK_CMD\` and fix issues."
+# Explicit selection includes the library even when publish = false.
+if ! cargo semver-checks --package template_lib --all-features --baseline-rev "$baseline_sha"; then
+  fail "Semantic versioning check failed against $baseline. Review the diagnostics above."
 fi
 final_success "Semantic versioning check passed."

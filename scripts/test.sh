@@ -2,9 +2,10 @@
 
 set -eu
 
-SCRIPTS_DIR="${SCRIPTS_DIR:-$(dirname -- "$(readlink -f -- "$0")")}"
+SCRIPTS_DIR="${SCRIPTS_DIR:-$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)}"
 PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/.." && pwd)}"
 
+# shellcheck source=scripts/functions.sh
 . "${SCRIPTS_DIR}/functions.sh"
 
 if [ -z "${RUST_SCOPE+x}" ]; then
@@ -13,20 +14,20 @@ fi
 
 echo ""
 
-DOC_TEST_CMD="cargo test --workspace --all-features --doc"
+DOC_TEST_CMD="cargo test --locked --workspace --all-features --doc"
 info "Running doc tests with \`$DOC_TEST_CMD\`..."
 if ! $DOC_TEST_CMD; then
   fail "Doc tests failed. Run \`$DOC_TEST_CMD\` and fix issues."
 fi
 
-TEST_CMD="cargo llvm-cov nextest --workspace $RUST_SCOPE" # Also in dependencies.sh
+TEST_CMD="cargo test --locked --workspace $RUST_SCOPE"
 info "Running tests with \`$TEST_CMD\`..."
 if ! $TEST_CMD; then
   fail "Tests failed. Run \`$TEST_CMD\` and fix issues."
 fi
 
 if [ "${SKIP_RELEASE_TEST:-false}" != "true" ]; then
-  RELEASE_TEST_CMD="cargo llvm-cov nextest --release --workspace $RUST_SCOPE" # Also in dependencies.sh
+  RELEASE_TEST_CMD="cargo test --locked --release --workspace $RUST_SCOPE"
   info "Running tests (release) with \`$RELEASE_TEST_CMD\`..."
   if ! $RELEASE_TEST_CMD; then
     fail "Tests (release) failed. Run \`$RELEASE_TEST_CMD\` and fix issues."

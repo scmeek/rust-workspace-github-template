@@ -1,0 +1,37 @@
+# Check all features and platforms, including workspace development dependencies.
+[graph]
+all-features = true
+targets = []
+
+[advisories]
+# Use RustSec's advisory database without blanket exceptions.
+ignore = []
+yanked = "deny"
+unmaintained = "all"
+unsound = "all"
+
+[licenses]
+# Initial policy covers the template's dependency graph. Review new licenses
+# before extending this list; cargo-deny evaluates SPDX AND/OR expressions.
+allow = ["MIT", "Apache-2.0", "Unicode-3.0"]
+confidence-threshold = 0.8
+include-dev = true
+include-build = true
+
+[licenses.private]
+ignore = false
+
+[bans]
+# Transitive duplicates are often unavoidable; report them without blocking CI.
+multiple-versions = "warn"
+wildcards = "deny"
+# Unpublished workspace crates can depend on each other by path without versions.
+allow-wildcard-paths = true
+# Add project-specific crate bans here, with a reason for each entry.
+deny = []
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []
