@@ -8,5 +8,5 @@ fn prints_greeting_and_sum() {
 
     assert!(output.status.success());
     assert_eq!(output.stdout, b"Hello, world!\n3\n");
-    assert!(output.stderr.is_empty());
+    assert_eq!(output.stderr, [] as [u8; 0]);
 }
