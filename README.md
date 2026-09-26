@@ -227,12 +227,13 @@ run `just check` afterward to validate the workspace.
 repository toolchain file supplies `llvm-tools-preview`. CI also exercises
 tests through nextest.
 
-`just deps` installs the workspace lint checker, cargo-machete, and typos needed by `just check`.
+`just deps` installs the workspace lint checker, cargo-machete, and typos needed by
+`just check`, plus actionlint and ShellCheck needed by `just workflows`.
 Add other tool groups as needed:
 
 | Command | Tools | Purpose |
 | --- | --- | --- |
-| `just deps` (or `just deps core`) | cargo-workspace-lints, cargo-machete, typos-cli | Routine local checks |
+| `just deps` (or `just deps core`) | cargo-workspace-lints, cargo-machete, typos-cli, actionlint, ShellCheck | Routine local and workflow checks |
 | `just deps checks` | cargo-deny, cargo-semver-checks, cargo-llvm-cov | Dependency policy, API compatibility, coverage |
 | `just deps bench` | cargo-criterion | Local benchmarks |
 | `just deps release` | release-plz | Run release tooling locally |
@@ -240,12 +241,18 @@ Add other tool groups as needed:
 | `just deps deep` | cargo-udeps, cargo-mutants, cargo-careful | Optional dependency, mutation, and runtime checks |
 | `just deps all` | All of the above | Full local toolset |
 
-Each group installs only its listed tools. Versions are pinned in
+Each group installs only its listed tools. Cargo tool versions are pinned in
 [`scripts/tools.txt`](scripts/tools.txt), shared by the installer and doctor.
 The installer uses exact versions and each tool's published lockfile; rerunning
 it skips tools already at the selected version. To update a pin, also update
 matching workflow versions and validate the associated command. To install tools
 without `just`, run `bash scripts/dependencies.sh <group>`.
+
+For actionlint and ShellCheck, the installer keeps tools already on `PATH` and
+installs missing tools through Homebrew when available. Without Homebrew, install
+them using your system package manager or the upstream releases linked below;
+`just deps` fails with installation guidance until both tools are available.
+Native package versions follow the package manager; CI pins are documented below.
 
 Rust components remain managed by `rust-toolchain.toml`. Running
 `cargo +nightly udeps` additionally requires a nightly toolchain
@@ -286,11 +293,14 @@ exceptions. Advisory checks fetch the RustSec database and require network acces
 ### Workflow and spelling checks
 
 `just workflows` runs actionlint (including ShellCheck on workflow `run` blocks)
-and ShellCheck on the repository shell scripts. Install these native tools
-separately, for example `brew install actionlint shellcheck` on macOS. CI pins
-**actionlint 1.7.12** and **ShellCheck 0.11.0** in `zizmor.yml`; use those upstream
-releases when reproducing CI exactly. `just doctor` reports their availability.
-They are optional locally and required in CI, alongside zizmor.
+and ShellCheck on the repository shell scripts. `just deps` includes both tools
+in the default setup and installs them through Homebrew when missing. On systems
+without Homebrew, use your package manager or the
+[actionlint releases](https://github.com/rhysd/actionlint/releases) and
+[ShellCheck releases](https://github.com/koalaman/shellcheck/releases).
+CI pins **actionlint 1.7.12** and **ShellCheck 0.11.0** in `zizmor.yml`; use those
+releases when reproducing CI exactly. `just doctor` reports missing workflow
+tools as required setup failures. CI also runs zizmor.
 
 `just spelling` runs typos over source, documentation, and hidden configuration.
 `.typos.toml` excludes Git internals and the generated Cargo lockfile; ordinary

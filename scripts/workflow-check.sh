@@ -8,7 +8,7 @@ cd "$PROJECT_ROOT"
 # actionlint silently skips embedded-shell analysis when ShellCheck is missing.
 for tool in shellcheck actionlint; do
   if ! command -v "$tool" >/dev/null; then
-    printf 'Missing %s. Install actionlint and ShellCheck; see README.md.\n' "$tool" >&2
+    printf 'Missing %s. Run just deps; see README.md for native tool installation.\n' "$tool" >&2
     exit 1
   fi
 done

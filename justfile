@@ -27,7 +27,7 @@ fmt:
 hooks:
     "$SCRIPTS_DIR/hooks.sh"
 
-# Install pinned tools: core (default), checks, bench, release, ci, deep, or all
+# Install development tools: core (default), checks, bench, release, ci, deep, or all
 deps group="core":
     "$SCRIPTS_DIR/dependencies.sh" {{quote(group)}}
 

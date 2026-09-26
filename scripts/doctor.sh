@@ -100,6 +100,8 @@ check_command REQUIRED Clippy "rustup component add --toolchain $pinned clippy" 
 check_cargo_tool cargo-workspace-lints REQUIRED 'just check / just lint'
 check_cargo_tool cargo-machete REQUIRED 'just check / just unused'
 check_cargo_tool typos-cli REQUIRED 'just check / just spelling'
+check_command REQUIRED actionlint 'Run just deps (CI pins 1.7.12).' '' actionlint -version
+check_command REQUIRED ShellCheck 'Run just deps (CI pins 0.11.0).' '' shellcheck --version
 
 printf '\n%s\n' 'Optional tools (not required for just check)'
 check_cargo_tool cargo-deny OPTIONAL 'just audit / just licenses'
@@ -117,13 +119,11 @@ check_cargo_tool cargo-udeps OPTIONAL 'just udeps; execution also needs nightly'
 check_cargo_tool release-plz OPTIONAL 'release automation'
 check_cargo_tool cargo-mutants OPTIONAL 'just mutants'
 check_cargo_tool cargo-careful OPTIONAL 'just careful; execution also needs nightly and rust-src'
-check_command OPTIONAL actionlint 'brew install actionlint (CI pins 1.7.12)' '' actionlint -version
-check_command OPTIONAL ShellCheck 'brew install shellcheck (CI pins 0.11.0)' '' shellcheck --version
 check_command OPTIONAL Miri 'rustup toolchain install nightly --component miri --component rust-src' '' cargo +nightly miri --version
 
 printf '\n'
 if [ "$problems" -gt 0 ]; then
-  printf '%s required check(s) failed. Resolve them before running just check.\n' "$problems"
+  printf '%s required check(s) failed. Resolve them before running just check and just workflows.\n' "$problems"
   exit 1
 fi
 printf '%s\n' 'Core tools are ready. Optional notices only affect their associated commands.'
