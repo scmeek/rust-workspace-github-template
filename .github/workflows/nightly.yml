@@ -29,7 +29,7 @@ jobs:
       matrix:
         toolchain:
           - stable
-          - "1.98.1" # Also defined in rust-toolchain.toml
+          - "1.98.1" # Keep aligned with Cargo.toml's MSRV.
           - beta
           - nightly
         os:
@@ -43,10 +43,8 @@ jobs:
           persist-credentials: false
           submodules: true
 
-      - uses: dtolnay/rust-toolchain@e2a55d2ffb04f378e9626c28d38b36d230d1e12f # master
-        with:
-          toolchain: ${{ matrix.toolchain }}
-          components: clippy
+      - name: Install Rust toolchain
+        run: rustup toolchain install "$RUSTUP_TOOLCHAIN" --profile minimal --component clippy
 
       - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
         with:
@@ -85,9 +83,8 @@ jobs:
           persist-credentials: false
           submodules: true
 
-      - uses: dtolnay/rust-toolchain@e2a55d2ffb04f378e9626c28d38b36d230d1e12f # master
-        with:
-          toolchain: "1.98.1" # Also defined in rust-toolchain.toml
+      - name: Install Rust toolchain
+        run: rustup toolchain install --profile minimal
 
       - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
 
