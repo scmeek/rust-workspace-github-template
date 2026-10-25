@@ -5,7 +5,8 @@ members = ["crates/template_bin", "crates/template_lib"]
 [workspace.package]
 description = "A minimal Rust workspace with a library and command-line application"
 edition = "2024"
-rust-version = "1.98.1"       # Also defined in GitHub Actions workflow runners
+# MSRV also in .github/workflows.msrv.yml
+rust-version = "1.85.1"
 
 license-file = "LICENSE"
 repository = "https://github.com/scmeek/rust-workspace-github-template"
