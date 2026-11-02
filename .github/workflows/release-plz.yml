@@ -31,7 +31,7 @@ jobs:
       - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
 
       - name: Run release-plz
-        uses: release-plz/action@6caa8d34f74d82b0dc76a18edd1cc3d6801c9baf # v0.5.143
+        uses: release-plz/action@b2baf303c463c223526d52a8a91b0777f052cf3f # v0.5.146
         with:
           # 0.3.167 tries to package unpublished path dependencies in Git-only mode.
           version: 0.3.169 # Also defined in scripts/tools.txt
